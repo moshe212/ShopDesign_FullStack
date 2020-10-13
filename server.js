@@ -102,7 +102,7 @@ app.get("/", (req, res) => {
 });
 
 //החזרת כל המוצרים או לפי חיפוש אם יש חיפוש == Mongo
-app.get("/products", (req, res) => {
+app.get("/api/products", (req, res) => {
   console.log("QUERY:", req.query);
   const search = req.query.search;
   console.log(search);
