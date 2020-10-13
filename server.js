@@ -71,6 +71,9 @@ app.use(bodyParser.json());
 
 app.use(cors());
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, "client/build")));
+
 let DB_Name = process.env.DB_Name
 let DB_Pass = process.env.DB_Pass
 let Mongo_Path = process.env.Mongo_Path
