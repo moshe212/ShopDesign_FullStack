@@ -82,7 +82,7 @@ const Home = (props) => {
 
   useEffect(() => {
     setTimeout(() => {
-      doAxios(false, false, false, "https://localhost:8000/products");
+      doAxios(false, false, false, "http://localhost/products");
     }, 1000);
   }, []);
   // console.log(Products[0]);
