@@ -433,7 +433,7 @@ app.post("/AddToCart", async (req, res) => {
 });
 
 connectToDB().then(() => {
-  server.listen(port, () => {
-    console.log("Example app listening on port " + port);
+  server.listen(8000, () => {
+    console.log("Example app listening on port " + 8000);
   });
 });
