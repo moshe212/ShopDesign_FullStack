@@ -1,0 +1,20 @@
+.ant-upload-drag-icon {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.ant-upload-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.ant-upload-hint {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}

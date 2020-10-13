@@ -1,0 +1,16 @@
+.FormModal input {
+  width: 80%;
+  margin-top: 10px;
+}
+
+.NameDiv {
+  display: inline-block;
+  width: 20%;
+  margin-top: 10px;
+}
+
+.AddProductBtn button {
+  background-color: #af4176;
+  border-radius: 5px;
+  border: 1px solid gray;
+}

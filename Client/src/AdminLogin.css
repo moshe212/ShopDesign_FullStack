@@ -1,0 +1,28 @@
+.Modalbtn:hover {
+  cursor: pointer;
+}
+
+.AdminIcon {
+  max-width: 85% !important;
+  max-height: 85% !important;
+  margin-left: 5px !important;
+  margin-bottom: 5px !important;
+}
+
+.AdminBtn .Modalbtn {
+  background-color: white !important;
+  color: #e06da5 !important;
+  border: 1px solid black !important;
+  border-radius: 5px !important;
+  height: 30px !important;
+  width: 100px !important;
+  /* margin-left: auto !important;
+  margin-top: -65px !important;
+  margin-right: 20px !important; */
+}
+
+.AdminBtn {
+  margin-left: auto !important;
+  margin-top: -2% !important;
+  margin-right: 30px !important;
+}

@@ -1,0 +1,26 @@
+.input {
+  border-style: solid;
+  border-color: #af4176;
+  width: 110px;
+  height: 30px;
+}
+
+.searchButton {
+  height: 30px;
+  width: 50px;
+  margin-right: 20px;
+  width: 60px;
+  height: 30px;
+  border-radius: 5px;
+  /* display: inline; */
+  color: white;
+  background-color: #af4176;
+}
+
+.Search {
+  margin-left: 75%;
+  /* float: left; */
+  /* width: 45%; */
+  position: absolute;
+  margin-top: 80px;
+}

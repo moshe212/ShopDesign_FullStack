@@ -1,0 +1,10 @@
+.DownLoadBtn {
+  width: 400px;
+}
+
+.DownLoadBtnDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

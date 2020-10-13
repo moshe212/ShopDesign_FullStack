@@ -1,0 +1,27 @@
+.Cart {
+  width: 200px;
+  height: 430px;
+  border: 1px solid red;
+  margin-top: 20px;
+  margin-left: 30px;
+  margin-top: 33px;
+  float: left;
+}
+
+.Content {
+  margin-left: 20px;
+}
+
+.CartHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.ProductsInCart .Product {
+  margin: 0px auto;
+  margin-top: 10px;
+  height: 125px;
+}

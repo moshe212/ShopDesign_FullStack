@@ -1,0 +1,50 @@
+[
+  {
+    "title": "אפרסק",
+    "image": "https://static.wixstatic.com/media/5d4d94_0c727ef7c8e347f081f58870f44d8cd6~mv2.jpg",
+    "quantity": "30",
+    "price": "10"
+  },
+  {
+    "title": "תותים",
+    "image": "https://static.wixstatic.com/media/5d4d94_4a861ad31a9548cbaa26c85208eefdb2~mv2.jpg",
+    "quantity": "50",
+    "price": "40"
+  },
+  {
+    "title": "דובדבן",
+    "image": "https://static.wixstatic.com/media/5d4d94_d4fcc9efb7b748ceaf5d1a2a26d14e64~mv2.jpg",
+    "quantity": "90",
+    "price": "100"
+  },
+  {
+    "title": "אננס",
+    "image": "https://static.wixstatic.com/media/5d4d94_8f6594bcf29049328b625b5c449db813~mv2.jpg",
+    "quantity": "130",
+    "price": "25"
+  },
+  {
+    "title": "קיווי",
+    "image": "https://static.wixstatic.com/media/5d4d94_7440dca080d04e57bb5af6c85fe38302~mv2.jpg",
+    "quantity": "100",
+    "price": "20"
+  },
+  {
+    "title": "תפוח",
+    "image": "https://static.wixstatic.com/media/5d4d94_2620f0b476ff472cbbaf26c43ff13e4c~mv2.jpg",
+    "quantity": "1",
+    "price": "200"
+  },
+  {
+    "title": "קוקוס",
+    "image": "https://static.wixstatic.com/media/5d4d94_8f9262a200fe4cccbb56a75b9263a83b~mv2.jpg",
+    "quantity": "1",
+    "price": "200"
+  },
+  {
+    "title": "מנגו",
+    "image": "https://static.wixstatic.com/media/5d4d94_626941c79a8f402b90ae962e545bc54f~mv2.jpg",
+    "quantity": "1",
+    "price": "200"
+  }
+]

@@ -1,0 +1,21 @@
+.ant-tabs-tab {
+  width: 50% !important;
+  justify-content: center;
+}
+
+.ant-tabs-nav-list {
+  width: 100%;
+}
+
+.ant-tabs-tab-active {
+  border-bottom: 1px solid #c9ccac !important;
+}
+
+.ant-tabs-tab-btn {
+  color: #e06da5 !important;
+}
+
+.ant-modal-close {
+  margin-top: -15px;
+  margin-right: -15px;
+}

@@ -1,0 +1,18 @@
+.LogInuserBtn {
+  background-color: white !important;
+  border-radius: 10px !important;
+  border: 0.5px solid #bece39 !important;
+  width: 200px !important;
+  height: 50px !important;
+  margin-top: -15px !important;
+  margin-left: 12% !important;
+  /* position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0px !important; */
+}
+
+.LogInuserBtn p {
+  margin-top: 15px !important;
+  font-weight: bold !important;
+  color: #e06da5 !important;
+}

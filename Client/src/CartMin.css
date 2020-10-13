@@ -1,0 +1,90 @@
+.CartImg {
+  width: 70px;
+  height: 70px;
+  margin-left: 40px;
+}
+
+.Count {
+  font-weight: bold;
+  font-size: x-large;
+  margin-bottom: -30px;
+  margin-left: 86px;
+  background-color: #bece39;
+  /* margin-top: -20px; */
+
+  border: 2px solid #bece39;
+  border-radius: 100px;
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.CartImgDiv {
+  position: fixed;
+  top: 33px;
+}
+
+.TotalCount {
+  width: 100px;
+  height: 28px;
+  background-color: white;
+  margin-left: 35px;
+  margin-top: -5px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: x-large;
+  border: 1px solid #e06da5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.SmallIcon {
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.CartImg:hover {
+  cursor: pointer;
+}
+
+/* .MainDrawer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+} */
+
+.ForPay {
+  font-weight: bold;
+  font-size: x-large;
+  margin-top: -5px;
+}
+
+.TotalCountInFullCartDiv {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+.TotalCountInFullCart {
+  width: 100px;
+  height: 28px;
+  background-color: white;
+  /* margin-left: 35px; */
+  margin-top: -5px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: x-large;
+  border: 1px solid #e06da5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,0 +1,159 @@
+.Product {
+  width: calc(100% / 4 + 0px);
+  height: 350px;
+  float: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.ProductImg {
+  max-width: 80%;
+  max-height: 80%;
+  margin: 0xp auto;
+  animation-name: fadeIn;
+  animation-duration: 4s;
+  transition: width 2s, height 2s, transform 2s;
+}
+
+.Clone {
+  max-width: 50%;
+  max-height: 50%;
+  top: 80px;
+  position: absolute;
+  opacity: 0;
+  transition: width 2s, height 2s, transform 2s;
+  z-index: -1;
+}
+
+.ProductImg:hover {
+  transform: rotate(360deg);
+}
+
+/* .Clone:hover {
+  transform: rotate(360deg);
+} */
+
+@keyframes fadeIn {
+  from {
+    max-width: 20%;
+  }
+  to {
+    max-width: 80%;
+  }
+}
+
+.animateToCart {
+  top: 13px;
+  left: 17px;
+  transition: transform 2s ease-in-out;
+}
+
+@keyframes move {
+  from {
+    max-width: 80%;
+  }
+  to {
+    top: 13px;
+    left: 17px;
+    max-width: 20%;
+    transform: rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.ImgContent {
+  height: 50%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation-name: move;
+  cursor: pointer;
+  position: relative;
+}
+
+button.Minus {
+  width: 30px;
+  height: 20px;
+  border-radius: 5px;
+  border-color: #bece39;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  float: left;
+  margin: 5px;
+  background-color: white;
+  color: #af4176;
+  font-weight: bold;
+  cursor: pointer;
+  /* position: absolute; */
+}
+
+button.Plus {
+  width: 30px;
+  height: 20px;
+  border-radius: 5px;
+  border-color: #bece39;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  float: left;
+  margin: 5px;
+  background-color: white;
+  color: #af4176;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 50px;
+  /* top: 20px; */
+  /* position: absolute; */
+}
+
+.AddToCartOne {
+  width: 100px;
+  height: 30px;
+  background-color: #af4176;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.QuantityToCart {
+  font-size: 6em;
+  -webkit-text-stroke: 1px #bece39;
+  /* color: transparent; */
+  color: white;
+  position: absolute;
+  top: 0;
+}
+
+.ProdDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* position: relative; */
+}
+
+.Name {
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  /* position: absolute; */
+}
+
+.Price {
+  font-variant-numeric: normal;
+  font-weight: bold;
+  /* position: absolute; */
+}
+
+.PlusMinusBtns {
+  position: absolute;
+}
