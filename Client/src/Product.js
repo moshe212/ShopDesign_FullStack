@@ -38,14 +38,14 @@ const Product = (props) => {
   };
 
   console.log("props", props);
-  useEffect(() => {
-    const socket = socketIOClient("http://localhost:8000");
-    socket.on("UpdateQuantity", (data) => {
-      if (props.id === data.id) {
-        props.ChangQuantity(data);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   const socket = socketIOClient("http://localhost:8000");
+  //   socket.on("UpdateQuantity", (data) => {
+  //     if (props.id === data.id) {
+  //       props.ChangQuantity(data);
+  //     }
+  //   });
+  // }, []);
 
   const ClickImg = () => {
     console.log("clickimg");
