@@ -381,7 +381,7 @@ app.post("/LogInUser", (req, res) => {
 // });
 
 //עדכון מלאי
-app.put("/UpdateQuantity/:id", async (req, res) => {
+app.put("/api/UpdateQuantity/:id", async (req, res) => {
   // console.log(req.query);
   // console.log(req.body);
   const productId = req.params.id;
