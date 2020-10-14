@@ -12,7 +12,7 @@ import cloneDeep from "lodash/cloneDeep";
 import { Slider, Switch } from "antd";
 import BackTopButton from "./BackTop";
 
-import socketIOClient from "socket.io-client";
+// import socketIOClient from "socket.io-client";
 
 import "./Home.css";
 
