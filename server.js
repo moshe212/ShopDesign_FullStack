@@ -80,7 +80,7 @@ let Mongo_Path = process.env.Mongo_Path
 
 function connectToDB() {
   // const connection = mongoose.connect("mongodb://localhost/Shop", {
-  //const connection = mongoose.connect("mongodb+srv://moshe:Kisufim39!@cluster0.gopqy.mongodb.net/Shop?retryWrites=true&w=majority"
+  
   const connection = mongoose.connect(Mongo_Path, {
     useNewUrlParser: true,
     useCreateIndex: true,
