@@ -82,7 +82,7 @@ const Home = (props) => {
 
   useEffect(() => {
     setTimeout(() => {
-      doAxios(false, false, false, "https://localhost:8000/products");
+      doAxios(false, false, false, "http://localhost:8000/api/products");
     }, 1000);
   }, []);
   // console.log(Products[0]);
@@ -133,7 +133,7 @@ const Home = (props) => {
             console.log(67);
             const UserInput = document.querySelector(".input").value;
             console.log(UserInput);
-            const link = "http://localhost:8000/products?search=" + UserInput;
+            const link = "http://localhost:8000/api/products?search=" + UserInput;
             console.log(link);
             doAxios(false, true, false, link);
           }}
