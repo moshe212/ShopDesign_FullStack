@@ -37,9 +37,11 @@ const Product = (props) => {
     });
   };
 
+  let socket = socketIOClient();
+
   console.log("props", props);
   useEffect(() => {
-    const socket = socketIOClient("https://shopfullstack.herokuapp.com/");
+    // const socket = socketIOClient("https://shopfullstack.herokuapp.com");
     socket.on("UpdateQuantity", (data) => {
       if (props.id === data.id) {
         props.ChangQuantity(data);
