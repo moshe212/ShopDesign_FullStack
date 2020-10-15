@@ -19,7 +19,8 @@ const ProductDetails = (props) => {
   const [ClickArrow, setClickArrow] = useState(false);
 
   useEffect(() => {
-    Axios.get("http://localhost:8000/products")
+    console.log('useEffect')
+    Axios.get("/api/products")
       .then((res) => {
         console.log(res.data);
         localStorage.setItem("LocalProductList", JSON.stringify(res.data));

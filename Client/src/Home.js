@@ -117,7 +117,7 @@ const Home = (props) => {
                       true,
                       false,
                       false,
-                      "http://localhost:8000/products",
+                      "/api/products",
                       value[1],
                       value[0]
                     );
@@ -133,7 +133,7 @@ const Home = (props) => {
             console.log(67);
             const UserInput = document.querySelector(".input").value;
             console.log(UserInput);
-            const link = "http://localhost:8000/api/products?search=" + UserInput;
+            const link = "/api/products?search=" + UserInput;
             console.log(link);
             doAxios(false, true, false, link);
           }}
