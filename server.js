@@ -9,9 +9,8 @@ const path = require("path");
 const csv = require("csvtojson");
 const utf8 = require("utf8");
 const dotenv = require("dotenv");
-// const { Socket } = require('dgram');
 const server = http.createServer(app);
-const io = socketIo(server);
+// const io = socketIo(server);
 const mongoose = require("mongoose");
 const autoIncrement = require("mongoose-auto-increment");
 
