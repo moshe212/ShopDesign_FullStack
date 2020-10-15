@@ -382,30 +382,30 @@ app.post("/LogInUser", (req, res) => {
 // });
 
 //עדכון מלאי
-app.put("/UpdateQuantity/:id", async (req, res) => {
-  // console.log(req.query);
-  // console.log(req.body);
-  const productId = req.params.id;
-  const Quantity = +req.body.quantity;
-  console.log(productId);
-  Product.findByIdAndUpdate(
-    productId,
-    { $set: { ...req.body } },
-    // (options.new = true),
-    (err, prod) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("update", prod);
-      }
-    }
-  );
+// app.put("/UpdateQuantity/:id", async (req, res) => {
+//   // console.log(req.query);
+//   // console.log(req.body);
+//   const productId = req.params.id;
+//   const Quantity = +req.body.quantity;
+//   console.log(productId);
+//   Product.findByIdAndUpdate(
+//     productId,
+//     { $set: { ...req.body } },
+//     // (options.new = true),
+//     (err, prod) => {
+//       if (err) {
+//         console.log(err);
+//       } else {
+//         console.log("update", prod);
+//       }
+//     }
+//   );
 
-  productItems = await Product.find().exec();
+//   productItems = await Product.find().exec();
 
-  res.send(productItems);
-  io.emit("UpdateQuantity", { id: productId, quantity: Quantity });
-});
+//   res.send(productItems);
+//   io.emit("UpdateQuantity", { id: productId, quantity: Quantity });
+// });
 
 //הוספת מוצר לעגלה
 app.post("/AddToCart", async (req, res) => {
