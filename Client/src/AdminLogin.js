@@ -5,8 +5,8 @@ import LogInForm from "./LogInForm";
 import "./AdminLogin.css";
 
 const AdminLogIn = (props) => {
-  console.log("ax");
-  console.log(props.CloseModal);
+  //console.log("ax");
+  //console.log(props.CloseModal);
   const [state, setState] = useState({
     loading: false,
     visible: false,

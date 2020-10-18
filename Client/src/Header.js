@@ -15,8 +15,8 @@ const Header = (props) => {
   const [redirect_ImportProducts, setredirect_ImportProducts] = useState(false);
   const [redirect_Home, setredirect_Home] = useState(false);
 
-  console.log("HeaderProps", props);
-  console.log(props.Render);
+  //console.log("HeaderProps", props);
+  //console.log(props.Render);
   const Render = props.Render;
 
   const GoHome = () => {
@@ -36,7 +36,7 @@ const Header = (props) => {
   };
 
   if (redirect_Admin) {
-    console.log("Redirect");
+    //console.log("Redirect");
     return <Redirect push to="/Admin" />;
   } else if (redirect_MangeProducts) {
     return <Redirect push to="/Admin/ManageProducts" />;

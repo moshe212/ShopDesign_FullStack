@@ -6,8 +6,8 @@ import FormUpdateProd from "./FormUpdateProd";
 import "./UpdateProduct.css";
 
 const UpdateProduct = (props) => {
-  console.log("ax");
-  console.log(props.CloseModal);
+  //console.log("ax");
+  //console.log(props.CloseModal);
   const [state, setState] = useState({
     loading: false,
     visible: false,

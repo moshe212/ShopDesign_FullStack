@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./ProductInCart.css";
 
 const ProductInCart = (props) => {
-  console.log("ProductTotalPrice", props.Quantity * props.price);
+  //console.log("ProductTotalPrice", props.Quantity * props.price);
   const ProductTotalPrice = props.Quantity * props.price;
   return (
     <div className="Cart_Product" id={props.id}>

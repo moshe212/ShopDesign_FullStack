@@ -19,18 +19,18 @@ const CartMin = (props) => {
   const onChange = (e) => {
     setPlacement(e.target.value);
   };
-  console.log(props.ProductListToCart);
+  //console.log(props.ProductListToCart);
   const ProductInCartItems = props.ProductListToCart;
 
   // const TotalCount = 1;
   const Prices = ProductInCartItems.map(
     (product) => product.quantity * product.price
   );
-  console.log(Prices);
+  //console.log(Prices);
   const getSum = (total, num) => total + num;
 
   const TotalPrice = Prices.reduce(getSum, 0);
-  console.log("TotalPrice", TotalPrice, ProductInCartItems);
+  //console.log("TotalPrice", TotalPrice, ProductInCartItems);
   return (
     <>
       <Space>
@@ -107,13 +107,13 @@ const CartMin = (props) => {
 // const CartMin = (props) => {
 //   // const [ProductsIncarts, setProductsInCarts] = useState([]);
 
-//   console.log(1);
+//   //console.log(1);
 
-//   console.log(props.ProductListToCart);
-//   // console.log(props.RenderDrawer);
+//   //console.log(props.ProductListToCart);
+//   // //console.log(props.RenderDrawer);
 
 //   return (
-//     <div className="CartImgDiv" onClick={(e) => console.log("g")}>
+//     <div className="CartImgDiv" onClick={(e) => //console.log("g")}>
 //       <div>
 //         <div className="Count">{props.Cartp}</div>
 //         <img className="CartImg" src="/Images/shopping_cart_PNG29.png"></img>

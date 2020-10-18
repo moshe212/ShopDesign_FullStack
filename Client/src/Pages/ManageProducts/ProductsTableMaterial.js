@@ -89,12 +89,12 @@ const ProductsTableMaterial = () => {
   const doAxios = (operation, url, obj) => {
     Axios[operation](url, obj)
       .then((res) => {
-        console.log("res.data", res.data);
-        console.log(url);
+        //console.log("res.data", res.data);
+        //console.log(url);
         setData(res.data);
       })
       .catch(function (error) {
-        console.log(error);
+        //console.log(error);
       });
   };
 
@@ -130,7 +130,7 @@ const ProductsTableMaterial = () => {
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {
                 setTimeout(() => {
-                  console.log(newData);
+                  //console.log(newData);
                   const url = "http://localhost:8000/products";
                   const obj = {
                     title: newData.title,
@@ -138,7 +138,7 @@ const ProductsTableMaterial = () => {
                     quantity: newData.quantity,
                     price: newData.price,
                   };
-                  console.log(obj);
+                  //console.log(obj);
 
                   doAxios("post", url, obj);
                   //   setData([...data, newData]);
@@ -162,7 +162,7 @@ const ProductsTableMaterial = () => {
                     quantity: dataUpdate[index].quantity,
                     price: dataUpdate[index].price,
                   };
-                  console.log(
+                  //console.log(
                     "RowUpdate",
                     dataUpdate,
                     index,
@@ -182,7 +182,7 @@ const ProductsTableMaterial = () => {
                   const index = oldData.tableData.id;
                   const url =
                     "http://localhost:8000/products/" + dataDelete[index]._id;
-                  console.log(
+                  //console.log(
                     dataDelete,
                     index,
                     dataDelete[index],

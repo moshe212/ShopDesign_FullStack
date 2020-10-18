@@ -72,12 +72,12 @@ const LoginForm = (props) => {
 
   const [form] = Form.useForm();
 
-  console.log("WhoLogIn", props.WhoLogIn);
+  //console.log("WhoLogIn", props.WhoLogIn);
   const { Redirect_MangeProducts, Redirect_Home, UserId, Name } = State;
   if (Redirect_MangeProducts) {
     return <Redirect push to="/Admin/ManageProducts" />;
   } else if (Redirect_Home) {
-    console.log("userid", { UserId }, { Name });
+    //console.log("userid", { UserId }, { Name });
     return <Redirect push to={"/LoginUser/user/" + Name} />;
     // setTimeout(() => {
     //   return <Redirect push to="/LoginUser/:" {...UserId} />;
@@ -91,9 +91,9 @@ const LoginForm = (props) => {
   } else if (props.WhoLogIn === "Admin") {
     url = "http://localhost:8000/LogInAdmin";
   }
-  console.log(url);
+  //console.log(url);
   const onFinish = (values) => {
-    console.log(values.LogIn.Username, values.LogIn.Password);
+    //console.log(values.LogIn.Username, values.LogIn.Password);
 
     props.onSubmit();
     form.resetFields();
@@ -103,7 +103,7 @@ const LoginForm = (props) => {
       Pass: values.LogIn.Password,
     }).then(
       (response) => {
-        console.log("response", response.data);
+        //console.log("response", response.data);
         if (response.data[0] === "OK" || response.data === "OK") {
           if (url === "http://localhost:8000/LogInUser") {
             Usersuccess();
@@ -112,11 +112,11 @@ const LoginForm = (props) => {
           }
 
           setTimeout(() => {
-            console.log("1000");
+            //console.log("1000");
             if (url === "http://localhost:8000/LogInUser") {
               const id = response.data[1];
               const name = response.data[2];
-              console.log(id, name);
+              //console.log(id, name);
               setState({ UserId: id, Redirect_Home: true, Name: name });
               // setUserId(id);
               // setRedirect_Home(true);
@@ -130,7 +130,7 @@ const LoginForm = (props) => {
         }
       },
       (error) => {
-        console.log(error);
+        //console.log(error);
       }
     );
   };

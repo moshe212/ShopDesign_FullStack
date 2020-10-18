@@ -8,7 +8,7 @@ import { Redirect } from "react-router";
 const Product = (props) => {
   // const [Active, setActive] = useState(false);
   // const ActiveProd = (ActivID) => {
-  //   console.log("+", ActivID);
+  //   //console.log("+", ActivID);
   //   setActive(ActivID);
   // };
   const [Click, setClick] = useState(false);
@@ -39,7 +39,7 @@ const Product = (props) => {
 
   
 
-  console.log("props", props);
+  //console.log("props", props);
   // useEffect(() => {
   //   let socket = socketIOClient("https://shopfullstack.herokuapp.com",{secure: true});
   //   // const socket = socketIOClient("https://shopfullstack.herokuapp.com");
@@ -51,12 +51,12 @@ const Product = (props) => {
   // }, []);
 
   const ClickImg = () => {
-    console.log("clickimg");
+    //console.log("clickimg");
     setClick(true);
   };
 
   if (Click) {
-    console.log("props", props.id);
+    //console.log("props", props.id);
     return (
       <Redirect
         to={{
@@ -75,15 +75,15 @@ const Product = (props) => {
   }
 
   const makeFixedPosition = (e) => {
-    console.log("props.Quantity", props.Quantity);
+    //console.log("props.Quantity", props.Quantity);
     if (props.Quantity > 0) {
       const item = document.getElementById([props.id]);
       // const ElemPosition = item.getBoundingClientRect();
-      // console.log(ElemPosition.y, ElemPosition.x, e.clientY, e.clientX);
+      // //console.log(ElemPosition.y, ElemPosition.x, e.clientY, e.clientX);
       const img = item.querySelector(".ProductImg");
       const CloneImg = item.querySelector(".Clone");
       // const CloneImg = React.cloneElement(item);
-      // console.log("CloneImg", CloneImg);
+      // //console.log("CloneImg", CloneImg);
       const rect = item.querySelector(".ProductImg").getBoundingClientRect();
       const offset = {
         top: rect.top + window.scrollY,
@@ -112,7 +112,7 @@ const Product = (props) => {
         CloneImg.style.transform = null;
       }, 1500);
 
-      console.log("style", img.style);
+      //console.log("style", img.style);
     }
   };
   return (

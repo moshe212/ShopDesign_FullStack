@@ -37,13 +37,13 @@ const Home = (props) => {
   const [RendDrawer, setRendDrawer] = useState(false);
 
   const params = useParams();
-  console.log("params", params);
+  //console.log("params", params);
 
   const doAxios = (isSlider, isSearch, isAddProduct, url, val1, val2) => {
     Axios.get(url)
       .then((res) => {
-        console.log("res.data", res.data);
-        console.log(url);
+        //console.log("res.data", res.data);
+        //console.log(url);
         let Prices = res.data.map((prod) => prod.price);
         if (isSlider) {
           const newProducts = res.data.filter(
@@ -54,21 +54,21 @@ const Home = (props) => {
           setProducts(res.data);
         } else if (isAddProduct) {
           setProducts(res.data);
-          console.log("Prices");
-          console.log(Min, Max);
-          console.log("Products", Products);
+          //console.log("Prices");
+          //console.log(Min, Max);
+          //console.log("Products", Products);
           setTimeout(() => {
-            console.log(Prices);
+            //console.log(Prices);
             setMin(Math.min(...Prices));
             setMax(Math.max(...Prices));
             setMinimum(Math.min(...Prices));
             setMaximum(Math.max(...Prices));
-            console.log(Min, Max);
+            //console.log(Min, Max);
           }, 500);
         } else {
           setProducts(res.data);
-          console.log("Products", Products);
-          console.log("Prices", Prices);
+          //console.log("Products", Products);
+          //console.log("Prices", Prices);
           setMin(Math.min(...Prices));
           setMax(Math.max(...Prices));
           setMinimum(Math.min(...Prices));
@@ -76,7 +76,7 @@ const Home = (props) => {
         }
       })
       .catch(function (error) {
-        console.log(error);
+        //console.log(error);
       });
   };
 
@@ -85,7 +85,7 @@ const Home = (props) => {
       doAxios(false, false, false, "/api/products");
     }, 1000);
   }, []);
-  // console.log(Products[0]);
+  // //console.log(Products[0]);
   let UpdateState = false;
 
   return (
@@ -111,8 +111,8 @@ const Home = (props) => {
                   range
                   defaultValue={[Minimum, Maximum]}
                   onAfterChange={(value) => {
-                    console.log("val");
-                    console.log(value);
+                    //console.log("val");
+                    //console.log(value);
                     doAxios(
                       true,
                       false,
@@ -130,11 +130,11 @@ const Home = (props) => {
         {/* <div> */}
         <Search
           Search={(e) => {
-            console.log(67);
+            //console.log(67);
             const UserInput = document.querySelector(".input").value;
-            console.log(UserInput);
+            //console.log(UserInput);
             const link = "/api/products?search=" + UserInput;
-            console.log(link);
+            //console.log(link);
             doAxios(false, true, false, link);
           }}
         />
@@ -194,9 +194,9 @@ const Home = (props) => {
                       );
 
                       if (index >= 0 && !quantityUpdate) {
-                        // console.log("+", vProductListToCart[index]);
+                        // //console.log("+", vProductListToCart[index]);
                         let ThisItem = { ...vProductListToCart[index] };
-                        console.log(ThisItem);
+                        //console.log(ThisItem);
                         if (
                           ThisItem.quantity < Products[productIndex].quantity
                         ) {
@@ -265,7 +265,7 @@ const Home = (props) => {
 
                       productsList[productfromlistIndex] = productFromList;
                     }
-                    console.log("update", UpdateState);
+                    //console.log("update", UpdateState);
                     if (UpdateState) {
                       setProducts(productsList);
                       // setCartv(Cartv - 1);
@@ -284,10 +284,10 @@ const Home = (props) => {
               addTocart={(ProductDetails) => {
                 Axios.post("http://localhost:8000/AddToCart", ProductDetails)
                   .then((res) => {
-                    console.log("res.data", res.data);
+                    //console.log("res.data", res.data);
                   })
                   .catch(function (error) {
-                    console.log(error);
+                    //console.log(error);
                   });
               }}
             />

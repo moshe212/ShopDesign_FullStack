@@ -6,8 +6,8 @@ import MyForm from "./MyForm";
 import "./AddProduct.css";
 
 const AddProduct = (props) => {
-  console.log("ax");
-  console.log(props.CloseModal);
+  //console.log("ax");
+  //console.log(props.CloseModal);
   const [state, setState] = useState({
     loading: false,
     visible: false,

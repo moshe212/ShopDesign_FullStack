@@ -26,20 +26,20 @@ const ProductDetails = (props) => {
         localStorage.setItem("LocalProductList", JSON.stringify(res.data));
       })
       .catch(function (error) {
-        console.log(error);
+        //console.log(error);
       });
   }, []);
 
   const LocalProduct = localStorage.getItem("LocalProductList");
   const params = useParams();
-  console.log("params", params);
-  //   console.log(props);
-  console.log(window.history.state.state);
-  //   console.log(LocalProduct);
+  //console.log("params", params);
+  //   //console.log(props);
+  //console.log(window.history.state.state);
+  //   //console.log(LocalProduct);
   const Details = window.history.state.state;
 
   const HandleClick = () => {
-    console.log("clickarrow");
+    //console.log("clickarrow");
 
     // <Redirect
     //   to={{
@@ -59,12 +59,12 @@ const ProductDetails = (props) => {
   let i = 0;
 
   const Productdetails_Json = JSON.parse(LocalProduct);
-  console.log("Productdetails_Json", Productdetails_Json);
+  //console.log("Productdetails_Json", Productdetails_Json);
   for (i = 0; i < Productdetails_Json.length; i++) {
     const id = Productdetails_Json[i]._id;
-    console.log("id", id, parseInt(params.id));
+    //console.log("id", id, parseInt(params.id));
     if (id === params.id) {
-      console.log("equal");
+      //console.log("equal");
       PD_Name = Productdetails_Json[i].title;
       PD_Quantity = Productdetails_Json[i].Quantity;
       PD_Img = Productdetails_Json[i].image;

@@ -10,11 +10,11 @@ const UploadFile = () => {
   const doAxios = (operation, url, obj, param) => {
     Axios[operation](url, obj, param)
       .then((res) => {
-        console.log("res.data", res.data);
+        //console.log("res.data", res.data);
         status = res.data;
       })
       .catch(function (error) {
-        console.log(error);
+        //console.log(error);
       });
   };
 
@@ -35,8 +35,8 @@ const UploadFile = () => {
           );
         }
         if (status !== "uploading") {
-          console.log(info.fileList[0]);
-          console.log(status);
+          //console.log(info.fileList[0]);
+          //console.log(status);
         }
         if (status === "OK") {
           message.success(`${info.file.name} file uploaded successfully.`);
@@ -49,8 +49,8 @@ const UploadFile = () => {
       //   const { status } = info.file;
       //   if (info.file) {
       //     if (status !== "uploading") {
-      //       console.log(info.fileList[0]);
-      //       console.log(status);
+      //       //console.log(info.fileList[0]);
+      //       //console.log(status);
       //     }
       //     if (status === "done") {
       //       message.success(`${info.file.name} file uploaded successfully.`);

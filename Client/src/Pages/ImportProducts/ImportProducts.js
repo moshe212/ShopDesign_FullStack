@@ -8,20 +8,20 @@ import "./ImportProducts.css";
 
 const ImportProducts = () => {
   const uploadFile = () => {
-    console.log("l");
+    //console.log("l");
     const uploadedFile = document.querySelector(".InputUpload #uploadedFile");
-    // console.log(uploadedFile);
-    console.log(uploadedFile.files[0]);
+    // //console.log(uploadedFile);
+    //console.log(uploadedFile.files[0]);
     Axios.post("http://localhost:8000/upload", uploadedFile.files[0], {
       params: { filename: uploadedFile.files[0].name },
       onUploadProgress: (progressEvent) => {
         const percentCompleted = Math.round(
           (progressEvent.loaded * 100) / progressEvent.total
         );
-        console.log(percentCompleted);
+        //console.log(percentCompleted);
       },
     }).then((res) => {
-      console.log(res);
+      //console.log(res);
       if (res.data === "OK") {
         alert("הקובץ עלה בהצלחה לשרת. רשימת המוצרים התעדכנה בהצלחה.");
       }

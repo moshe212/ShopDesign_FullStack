@@ -7,8 +7,8 @@ import Tab from "./Tab";
 import "./LogInUser.css";
 
 const LogInUser = (props) => {
-  console.log("ax", props);
-  console.log(props.CloseModal);
+  //console.log("ax", props);
+  //console.log(props.CloseModal);
   const [state, setState] = useState({
     loading: false,
     visible: false,

@@ -13,7 +13,7 @@ const DownLoadButton = () => {
         FileDownload(res.data, "Text.txt");
       })
       .catch(function (error) {
-        console.log(error);
+        //console.log(error);
       });
   };
   const size = "large";

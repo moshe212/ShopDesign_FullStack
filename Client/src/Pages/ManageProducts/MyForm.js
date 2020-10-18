@@ -3,14 +3,14 @@ import React from "react";
 const MyForm = () => {
   const Submit = (event) => {
     // event.preventDefault();
-    console.log("e");
+    //console.log("e");
     // const Modal = document.querySelector(".ant-modal");
     // const title = Modal.querySelector("#title").value;
     const Image = document.querySelector(".Form #Image");
     // const quantity = document.getElementById("#quantity").value;
     // const price = document.getElementById("#price").value;
-    // console.log(title);
-    console.log(Image.files);
+    // //console.log(title);
+    //console.log(Image.files);
   };
   return (
     <div>
