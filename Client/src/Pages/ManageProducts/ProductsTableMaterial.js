@@ -163,14 +163,14 @@ const ProductsTableMaterial = () => {
                     price: dataUpdate[index].price,
                   };
                   //console.log(
-                    "RowUpdate",
-                    dataUpdate,
-                    index,
-                    dataUpdate[index],
-                    dataUpdate[index]._id,
-                    url,
-                    obj
-                  );
+                  //   "RowUpdate",
+                  //   dataUpdate,
+                  //   index,
+                  //   dataUpdate[index],
+                  //   dataUpdate[index]._id,
+                  //   url,
+                  //   obj
+                  // );
                   doAxios("put", url, obj);
                   resolve();
                 }, 1000);
@@ -183,12 +183,12 @@ const ProductsTableMaterial = () => {
                   const url =
                     "http://localhost:8000/products/" + dataDelete[index]._id;
                   //console.log(
-                    dataDelete,
-                    index,
-                    dataDelete[index],
-                    dataDelete[index]._id,
-                    url
-                  );
+                  //   dataDelete,
+                  //   index,
+                  //   dataDelete[index],
+                  //   dataDelete[index]._id,
+                  //   url
+                  // );
                   doAxios("delete", url);
                   // dataDelete.splice(index, 1);
                   // setData([...dataDelete]);
