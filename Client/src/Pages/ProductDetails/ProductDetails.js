@@ -19,12 +19,12 @@ const ProductDetails = (props) => {
   const [ClickArrow, setClickArrow] = useState(false);
 
   console.log("log");
-
+  // localStorage.clear();
   useEffect(() => {
     console.log("useEffect");
     Axios.get("/api/products")
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         localStorage.setItem("LocalProductList", JSON.stringify(res.data));
       })
       .catch(function (error) {
@@ -61,7 +61,7 @@ const ProductDetails = (props) => {
   let i = 0;
 
   const Productdetails_Json = JSON.parse(LocalProduct);
-  //console.log("Productdetails_Json", Productdetails_Json);
+  console.log("Productdetails_Json", Productdetails_Json);
   if (Productdetails_Json) {
     for (i = 0; i < Productdetails_Json.length + 1; i++) {
       const id = Productdetails_Json[i]._id;
@@ -86,7 +86,7 @@ const ProductDetails = (props) => {
         ProductListToCart={Details ? Details.ProductListToCart : []}
         Cartp={Details ? Details.Cartv || 0 : 0}
       />
-      {Productdetails_Json != "null" && (
+      {Productdetails_Json && Productdetails_Json != "null" && (
         <div className="PD_nav">
           <img className="Arrow" src="../../../Images/back.svg"></img>
           <Link
