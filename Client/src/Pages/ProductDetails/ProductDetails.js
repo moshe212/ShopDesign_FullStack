@@ -86,7 +86,7 @@ const ProductDetails = (props) => {
         ProductListToCart={Details ? Details.ProductListToCart : []}
         Cartp={Details ? Details.Cartv || 0 : 0}
       />
-      {Productdetails_Json && (
+      {Productdetails_Json.length > 0 && (
         <div className="PD_nav">
           <img className="Arrow" src="../../../Images/back.svg"></img>
           <Link
