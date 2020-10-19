@@ -34,17 +34,17 @@ const FormUpdateProd = (props) => {
     props.onSubmit();
     form.resetFields();
 
-    Axios.put("http://localhost:8000/UpdateProduct", uploadedFile.files[0], {
+    Axios.put("/api/UpdateProduct", uploadedFile.files[0], {
       params: {
         filename: uploadedFile.files[0] ? uploadedFile.files[0].name : "",
-        id: values.product._id,
+        id: values.product.id,
         title: values.product.title || "",
         quantity: values.product.quantity || "",
         price: values.product.price || "",
       },
     }).then(
       (response) => {
-        //console.log(response);
+        console.log(response);
       },
       (error) => {
         //console.log(error);

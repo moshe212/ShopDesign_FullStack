@@ -12,7 +12,7 @@ const ImportProducts = () => {
     const uploadedFile = document.querySelector(".InputUpload #uploadedFile");
     // //console.log(uploadedFile);
     //console.log(uploadedFile.files[0]);
-    Axios.post("http://localhost:8000/upload", uploadedFile.files[0], {
+    Axios.post("/api/upload", uploadedFile.files[0], {
       params: { filename: uploadedFile.files[0].name },
       onUploadProgress: (progressEvent) => {
         const percentCompleted = Math.round(

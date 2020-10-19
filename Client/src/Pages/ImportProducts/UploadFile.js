@@ -21,18 +21,13 @@ const UploadFile = () => {
   const props = {
     name: "file",
     multiple: true,
-    action: "http://localhost:8000/upload?",
+    action: "/api/upload?",
     onChange(info) {
       setTimeout(() => {
         if (info.file && status === "") {
-          doAxios(
-            "post",
-            "http://localhost:8000/upload",
-            info.fileList[0].originFileObj,
-            {
-              params: { filename: info.fileList[0].name },
-            }
-          );
+          doAxios("post", "/api/upload", info.fileList[0].originFileObj, {
+            params: { filename: info.fileList[0].name },
+          });
         }
         if (status !== "uploading") {
           //console.log(info.fileList[0]);

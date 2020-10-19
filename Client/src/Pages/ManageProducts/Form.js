@@ -30,7 +30,7 @@ const Demo = (props) => {
     props.onSubmit();
 
     Axios.post(
-      "http://localhost:8000/AddProductWithImgFile",
+      "/api/AddProductWithImgFile",
 
       inputEl.current.files[0],
       {

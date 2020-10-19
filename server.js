@@ -73,13 +73,13 @@ app.use(cors());
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "Client/build")));
 
-let DB_Name = process.env.DB_Name
-let DB_Pass = process.env.DB_Pass
-let Mongo_Path = process.env.Mongo_Path
+let DB_Name = process.env.DB_Name;
+let DB_Pass = process.env.DB_Pass;
+let Mongo_Path = process.env.Mongo_Path;
 
 function connectToDB() {
   // const connection = mongoose.connect("mongodb://localhost/Shop", {
-  
+
   const connection = mongoose.connect(Mongo_Path, {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -90,7 +90,6 @@ function connectToDB() {
 
   return connection;
 }
-
 
 let port = process.env.PORT;
 if (port == null || port == "") {
@@ -124,7 +123,7 @@ app.get("/api/products", (req, res) => {
   }
 });
 
-app.get("/products/Admin/ManageProducts", (req, res) => {
+app.get("/api/products/Admin/ManageProducts", (req, res) => {
   console.log("QUERY:", req.query);
 
   fs.readFile("product.json", (err, data) => {
@@ -150,7 +149,7 @@ app.get("/products/Admin/ManageProducts", (req, res) => {
 });
 
 // הוספת מוצר == Mongo
-app.post("/products", async (req, res) => {
+app.post("/api/products", async (req, res) => {
   console.log(req.body);
   const title = req.body.title;
   const image = req.body.image;
@@ -172,7 +171,7 @@ app.post("/products", async (req, res) => {
 });
 
 //מחיקת מוצר == Mongo
-app.delete("/products/:id", async (req, res) => {
+app.delete("/api/products/:id", async (req, res) => {
   const productId = req.params.id;
   console.log(productId);
   Product.findByIdAndDelete(productId, (err, prod) => {
@@ -189,7 +188,7 @@ app.delete("/products/:id", async (req, res) => {
 });
 
 // עדכון מוצר == Mongo
-app.put("/products/:id", async (req, res) => {
+app.put("/api/products/:id", async (req, res) => {
   const productId = req.params.id;
   console.log(productId);
 
@@ -212,7 +211,7 @@ app.put("/products/:id", async (req, res) => {
 });
 
 // הורדת קובץ מבנה לקבלת קובץ רשימת מוצרים להעלאה
-app.get("/download/:file(*)", function (req, res) {
+app.get("/api/download/:file(*)", function (req, res) {
   // const file = "Test.txt";
   const file = req.params.file;
   const fileLocation = path.join("./", file);
@@ -221,7 +220,7 @@ app.get("/download/:file(*)", function (req, res) {
 });
 
 // הוספת מוצרים מקובץ Csv == Mongo
-app.post("/upload", (req, res) => {
+app.post("/api/upload", (req, res) => {
   console.log(req.query);
   req.pipe(fs.createWriteStream(`./${req.query.filename}`));
   if (req.query.filename.includes("csv")) {
@@ -252,7 +251,7 @@ app.post("/upload", (req, res) => {
 });
 
 // הוספת מוצר עם קובץ להעלאה עבור תמונה == Mongo
-app.post("/AddProductWithImgFile", (req, res) => {
+app.post("/api/AddProductWithImgFile", (req, res) => {
   console.log(req.query);
   console.log(req.body);
   req.pipe(
@@ -279,7 +278,7 @@ app.post("/AddProductWithImgFile", (req, res) => {
 });
 
 // עדכון מוצר עם אפשרות להעלאת תמונה כקובץ == Mongo
-app.put("/UpdateProduct", async (req, res) => {
+app.put("/api/UpdateProduct", async (req, res) => {
   console.log(req.query);
   console.log(req.body);
   if (req.query.filename.length > 0) {
@@ -318,7 +317,7 @@ app.put("/UpdateProduct", async (req, res) => {
 });
 
 // כניסת מנהל == Mongo
-app.post("/LogInAdmin", (req, res) => {
+app.post("/api/LogInAdmin", (req, res) => {
   console.log(req.body);
   const { Email, Pass } = req.body;
   console.log(Email, Pass);
@@ -340,7 +339,7 @@ app.post("/LogInAdmin", (req, res) => {
 });
 
 // כניסת משתמש == Mongo
-app.post("/LogInUser", (req, res) => {
+app.post("/api/LogInUser", (req, res) => {
   console.log(req.body);
   const { Email, Pass } = req.body;
   console.log(Email, Pass);
@@ -407,7 +406,7 @@ app.post("/LogInUser", (req, res) => {
 // });
 
 //הוספת מוצר לעגלה
-app.post("/AddToCart", async (req, res) => {
+app.post("/api/AddToCart", async (req, res) => {
   console.log(req.query);
   console.log(req.body);
   // const productId = req.params.id;

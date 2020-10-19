@@ -282,7 +282,7 @@ const Home = (props) => {
                 );
               }}
               addTocart={(ProductDetails) => {
-                Axios.post("http://localhost:8000/AddToCart", ProductDetails)
+                Axios.post("/api/AddToCart", ProductDetails)
                   .then((res) => {
                     //console.log("res.data", res.data);
                   })

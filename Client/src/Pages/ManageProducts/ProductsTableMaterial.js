@@ -100,7 +100,7 @@ const ProductsTableMaterial = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      doAxios("get", "http://localhost:8000/products");
+      doAxios("get", "/api/products");
     }, 500);
   }, []);
 
@@ -131,7 +131,7 @@ const ProductsTableMaterial = () => {
               new Promise((resolve, reject) => {
                 setTimeout(() => {
                   //console.log(newData);
-                  const url = "http://localhost:8000/products";
+                  const url = "/api/products";
                   const obj = {
                     title: newData.title,
                     image: newData.avatar,
@@ -155,8 +155,7 @@ const ProductsTableMaterial = () => {
                   dataUpdate[index] = newData;
 
                   //   setData([...dataUpdate]);
-                  const url =
-                    "http://localhost:8000/products/" + dataUpdate[index]._id;
+                  const url = "/api/products/" + dataUpdate[index]._id;
                   const obj = {
                     title: dataUpdate[index].title,
                     quantity: dataUpdate[index].quantity,
@@ -180,8 +179,7 @@ const ProductsTableMaterial = () => {
                 setTimeout(() => {
                   const dataDelete = [...data];
                   const index = oldData.tableData.id;
-                  const url =
-                    "http://localhost:8000/products/" + dataDelete[index]._id;
+                  const url = "/api/products/" + dataDelete[index]._id;
                   //console.log(
                   //   dataDelete,
                   //   index,

@@ -87,9 +87,9 @@ const LoginForm = (props) => {
   let url = "";
 
   if (props.WhoLogIn === "User") {
-    url = "http://localhost:8000/LogInUser";
+    url = "/api/LogInUser";
   } else if (props.WhoLogIn === "Admin") {
-    url = "http://localhost:8000/LogInAdmin";
+    url = "/api/LogInAdmin";
   }
   //console.log(url);
   const onFinish = (values) => {
@@ -105,7 +105,7 @@ const LoginForm = (props) => {
       (response) => {
         //console.log("response", response.data);
         if (response.data[0] === "OK" || response.data === "OK") {
-          if (url === "http://localhost:8000/LogInUser") {
+          if (url === "/api/LogInUser") {
             Usersuccess();
           } else {
             success();
@@ -113,14 +113,14 @@ const LoginForm = (props) => {
 
           setTimeout(() => {
             //console.log("1000");
-            if (url === "http://localhost:8000/LogInUser") {
+            if (url === "/api/LogInUser") {
               const id = response.data[1];
               const name = response.data[2];
               //console.log(id, name);
               setState({ UserId: id, Redirect_Home: true, Name: name });
               // setUserId(id);
               // setRedirect_Home(true);
-            } else if (url === "http://localhost:8000/LogInAdmin") {
+            } else if (url === "/api/LogInAdmin") {
               // setRedirect_MangeProducts(true);
               setState({ Redirect_MangeProducts: true });
             }

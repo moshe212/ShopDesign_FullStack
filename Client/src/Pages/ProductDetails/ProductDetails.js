@@ -18,8 +18,10 @@ import { parseInt } from "lodash";
 const ProductDetails = (props) => {
   const [ClickArrow, setClickArrow] = useState(false);
 
+  console.log("log");
+
   useEffect(() => {
-    console.log('useEffect')
+    console.log("useEffect");
     Axios.get("/api/products")
       .then((res) => {
         console.log(res.data);
@@ -60,19 +62,23 @@ const ProductDetails = (props) => {
 
   const Productdetails_Json = JSON.parse(LocalProduct);
   //console.log("Productdetails_Json", Productdetails_Json);
-  for (i = 0; i < Productdetails_Json.length; i++) {
-    const id = Productdetails_Json[i]._id;
-    //console.log("id", id, parseInt(params.id));
-    if (id === params.id) {
-      //console.log("equal");
-      PD_Name = Productdetails_Json[i].title;
-      PD_Quantity = Productdetails_Json[i].Quantity;
-      PD_Img = Productdetails_Json[i].image;
-      PD_Price = Productdetails_Json[i].price;
-      PD_ArrayLocation = i;
-      break;
+  if (Productdetails_Json) {
+    for (i = 0; i < Productdetails_Json.length + 1; i++) {
+      const id = Productdetails_Json[i]._id;
+      //console.log("id", id, parseInt(params.id));
+      if (id === params.id) {
+        console.log("i", i, Productdetails_Json.length);
+        PD_Name = Productdetails_Json[i].title;
+        PD_Quantity = Productdetails_Json[i].Quantity;
+        PD_Img = Productdetails_Json[i].image;
+        PD_Price = Productdetails_Json[i].price;
+        PD_ArrayLocation = i;
+
+        break;
+      }
     }
   }
+
   return (
     <div className="PD_Root">
       <Header />
@@ -84,7 +90,10 @@ const ProductDetails = (props) => {
         <img className="Arrow" src="../../../Images/back.svg"></img>
         <Link
           to={{
-            pathname: "/Products/" + Productdetails_Json[i - 1]._id,
+            pathname:
+              i > 0
+                ? "/Products/" + Productdetails_Json[i - 1]._id
+                : "/Products/" + Productdetails_Json[i]._id,
           }}
         >
           <span onClick={HandleClick}> הקודם </span>
@@ -93,7 +102,10 @@ const ProductDetails = (props) => {
         <span>|</span>
         <Link
           to={{
-            pathname: "/Products/" + Productdetails_Json[i + 1]._id,
+            pathname:
+              i < Productdetails_Json.length - 1
+                ? "/Products/" + Productdetails_Json[i + 1]._id
+                : "/Products/" + Productdetails_Json[i]._id,
           }}
         >
           <span onClick={HandleClick}> הבא </span>
