@@ -19,7 +19,7 @@ const ProductDetails = (props) => {
   const [ClickArrow, setClickArrow] = useState(false);
 
   console.log("log");
-  localStorage.clear();
+  // localStorage.clear();
   // useEffect(() => {
   //   console.log("useEffect");
   //   Axios.get("/api/products")
