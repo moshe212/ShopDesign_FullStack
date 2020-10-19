@@ -19,18 +19,27 @@ const ProductDetails = (props) => {
   const [ClickArrow, setClickArrow] = useState(false);
 
   console.log("log");
-  // localStorage.clear();
-  useEffect(() => {
-    console.log("useEffect");
-    Axios.get("/api/products")
-      .then((res) => {
-        // console.log(res.data);
-        localStorage.setItem("LocalProductList", JSON.stringify(res.data));
-      })
-      .catch(function (error) {
-        //console.log(error);
-      });
-  }, []);
+  localStorage.clear();
+  // useEffect(() => {
+  //   console.log("useEffect");
+  //   Axios.get("/api/products")
+  //     .then((res) => {
+  //       // console.log(res.data);
+  //       localStorage.setItem("LocalProductList", JSON.stringify(res.data));
+  //     })
+  //     .catch(function (error) {
+  //       //console.log(error);
+  //     });
+  // }, []);
+
+  Axios.get("/api/products")
+    .then((res) => {
+      // console.log(res.data);
+      localStorage.setItem("LocalProductList", JSON.stringify(res.data));
+    })
+    .catch(function (error) {
+      //console.log(error);
+    });
 
   const LocalProduct = localStorage.getItem("LocalProductList");
   const params = useParams();
@@ -86,35 +95,35 @@ const ProductDetails = (props) => {
         ProductListToCart={Details ? Details.ProductListToCart : []}
         Cartp={Details ? Details.Cartv || 0 : 0}
       />
-      {Productdetails_Json && Productdetails_Json != null && (
-        <div className="PD_nav">
-          <img className="Arrow" src="../../../Images/back.svg"></img>
-          <Link
-            to={{
-              pathname:
-                i > 0
-                  ? "/Products/" + Productdetails_Json[i - 1]._id
-                  : "/Products/" + Productdetails_Json[i]._id,
-            }}
-          >
-            <span onClick={HandleClick}> הקודם </span>
-          </Link>
 
-          <span>|</span>
-          <Link
-            to={{
-              pathname:
-                i < Productdetails_Json.length - 1
-                  ? "/Products/" + Productdetails_Json[i + 1]._id
-                  : "/Products/" + Productdetails_Json[i]._id,
-            }}
-          >
-            <span onClick={HandleClick}> הבא </span>
-          </Link>
+      <div className="PD_nav">
+        <img className="Arrow" src="../../../Images/back.svg"></img>
+        <Link
+          to={{
+            pathname:
+              i > 0
+                ? "/Products/" + Productdetails_Json[i - 1]._id
+                : "/Products/" + Productdetails_Json[i]._id,
+          }}
+        >
+          <span onClick={HandleClick}> הקודם </span>
+        </Link>
 
-          <img className="Arrow" src="../../../Images/next.svg"></img>
-        </div>
-      )}
+        <span>|</span>
+        <Link
+          to={{
+            pathname:
+              i < Productdetails_Json.length - 1
+                ? "/Products/" + Productdetails_Json[i + 1]._id
+                : "/Products/" + Productdetails_Json[i]._id,
+          }}
+        >
+          <span onClick={HandleClick}> הבא </span>
+        </Link>
+
+        <img className="Arrow" src="../../../Images/next.svg"></img>
+      </div>
+
       <div id={params.id} className="ProductDetails">
         <div className="PD_ImgContent grid-item">
           <img className="PD_ProductImg" src={PD_Img} alt="" />
