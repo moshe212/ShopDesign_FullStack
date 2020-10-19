@@ -86,33 +86,35 @@ const ProductDetails = (props) => {
         ProductListToCart={Details ? Details.ProductListToCart : []}
         Cartp={Details ? Details.Cartv || 0 : 0}
       />
-      <div className="PD_nav">
-        <img className="Arrow" src="../../../Images/back.svg"></img>
-        <Link
-          to={{
-            pathname:
-              i > 0
-                ? "/Products/" + Productdetails_Json[i - 1]._id
-                : "/Products/" + Productdetails_Json[i]._id,
-          }}
-        >
-          <span onClick={HandleClick}> הקודם </span>
-        </Link>
+      {Productdetails_Json && (
+        <div className="PD_nav">
+          <img className="Arrow" src="../../../Images/back.svg"></img>
+          <Link
+            to={{
+              pathname:
+                i > 0
+                  ? "/Products/" + Productdetails_Json[i - 1]._id
+                  : "/Products/" + Productdetails_Json[i]._id,
+            }}
+          >
+            <span onClick={HandleClick}> הקודם </span>
+          </Link>
 
-        <span>|</span>
-        <Link
-          to={{
-            pathname:
-              i < Productdetails_Json.length - 1
-                ? "/Products/" + Productdetails_Json[i + 1]._id
-                : "/Products/" + Productdetails_Json[i]._id,
-          }}
-        >
-          <span onClick={HandleClick}> הבא </span>
-        </Link>
+          <span>|</span>
+          <Link
+            to={{
+              pathname:
+                i < Productdetails_Json.length - 1
+                  ? "/Products/" + Productdetails_Json[i + 1]._id
+                  : "/Products/" + Productdetails_Json[i]._id,
+            }}
+          >
+            <span onClick={HandleClick}> הבא </span>
+          </Link>
 
-        <img className="Arrow" src="../../../Images/next.svg"></img>
-      </div>
+          <img className="Arrow" src="../../../Images/next.svg"></img>
+        </div>
+      )}
       <div id={params.id} className="ProductDetails">
         <div className="PD_ImgContent grid-item">
           <img className="PD_ProductImg" src={PD_Img} alt="" />
