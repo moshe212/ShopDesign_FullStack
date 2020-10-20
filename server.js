@@ -10,7 +10,7 @@ const csv = require("csvtojson");
 const utf8 = require("utf8");
 const dotenv = require("dotenv");
 const server = http.createServer(app);
-// const io = socketIo(server);
+const io = socketIo.listen(server);
 const mongoose = require("mongoose");
 const autoIncrement = require("mongoose-auto-increment");
 
