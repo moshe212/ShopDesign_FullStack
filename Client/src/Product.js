@@ -14,7 +14,7 @@ const Product = (props) => {
   const [Click, setClick] = useState(false);
   const [Product, setProduct] = useState({ props: props, isSocket: false });
 
-  console.log("AllProducts", props.AllProducts);
+  // console.log("AllProducts", props.AllProducts);
   let QuantityToCart;
   props.ProductListToCart.forEach((prod, prodIndex) => {
     if (prod._id === props.id) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Header from "../../Header";
 import Footer from "../../Footer";
 import CartMin from "../../CartMin";
@@ -15,8 +15,11 @@ import Axios from "axios";
 import { Redirect } from "react-router";
 import { parseInt } from "lodash";
 
+import ProductsContext from "../../ProductsContext";
+
 const ProductDetails = (props) => {
   const [ClickArrow, setClickArrow] = useState(false);
+  // const [Productdetails_Json, setProductdetails_Json] = useState({});
 
   console.log("log");
   // localStorage.clear();
@@ -61,20 +64,27 @@ const ProductDetails = (props) => {
   let PD_ArrayLocation = "";
   let i = 0;
 
-  console.log("Details", Details);
-  if (Details) {
-    localStorage.setItem(
-      "LocalProductList",
-      JSON.stringify(Details.AllProducts)
-    );
-  }
+  // console.log("Details", Details);
+  // if (Details) {
+  //   localStorage.setItem(
+  //     "LocalProductList",
+  //     JSON.stringify(Details.AllProducts)
+  //   );
+  // }
 
-  // console.log("Details", Details.AllProducts);
-  const Productdetails_Json = Details
-    ? Details.AllProducts
-    : JSON.parse(localStorage.getItem("LocalProductList"));
+  // // console.log("Details", Details.AllProducts);
+  // const Productdetails_Json = Details
+  //   ? Details.AllProducts
+  //   : JSON.parse(localStorage.getItem("LocalProductList"));
 
-  // const Productdetails_Json = JSON.parse(LocalProduct);
+  // let p = useContext(ProductsContext);
+  // setProductdetails_Json = p;
+  // useEffect(() => {
+  //   setProductdetails_Json = Productdetails_Json;
+  // }, [Productdetails_Json]);
+
+  const Productdetails = useContext(ProductsContext);
+  const Productdetails_Json = JSON.parse(Productdetails);
   console.log("Productdetails_Json", Productdetails_Json);
   if (Productdetails_Json) {
     for (i = 0; i < Productdetails_Json.length + 1; i++) {
@@ -145,5 +155,4 @@ const ProductDetails = (props) => {
     </div>
   );
 };
-
 export default ProductDetails;
