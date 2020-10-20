@@ -8,9 +8,9 @@ const FileDownload = require("js-file-download");
 
 const DownLoadButton = () => {
   const DownloadFile = () => {
-    Axios.get("/api/download/Test.txt")
+    Axios.get("/api/download/Products.csv")
       .then((res) => {
-        FileDownload(res.data, "Text.txt");
+        FileDownload(res.data, "Products.csv");
       })
       .catch(function (error) {
         //console.log(error);

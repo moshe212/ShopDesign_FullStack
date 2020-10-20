@@ -10,22 +10,24 @@ const ImportProducts = () => {
   const uploadFile = () => {
     //console.log("l");
     const uploadedFile = document.querySelector(".InputUpload #uploadedFile");
-    // //console.log(uploadedFile);
-    //console.log(uploadedFile.files[0]);
-    Axios.post("/api/upload", uploadedFile.files[0], {
-      params: { filename: uploadedFile.files[0].name },
-      onUploadProgress: (progressEvent) => {
-        const percentCompleted = Math.round(
-          (progressEvent.loaded * 100) / progressEvent.total
-        );
-        //console.log(percentCompleted);
-      },
-    }).then((res) => {
-      //console.log(res);
-      if (res.data === "OK") {
-        alert("הקובץ עלה בהצלחה לשרת. רשימת המוצרים התעדכנה בהצלחה.");
-      }
-    });
+    // console.log(uploadedFile);
+    console.log(uploadedFile.files[0]);
+    if (uploadedFile.files[0]) {
+      Axios.post("/api/upload", uploadedFile.files[0], {
+        params: { filename: uploadedFile.files[0].name },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          //console.log(percentCompleted);
+        },
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data === "OK") {
+          alert("הקובץ עלה בהצלחה לשרת. רשימת המוצרים התעדכנה בהצלחה.");
+        }
+      });
+    }
   };
 
   return (

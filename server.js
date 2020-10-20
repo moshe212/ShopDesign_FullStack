@@ -244,7 +244,8 @@ app.post("/api/upload", (req, res) => {
         Product.find((err, productItems) => {
           if (err) return console.error(err);
           // console.log(productItems);
-          res.send(productItems);
+          res.status(200).send("OK");
+          // res.send(productItems);
         });
       });
   }
