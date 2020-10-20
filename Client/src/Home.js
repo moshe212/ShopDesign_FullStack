@@ -153,6 +153,7 @@ const Home = (props) => {
               Quantity={product.quantity}
               ProductListToCart={ProductListToCart}
               Cartp={Cartv}
+              AllProducts={Products}
               ChangQuantity={(data) => {
                 let productsQuantityList = cloneDeep(Products);
                 productsQuantityList.forEach(

@@ -14,6 +14,7 @@ const Product = (props) => {
   const [Click, setClick] = useState(false);
   const [Product, setProduct] = useState({ props: props, isSocket: false });
 
+  console.log("AllProducts", props.AllProducts);
   let QuantityToCart;
   props.ProductListToCart.forEach((prod, prodIndex) => {
     if (prod._id === props.id) {
@@ -36,8 +37,6 @@ const Product = (props) => {
       Quantity: QuantityToCart,
     });
   };
-
-  
 
   //console.log("props", props);
   // useEffect(() => {
@@ -68,6 +67,7 @@ const Product = (props) => {
             // Price: props.price,
             ProductListToCart: props.ProductListToCart,
             Cartp: props.Cartv,
+            AllProducts: props.AllProducts,
           },
         }}
       ></Redirect>

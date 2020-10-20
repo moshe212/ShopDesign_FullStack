@@ -31,17 +31,9 @@ const ProductDetails = (props) => {
   //       //console.log(error);
   //     });
   // }, []);
+  // let LocalProduct = {};
 
-  Axios.get("/api/products")
-    .then((res) => {
-      // console.log(res.data);
-      localStorage.setItem("LocalProductList", JSON.stringify(res.data));
-    })
-    .catch(function (error) {
-      //console.log(error);
-    });
-
-  const LocalProduct = localStorage.getItem("LocalProductList");
+  // const LocalProduct = localStorage.getItem("LocalProductList");
   const params = useParams();
   //console.log("params", params);
   //   //console.log(props);
@@ -69,7 +61,20 @@ const ProductDetails = (props) => {
   let PD_ArrayLocation = "";
   let i = 0;
 
-  const Productdetails_Json = JSON.parse(LocalProduct);
+  console.log("Details", Details);
+  if (Details) {
+    localStorage.setItem(
+      "LocalProductList",
+      JSON.stringify(Details.AllProducts)
+    );
+  }
+
+  // console.log("Details", Details.AllProducts);
+  const Productdetails_Json = Details
+    ? Details.AllProducts
+    : JSON.parse(localStorage.getItem("LocalProductList"));
+
+  // const Productdetails_Json = JSON.parse(LocalProduct);
   console.log("Productdetails_Json", Productdetails_Json);
   if (Productdetails_Json) {
     for (i = 0; i < Productdetails_Json.length + 1; i++) {
