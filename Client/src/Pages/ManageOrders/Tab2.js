@@ -72,7 +72,7 @@ export default function FullWidthTabs() {
   return (
     <div>
       <div>
-        <Header />
+        <Header Render="Admin" />
       </div>
       <div dir="rtl" className={classes.root}>
         <AppBar position="static" color="white">
