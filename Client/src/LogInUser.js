@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button } from "antd";
 import LogInForm from "./LogInForm";
-import Tab from "./Tab";
+import LoginModalTabs from "./LoginModalTabs";
 
 // import { ConfigProvider } from "antd";
 import "./LogInUser.css";
@@ -68,7 +68,7 @@ const LogInUser = (props) => {
         // onOk={handleOk}
         onCancel={() => handleCancel()}
       >
-        <Tab closeModal={closeModal} />
+        <LoginModalTabs closeModal={closeModal} />
         {/* <LogInForm onSubmit={closeModal} WhoLogIn={"User"} /> */}
       </Modal>
       {/* <ConfigProvider direction={direction}>

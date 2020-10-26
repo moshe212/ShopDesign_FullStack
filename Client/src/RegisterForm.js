@@ -4,7 +4,7 @@ import Axios from "axios";
 import { Redirect } from "react-router";
 import { message } from "antd";
 
-import "./LoginForm.css";
+import "./RegisterForm.css";
 
 const success = () => {
   message.success({

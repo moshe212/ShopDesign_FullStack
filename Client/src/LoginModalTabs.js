@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Tabs, Radio } from "antd";
 import LogInForm from "./LogInForm";
+import RegisterForm from "./RegisterForm";
 
-import "./Tab.css";
+import "./LoginModalTabs.css";
 
 const { TabPane } = Tabs;
 
-const Tab = (props) => {
+const TabLogIn = (props) => {
   const [State, setState] = useState({ size: "small" });
 
   const closeModal = () => {
@@ -18,7 +19,7 @@ const Tab = (props) => {
     <div>
       <Tabs defaultActiveKey="2" type="card" size={size} centered>
         <TabPane tab="הרשם" key="1">
-          Content of card tab 2
+          <RegisterForm onSubmit={closeModal} />
         </TabPane>
         <TabPane tab="התחבר" key="2">
           <LogInForm onSubmit={closeModal} WhoLogIn={"User"} />
@@ -28,4 +29,4 @@ const Tab = (props) => {
   );
 };
 
-export default Tab;
+export default TabLogIn;

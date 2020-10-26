@@ -35,6 +35,7 @@ const Product = (props) => {
       ProductID: props.id,
       UnitPrice: props.price,
       Quantity: QuantityToCart,
+      CustomerID: localStorage.getItem("LocalCustomerID"),
     });
   };
 

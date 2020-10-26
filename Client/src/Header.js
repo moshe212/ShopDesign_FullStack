@@ -14,10 +14,12 @@ const Header = (props) => {
   const [redirect_MangeProducts, setredirect_MangeProducts] = useState(false);
   const [redirect_ImportProducts, setredirect_ImportProducts] = useState(false);
   const [redirect_Home, setredirect_Home] = useState(false);
+  const [redirect_ManageOrders, setredirect_ManageOrders] = useState(false);
 
   //console.log("HeaderProps", props);
-  //console.log(props.Render);
+  // console.log(props.Render);
   const Render = props.Render;
+  console.log(Render);
 
   const GoHome = () => {
     setredirect_Home(true);
@@ -35,6 +37,10 @@ const Header = (props) => {
     setredirect_ImportProducts(true);
   };
 
+  const ManageOrders_handleOnClick = () => {
+    setredirect_ManageOrders(true);
+  };
+
   if (redirect_Admin) {
     //console.log("Redirect");
     return <Redirect push to="/Admin" />;
@@ -42,9 +48,12 @@ const Header = (props) => {
     return <Redirect push to="/Admin/ManageProducts" />;
   } else if (redirect_ImportProducts) {
     return <Redirect push to="/Admin/ImportProducts" />;
+  } else if (redirect_ManageOrders) {
+    return <Redirect push to="/Admin/ManageOrders" />;
   } else if (redirect_Home) {
     return <Redirect push to="/" />;
   }
+
   return (
     <div className="header">
       <LogInUser Username={props.UserName} />
@@ -54,19 +63,19 @@ const Header = (props) => {
         </div>
         <AdminLogIn />
       </div>
-      {Render === "Home" ||
-        (Render === undefined && (
-          <div className="Menu">
-            <div>אודות</div>
-            <div>מבצעים</div>
-            <div>צור קשר</div>
-            <div>מתכונים לשייקים</div>
-          </div>
-        ))}
+      {Render === "Home" && (
+        <div className="Menu">
+          <div>אודות</div>
+          <div>מבצעים</div>
+          <div>צור קשר</div>
+          <div>מתכונים לשייקים</div>
+        </div>
+      )}
       {Render === "Admin" && (
         <div className="Menu">
           <div onClick={MangeProducts_handleOnClick}>ניהול מוצרים</div>
           <div onClick={ImportProducts_handleOnClick}>ייבוא מוצרים</div>
+          <div onClick={ManageOrders_handleOnClick}>ניהול הזמנות</div>
         </div>
       )}
     </div>

@@ -14,6 +14,9 @@ import Home from "./Home";
 import ManageProducts from "./Pages/ManageProducts/ManageProducts";
 import ImportProducts from "./Pages/ImportProducts/ImportProducts";
 import ProductDetails from "./Pages/ProductDetails/ProductDetails";
+import ManageOrdersMaterial from "./Pages/ManageOrders/ManageOrdersMaterial";
+import SerratedTabs from "./Pages/ManageOrders/Tab";
+import SerratedTabs2 from "./Pages/ManageOrders/Tab2";
 
 import { ProductsProvider } from "./ProductsContext";
 // import ProductsContext from "./ProductsContext";
@@ -35,7 +38,7 @@ const App = () => {
   useEffect(() => {
     Axios.get("/api/products")
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setAllProducts(JSON.stringify(res.data));
       })
       .catch(function (error) {
@@ -53,7 +56,7 @@ const App = () => {
           <Home />
         </Route>
 
-        <Route path="/LoginUser/user/:name">
+        <Route path="/LoginCustomer/Customer/:name">
           <Home />
         </Route>
 
@@ -75,6 +78,11 @@ const App = () => {
 
         <Route exact path="/Admin/ImportProducts">
           <ImportProducts />
+        </Route>
+
+        <Route exact path="/Admin/ManageOrders">
+          <SerratedTabs2 />
+          {/* <ManageOrdersMaterial /> */}
         </Route>
 
         {/* <Route path="/todos/:idParam">

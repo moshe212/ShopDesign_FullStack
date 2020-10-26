@@ -20,6 +20,7 @@ const ProductSchema = new mongoose.Schema({
   image: String,
   quantity: Number,
   price: Number,
+  Orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
 });
 
 const CustomerSchema = new mongoose.Schema({
@@ -35,11 +36,20 @@ const CustomerSchema = new mongoose.Schema({
 
 const OrderSchema = new mongoose.Schema({
   CustomerID: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" },
+  Products: [
+    {
+      productid: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+      quantity: Number,
+    },
+  ],
   OrderDate: Date,
   RequiredDate: Date,
   ShippedDate: Date,
-  ShioAddress: String,
+  ShipStreet: String,
+  ShipHome: String,
   ShipCity: String,
+  Status: Boolean,
+  TotalAmount: Number,
 });
 
 const UserSchema = new mongoose.Schema({
@@ -60,10 +70,18 @@ const UserSchema = new mongoose.Schema({
   Admin: Boolean,
 });
 
+// const OrderDetailsSchema = new mongoose.Schema({
+//   OrderID: { type: mongoose.Schema.Types.ObjectId, ref: "Order" },
+//   ProductID: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+//   Quantity: Number,
+//   Price: Number,
+// });
+
 const User = mongoose.model("User", UserSchema);
 const Order = mongoose.model("Order", OrderSchema);
 const Customer = mongoose.model("Customer", CustomerSchema);
 const Product = mongoose.model("Product", ProductSchema);
+// const OrderDetails = mongoose.model("OrderDetails", OrderDetailsSchema);
 
 dotenv.config();
 app.use(bodyParser.json());
@@ -122,6 +140,127 @@ app.get("/api/products", (req, res) => {
     });
   }
 });
+
+//החזרת כל ההזמנות או לפי חיפוש אם יש חיפוש == Mongo
+app.get("/api/orders", async (req, res) => {
+  console.log("QUERY:", req.query);
+  const search = req.query.search;
+  console.log(search);
+
+  if (search) {
+    const StartDate = new Date(search);
+    const NextDay = new Date(+StartDate);
+    const DayValue = NextDay.getDate() + 1;
+    const NextDayDate = NextDay.setDate(DayValue);
+    console.log("NextDayDate", NextDayDate);
+    const filteredOrders = await Order.find(
+      {
+        OrderDate: { $gte: new Date("2020-10-25"), $lt: new Date(NextDayDate) },
+      },
+      (err, filteredOrders) => {
+        if (err) return console.error(err);
+        console.log(filteredOrders);
+        res.send(filteredOrders);
+      }
+    );
+  } else {
+    Order.find((err, orderItems) => {
+      if (err) return console.error(err);
+      console.log(orderItems);
+      res.send(orderItems);
+    });
+  }
+});
+
+//החזרת כמות הזמנות לפי תאריך
+app.get("/api/orders/dates", async (req, res) => {
+  console.log("QUERY:", req.query);
+  const search = req.query.search;
+  console.log(search);
+  const OrdersCount = await Order.aggregate([
+    {
+      $group: {
+        _id: { $dateToString: { format: "%Y-%m-%d", date: "$OrderDate" } },
+        // _id: { $dayOfYear: "$OrderDate" },
+        'סה"כ הזמנות': { $sum: 1 },
+      },
+    },
+    { $sort: { _id: 1 } },
+  ]);
+  // const day = await Order.aggregate([
+  //   { $project: { day: OrdersCount[0]._id } },
+  // ]);
+  // console.log(day);
+
+  console.log(OrdersCount);
+
+  res.send(OrdersCount);
+
+  // const filteredProducts = Order.find(
+  //   { title: { $regex: search, $options: "i" } },
+  //   (err, filteredProducts) => {
+  //     if (err) return console.error(err);
+  //     res.send(filteredProducts);
+  //   }
+  // );
+});
+
+//החזרת סהכ הכנסות לחודש
+app.get("/api/orders/total_income", async (req, res) => {
+  console.log("QUERY:", req.query);
+  const search = req.query.search;
+  console.log(search);
+  const OrdersTotalIncome = await Order.aggregate([
+    {
+      $group: {
+        _id: { $dateToString: { format: "%Y-%m", date: "$OrderDate" } },
+        // _id: "ProductID",
+        'סה"כ הכנסות': { $sum: "$TotalAmount" },
+      },
+    },
+
+    { $sort: { _id: 1 } },
+  ]);
+  // const day = await Order.aggregate([
+  //   { $project: { day: OrdersCount[0]._id } },
+  // ]);
+  // console.log(day);
+
+  console.log(OrdersTotalIncome);
+
+  res.send(OrdersTotalIncome);
+
+  // const filteredProducts = Order.find(
+  //   { title: { $regex: search, $options: "i" } },
+  //   (err, filteredProducts) => {
+  //     if (err) return console.error(err);
+  //     res.send(filteredProducts);
+  //   }
+  // );
+});
+
+//החזרת כל המוצרים או לפי חיפוש אם יש חיפוש == Mongo
+// app.get("/api/products", (req, res) => {
+//   console.log("QUERY:", req.query);
+//   const search = req.query.search;
+//   console.log(search);
+
+//   if (search) {
+//     const filteredProducts = Product.find(
+//       { title: { $regex: search, $options: "i" } },
+//       (err, filteredProducts) => {
+//         if (err) return console.error(err);
+//         res.send(filteredProducts);
+//       }
+//     );
+//   } else {
+//     Product.find((err, productItems) => {
+//       if (err) return console.error(err);
+//       console.log(productItems);
+//       res.send(productItems);
+//     });
+//   }
+// });
 
 app.get("/api/products/Admin/ManageProducts", (req, res) => {
   console.log("QUERY:", req.query);
@@ -208,6 +347,28 @@ app.put("/api/products/:id", async (req, res) => {
   productItems = await Product.find().exec();
 
   res.send(productItems);
+});
+
+//הוספת הזמנה-- Mongo
+app.post("/api/AddOrder", async (req, res) => {
+  console.log(req.body);
+  const title = req.body.title;
+  const image = req.body.image;
+  const quantity = req.body.quantity;
+  const price = req.body.price;
+
+  const newProduct = new Product({
+    title: title,
+    image: image,
+    quantity: +quantity,
+    price: +price,
+  });
+  await newProduct.save();
+  Product.find((err, productItems) => {
+    if (err) return console.error(err);
+    // console.log(productItems);
+    res.send(productItems);
+  });
 });
 
 // הורדת קובץ מבנה לקבלת קובץ רשימת מוצרים להעלאה
@@ -339,20 +500,20 @@ app.post("/api/LogInAdmin", (req, res) => {
   });
 });
 
-// כניסת משתמש == Mongo
-app.post("/api/LogInUser", (req, res) => {
+// כניסת לקוח == Mongo
+app.post("/api/LogInCustomer", (req, res) => {
   console.log(req.body);
   const { Email, Pass } = req.body;
   console.log(Email, Pass);
   let Status = "";
-  const UserItem = User.find({ Admin: false }, (err, Users) => {
+  const CustomerItem = Customer.find((err, Customers) => {
     if (err) return console.error(err);
-    console.log(Users);
-    for (let i = 0; i < Users.length; i++) {
-      const { UserName, Password, FirstName, LastNmme } = Users[i];
-      console.log(UserName, Password, FirstName, LastNmme);
-      if (UserName === Email && Password === parseInt(Pass)) {
-        Status = ["OK", Users[i]._id, FirstName + " " + LastNmme];
+    console.log(Customers);
+    for (let i = 0; i < Customers.length; i++) {
+      const { UserName, Password, FullName } = Customers[i];
+      console.log(UserName, Email, Password, Pass, FullName);
+      if (UserName === Email && Password === Pass) {
+        Status = ["OK", Customers[i]._id, FullName];
         break;
       } else {
         Status = "Not_allow";
@@ -363,20 +524,27 @@ app.post("/api/LogInUser", (req, res) => {
   });
 });
 
-// app.get("/LogInUser/ID", (req, res) => {
-//   console.log("QUERY:", req.query);
-//   const search = req.query.search;
-//   console.log(search);
-//   fs.readFile("product.json", (err, data) => {
-//     const products = JSON.parse(data);
-//     if (search) {
-//       const filteredProducts = products.filter((product) =>
-//         product.title.toLowerCase().includes(search.toLowerCase())
-//       );
-//       res.send(filteredProducts);
-//     } else {
-//       res.send(products);
+// כניסת משתמש == Mongo
+// app.post("/api/LogInCustomer", (req, res) => {
+//   console.log(req.body);
+//   const { Email, Pass } = req.body;
+//   console.log(Email, Pass);
+//   let Status = "";
+//   const CustomerItem = Customer.find({ Admin: false }, (err, Customers) => {
+//     if (err) return console.error(err);
+//     console.log(Customers);
+//     for (let i = 0; i < Customers.length; i++) {
+//       const { UserName, Password, FirstName, LastNmme } = Customers[i];
+//       console.log(UserName, Password, FirstName, LastNmme);
+//       if (UserName === Email && Password === parseInt(Pass)) {
+//         Status = ["OK", Customers[i]._id, FirstName + " " + LastNmme];
+//         break;
+//       } else {
+//         Status = "Not_allow";
+//       }
 //     }
+//     console.log(Status);
+//     res.status(200).send(Status);
 //   });
 // });
 
@@ -408,11 +576,123 @@ app.post("/api/LogInUser", (req, res) => {
 
 //הוספת מוצר לעגלה
 app.post("/api/AddToCart", async (req, res) => {
-  console.log(req.query);
+  // console.log(req.query);
   console.log(req.body);
-  // const productId = req.params.id;
-  // const Quantity = +req.body.quantity;
-  // console.log(productId);
+  const ProductId = req.body.ProductID;
+  const Quantity = +req.body.Quantity;
+  const IsNewOrder = req.body.IsNewOrder;
+  const CustomerID = req.body.CustomerID;
+  const UnitPrice = req.body.UnitPrice;
+  const Total = UnitPrice * Quantity;
+
+  console.log("Total", Total);
+
+  if (CustomerID) {
+    Customer.findById(CustomerID, async (err, customer) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("find", customer);
+        const ShipStreet = customer.Street;
+        const ShipHome = customer.Home;
+        const ShipCity = customer.City;
+        console.log("ShipAddress", ShipStreet, ShipHome, ShipCity);
+        console.log(ProductId, Quantity, IsNewOrder);
+        if (IsNewOrder) {
+          const newOrder = new Order({
+            CustomerID: CustomerID,
+            Products: { productid: ProductId, quantity: Quantity },
+            // Quantity: Quantity,
+            OrderDate: Date.now(),
+            RequiredDate: Date.now(),
+            ShippedDate: Date.now(),
+            ShipStreet: ShipStreet,
+            ShipHome: ShipHome,
+            ShipCity: ShipCity,
+            Status: false,
+            TotalAmount: Total,
+          });
+          await newOrder.save();
+          // console.log(newOrder._id);
+
+          // const newOrderDetails = new OrderDetails({
+          //   OrderID: newOrder._id,
+          //   ProductID: ProductId,
+          //   Quantity: Quantity,
+          //   Price: UnitPrice,
+          // });
+          // await newOrderDetails.save();
+        } else {
+          console.log("not new");
+          Order.find(
+            { CustomerID: CustomerID, Status: false },
+            async (err, order) => {
+              if (err) {
+                console.log(err);
+              } else {
+                const OrderID = order[0]._id;
+                const OrderTotal = order[0].TotalAmount;
+                const OrderTotalEnd = OrderTotal + Total;
+                // console.log(order[0]);
+                // console.log("find", OrderID, OrderTotal, OrderTotalEnd);
+
+                const ThisOrder = await Order.findOne({
+                  _id: OrderID,
+                });
+                await ThisOrder.Products.push({
+                  productid: ProductId,
+                  quantity: Quantity,
+                });
+                ThisOrder.TotalAmount = OrderTotalEnd;
+                await ThisOrder.save();
+
+                // ThisOrder({
+                //   $push: {
+                //     Products: { productid: ProductId, quantity: Quantity },
+                //   },
+                // });
+                // ThisOrder({ TotalAmount: OrderTotalEnd });
+                // ThisOrder.save();
+                //   function (error, success) {
+                //     if (error) {
+                //       console.log(error);
+                //     } else {
+                //       console.log(success);
+                //     }
+                //   }
+                // );
+                // Order.findByIdAndUpdate(
+                //   { _id: OrderID },
+                //   {
+                //     $push: {
+                //       Products: { productid: ProductId, quantity: Quantity },
+                //     },
+                //   },
+                //   { TotalAmount: OrderTotalEnd },
+                //   { new: true, useFindAndModify: false },
+                //   function (error, success) {
+                //     if (error) {
+                //       console.log(error);
+                //     } else {
+                //       console.log(success);
+                //     }
+                //   }
+                // );
+                // const newOrderDetails = new OrderDetails({
+                //   OrderID: order[0]._id,
+                //   ProductID: ProductId,
+                //   Quantity: Quantity,
+                //   Price: UnitPrice,
+                // });
+                // await newOrderDetails.save();
+              }
+            }
+          );
+        }
+      }
+    });
+  }
+
   // Product.findByIdAndUpdate(
   //   productId,
   //   { $set: { ...req.body } },
