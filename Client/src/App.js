@@ -71,7 +71,7 @@ const App = () => {
           </OrderProvider>
         </Route>
 
-        <Route path="/Products/:id">
+        <Route path="/api/Products/:id">
           {/* <ProductsContext.Provider value={AllProducts}> */}
           <ProductsProvider value={AllProducts}>
             <ProductDetails />
@@ -83,7 +83,7 @@ const App = () => {
           <Admin />
         </Route>
 
-        <Route exact path="/Admin/ManageProducts">
+        <Route exact path="/api/Admin/ManageProducts">
           <ManageProducts />
         </Route>
 

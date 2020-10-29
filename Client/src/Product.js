@@ -66,7 +66,7 @@ const Product = (props) => {
     return (
       <Redirect
         to={{
-          pathname: "/Products/" + props.id,
+          pathname: "/api/Products/" + props.id,
           state: {
             // Name: props.name,
             // Quantity: props.Quantity,

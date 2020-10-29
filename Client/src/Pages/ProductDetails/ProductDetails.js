@@ -77,8 +77,8 @@ const ProductDetails = (props) => {
             to={{
               pathname:
                 i > 0
-                  ? "/Products/" + Productdetails_Json[i - 1]._id
-                  : "/Products/" + Productdetails_Json[i]._id,
+                  ? "/api/Products/" + Productdetails_Json[i - 1]._id
+                  : "/api/Products/" + Productdetails_Json[i]._id,
             }}
           >
             <span onClick={HandleClick}> הקודם </span>
@@ -89,8 +89,8 @@ const ProductDetails = (props) => {
             to={{
               pathname:
                 i < Productdetails_Json.length - 1
-                  ? "/Products/" + Productdetails_Json[i + 1]._id
-                  : "/Products/" + Productdetails_Json[i]._id,
+                  ? "/api/Products/" + Productdetails_Json[i + 1]._id
+                  : "/api/Products/" + Productdetails_Json[i]._id,
             }}
           >
             <span onClick={HandleClick}> הבא </span>
