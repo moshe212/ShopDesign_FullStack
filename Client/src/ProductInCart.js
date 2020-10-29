@@ -32,6 +32,7 @@ const ProductInCart = (props) => {
       </div>
       <div className="Cart_ImgContent">
         <img className="Cart_ProductImg" src={props.src} alt="" />
+        <p className="QuantityOfProd">{props.Quantity}</p>
       </div>
     </div>
   );

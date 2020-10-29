@@ -22,36 +22,13 @@ const ProductDetails = (props) => {
   // const [Productdetails_Json, setProductdetails_Json] = useState({});
 
   console.log("log");
-  // localStorage.clear();
-  // useEffect(() => {
-  //   console.log("useEffect");
-  //   Axios.get("/api/products")
-  //     .then((res) => {
-  //       // console.log(res.data);
-  //       localStorage.setItem("LocalProductList", JSON.stringify(res.data));
-  //     })
-  //     .catch(function (error) {
-  //       //console.log(error);
-  //     });
-  // }, []);
-  // let LocalProduct = {};
 
-  // const LocalProduct = localStorage.getItem("LocalProductList");
   const params = useParams();
-  //console.log("params", params);
-  //   //console.log(props);
-  //console.log(window.history.state.state);
-  //   //console.log(LocalProduct);
+  console.log("params", params);
+
   const Details = window.history.state.state;
 
   const HandleClick = () => {
-    //console.log("clickarrow");
-
-    // <Redirect
-    //   to={{
-    //     pathname: "/Products/" + params.id + 1,
-    //   }}
-    // ></Redirect>;
     setTimeout(() => {
       setClickArrow(true);
     }, 500);
@@ -64,28 +41,9 @@ const ProductDetails = (props) => {
   let PD_ArrayLocation = "";
   let i = 0;
 
-  // console.log("Details", Details);
-  // if (Details) {
-  //   localStorage.setItem(
-  //     "LocalProductList",
-  //     JSON.stringify(Details.AllProducts)
-  //   );
-  // }
-
-  // // console.log("Details", Details.AllProducts);
-  // const Productdetails_Json = Details
-  //   ? Details.AllProducts
-  //   : JSON.parse(localStorage.getItem("LocalProductList"));
-
-  // let p = useContext(ProductsContext);
-  // setProductdetails_Json = p;
-  // useEffect(() => {
-  //   setProductdetails_Json = Productdetails_Json;
-  // }, [Productdetails_Json]);
-
   const Productdetails = useContext(ProductsContext);
   const Productdetails_Json = JSON.parse(Productdetails);
-  console.log("Productdetails_Json", Productdetails_Json);
+  // console.log("Productdetails_Json", Productdetails_Json);
   if (Productdetails_Json) {
     for (i = 0; i < Productdetails_Json.length + 1; i++) {
       const id = Productdetails_Json[i]._id;
@@ -102,57 +60,60 @@ const ProductDetails = (props) => {
       }
     }
   }
+  if (!Productdetails_Json) {
+    return <div>"hello"</div>;
+  } else {
+    return (
+      <div className="PD_Root">
+        <Header />
+        <CartMin
+          ProductListToCart={Details ? Details.ProductListToCart : []}
+          Cartp={Details ? Details.Cartv || 0 : 0}
+        />
 
-  return (
-    <div className="PD_Root">
-      <Header />
-      <CartMin
-        ProductListToCart={Details ? Details.ProductListToCart : []}
-        Cartp={Details ? Details.Cartv || 0 : 0}
-      />
+        <div className="PD_nav">
+          <img className="Arrow" src="/Images/back.svg"></img>
+          <Link
+            to={{
+              pathname:
+                i > 0
+                  ? "/Products/" + Productdetails_Json[i - 1]._id
+                  : "/Products/" + Productdetails_Json[i]._id,
+            }}
+          >
+            <span onClick={HandleClick}> הקודם </span>
+          </Link>
 
-      <div className="PD_nav">
-        <img className="Arrow" src="../../../Images/back.svg"></img>
-        <Link
-          to={{
-            pathname:
-              i > 0
-                ? "/Products/" + Productdetails_Json[i - 1]._id
-                : "/Products/" + Productdetails_Json[i]._id,
-          }}
-        >
-          <span onClick={HandleClick}> הקודם </span>
-        </Link>
+          <span>|</span>
+          <Link
+            to={{
+              pathname:
+                i < Productdetails_Json.length - 1
+                  ? "/Products/" + Productdetails_Json[i + 1]._id
+                  : "/Products/" + Productdetails_Json[i]._id,
+            }}
+          >
+            <span onClick={HandleClick}> הבא </span>
+          </Link>
 
-        <span>|</span>
-        <Link
-          to={{
-            pathname:
-              i < Productdetails_Json.length - 1
-                ? "/Products/" + Productdetails_Json[i + 1]._id
-                : "/Products/" + Productdetails_Json[i]._id,
-          }}
-        >
-          <span onClick={HandleClick}> הבא </span>
-        </Link>
-
-        <img className="Arrow" src="../../../Images/next.svg"></img>
-      </div>
-
-      <div id={params.id} className="ProductDetails">
-        <div className="PD_ImgContent grid-item">
-          <img className="PD_ProductImg" src={PD_Img} alt="" />
+          <img className="Arrow" src="/Images/next.svg"></img>
         </div>
-        <div className="Details grid-item">
-          <div className="PD_Name">{PD_Name}</div>
-          {/* <div className="PD_Quantity"> {Details.Quantity}</div> */}
-          <div className="PD_Price">₪{PD_Price}</div>
+
+        <div id={params.id} className="ProductDetails">
+          <div className="PD_ImgContent grid-item">
+            <img className="PD_ProductImg" src={PD_Img} alt="" />
+          </div>
+          <div className="Details grid-item">
+            <div className="PD_Name">{PD_Name}</div>
+            {/* <div className="PD_Quantity"> {Details.Quantity}</div> */}
+            <div className="PD_Price">₪{PD_Price}</div>
+          </div>
+        </div>
+        <div className="PD_BtnDiv">
+          <button className="PD_Btn">הוסף לסל</button>
         </div>
       </div>
-      <div className="PD_BtnDiv">
-        <button className="PD_Btn">הוסף לסל</button>
-      </div>
-    </div>
-  );
+    );
+  }
 };
 export default ProductDetails;

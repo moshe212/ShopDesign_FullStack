@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import socketIOClient from "socket.io-client";
 import cloneDeep from "lodash/cloneDeep";
 import "./Product.css";
 
 import { Redirect } from "react-router";
+
+import OrderContext from "./OrderContext";
 
 const Product = (props) => {
   // const [Active, setActive] = useState(false);
@@ -14,22 +16,26 @@ const Product = (props) => {
   const [Click, setClick] = useState(false);
   const [Product, setProduct] = useState({ props: props, isSocket: false });
 
+  const IsNewOrder = useContext(OrderContext).data;
+  const changeIsNewOrder = useContext(OrderContext).changeIsNewOrder;
+
   // console.log("AllProducts", props.AllProducts);
   let QuantityToCart;
-  props.ProductListToCart.forEach((prod, prodIndex) => {
+  props.ProductCount.forEach((prod, prodIndex) => {
     if (prod._id === props.id) {
       QuantityToCart = prod.quantity;
     }
   });
 
-  let IsNewOrder;
-  if (props.ProductListToCart.length > 1) {
-    IsNewOrder = false;
-  } else {
-    IsNewOrder = true;
-  }
-
+  // let IsNewOrder;
+  // if (!props.IsNewOrder) {
+  //   IsNewOrder = false;
+  // } else {
+  //   IsNewOrder = true;
+  // }
+  console.log("IsNewOrder", IsNewOrder);
   const SaveProdinCart = () => {
+    changeIsNewOrder(false);
     props.addTocart({
       IsNewOrder: IsNewOrder,
       ProductID: props.id,

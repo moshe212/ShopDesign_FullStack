@@ -19,6 +19,7 @@ import SerratedTabs from "./Pages/ManageOrders/Tab";
 import SerratedTabs2 from "./Pages/ManageOrders/Tab2";
 
 import { ProductsProvider } from "./ProductsContext";
+import { OrderProvider } from "./OrderContext";
 // import ProductsContext from "./ProductsContext";
 
 // import socketIOClient from "socket.io-client";
@@ -34,6 +35,12 @@ import {
 
 const App = () => {
   const [AllProducts, setAllProducts] = useState({ Name: "Moshe" });
+  const [IsNewOrder, setIsNewOrder] = useState(true);
+
+  const providerOptions = {
+    data: IsNewOrder,
+    changeIsNewOrder: (value) => setIsNewOrder(value),
+  };
 
   useEffect(() => {
     Axios.get("/api/products")
@@ -53,11 +60,15 @@ const App = () => {
     <Router>
       <SwitchRout>
         <Route exact path="/">
-          <Home />
+          <OrderProvider value={providerOptions}>
+            <Home />
+          </OrderProvider>
         </Route>
 
         <Route path="/LoginCustomer/Customer/:name">
-          <Home />
+          <OrderProvider value={providerOptions}>
+            <Home />
+          </OrderProvider>
         </Route>
 
         <Route path="/Products/:id">
@@ -88,6 +99,10 @@ const App = () => {
         {/* <Route path="/todos/:idParam">
           <Todo />
         </Route> */}
+
+        <Route path="/*">
+          <Home />
+        </Route>
       </SwitchRout>
     </Router>
   );

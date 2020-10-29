@@ -708,7 +708,7 @@ app.post("/api/AddToCart", async (req, res) => {
 
   // productItems = await Product.find().exec();
 
-  // res.send(productItems);
+  res.status(200).send("OK");
   // io.emit("UpdateQuantity", { id: productId, quantity: Quantity });
 });
 

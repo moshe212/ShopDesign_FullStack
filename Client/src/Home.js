@@ -29,6 +29,8 @@ const Home = (props) => {
   const [ProductTocart, setProductTocart] = useState({});
   const [ProductFromcart, setProductFromcart] = useState({});
   const [ProductListToCart, setProductListToCart] = useState([]);
+  const [ProductCount, setProductCount] = useState([]);
+
   const [Cartv, setCartv] = useState(0);
   const [Min, setMin] = useState(0);
   const [Max, setMax] = useState(0);
@@ -154,20 +156,21 @@ const Home = (props) => {
               ProductListToCart={ProductListToCart}
               Cartp={Cartv}
               AllProducts={Products}
-              ChangQuantity={(data) => {
-                let productsQuantityList = cloneDeep(Products);
-                productsQuantityList.forEach(
-                  (productFromList, productfromlistIndex) => {
-                    if (productFromList._id === data.id) {
-                      productFromList.quantity = data.quantity;
-                      setProducts(productsQuantityList);
-                    }
-                  }
-                );
-              }}
+              ProductCount={ProductCount}
+              // ChangQuantity={(data) => {
+              //   let productsQuantityList = cloneDeep(Products);
+              //   productsQuantityList.forEach(
+              //     (productFromList, productfromlistIndex) => {
+              //       if (productFromList._id === data.id) {
+              //         productFromList.quantity = data.quantity;
+              //         setProducts(productsQuantityList);
+              //       }
+              //     }
+              //   );
+              // }}
               Plus={(e) => {
                 let productsList = cloneDeep(Products);
-                let vProductListToCart = cloneDeep(ProductListToCart);
+                let vProductListToCart = cloneDeep(ProductCount);
                 let quantityUpdate = true;
                 let index = "";
                 productsList.forEach(
@@ -221,9 +224,10 @@ const Home = (props) => {
 
                       if (UpdateState) {
                         setTimeout(() => {
-                          setProducts(productsList);
+                          // setProducts(productsList);
                           // setCartv(Cartv + 1);
-                          setProductListToCart(vProductListToCart);
+                          // setProductListToCart(vProductListToCart);
+                          setProductCount(vProductListToCart);
                         }, 1);
                       } else {
                         setProducts(productsList);
@@ -237,7 +241,7 @@ const Home = (props) => {
               }}
               Minus={(e) => {
                 let productsList = cloneDeep(Products);
-                let vProductListToCart = cloneDeep(ProductListToCart);
+                let vProductListToCart = cloneDeep(ProductCount);
                 let quantityUpdate = true;
                 let index = "";
                 productsList.forEach(
@@ -246,7 +250,7 @@ const Home = (props) => {
                       productfromlistIndex === productIndex &&
                       productFromList.quantity >= 0
                     ) {
-                      index = ProductListToCart.findIndex(
+                      index = ProductCount.findIndex(
                         (x) => x._id === productFromList._id
                       );
 
@@ -272,7 +276,8 @@ const Home = (props) => {
                       // setCartv(Cartv - 1);
                       // setProductFromcart(RemoveProductToCartItem);
                       // setProductTocart("");
-                      setProductListToCart(vProductListToCart);
+                      // setProductListToCart(vProductListToCart);
+                      setProductCount(vProductListToCart);
                     } else {
                       setProducts(productsList);
                       // setCartv(Cartv);
@@ -283,9 +288,11 @@ const Home = (props) => {
                 );
               }}
               addTocart={(ProductDetails) => {
+                setProductListToCart(ProductCount);
+                setCartv(Cartv + 1);
                 Axios.post("/api/AddToCart", ProductDetails)
                   .then((res) => {
-                    //console.log("res.data", res.data);
+                    console.log("res.data", res.data);
                   })
                   .catch(function (error) {
                     //console.log(error);
