@@ -712,6 +712,10 @@ app.post("/api/AddToCart", async (req, res) => {
   // io.emit("UpdateQuantity", { id: productId, quantity: Quantity });
 });
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/Client/build/index.html"));
+});
+
 connectToDB().then(() => {
   server.listen(port, () => {
     console.log("Example app listening on port " + port);
