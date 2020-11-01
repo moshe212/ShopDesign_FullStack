@@ -34,7 +34,7 @@ import {
 } from "react-router-dom";
 
 const App = () => {
-  const [AllProducts, setAllProducts] = useState({ Name: "Moshe" });
+  const [AllProducts, setAllProducts] = useState({});
   const [IsNewOrder, setIsNewOrder] = useState(true);
 
   const providerOptions = {
@@ -71,7 +71,7 @@ const App = () => {
           </OrderProvider>
         </Route>
 
-        <Route path="/api/Products/:id">
+        <Route path="/Products/:id">
           {/* <ProductsContext.Provider value={AllProducts}> */}
           <ProductsProvider value={AllProducts}>
             <ProductDetails />
@@ -83,7 +83,7 @@ const App = () => {
           <Admin />
         </Route>
 
-        <Route exact path="/api/Admin/ManageProducts">
+        <Route exact path="/Admin/ManageProducts">
           <ManageProducts />
         </Route>
 

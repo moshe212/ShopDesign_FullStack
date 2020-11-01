@@ -20,7 +20,7 @@ const ProductSchema = new mongoose.Schema({
   image: String,
   quantity: Number,
   price: Number,
-  Orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
+  // Orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
 });
 
 const CustomerSchema = new mongoose.Schema({

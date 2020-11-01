@@ -19,7 +19,7 @@ import ProductsContext from "../../ProductsContext";
 
 const ProductDetails = (props) => {
   const [ClickArrow, setClickArrow] = useState(false);
-  // const [Productdetails_Json, setProductdetails_Json] = useState({});
+  const [Productdetails, setProductdetails] = useState();
 
   console.log("log");
 
@@ -27,6 +27,17 @@ const ProductDetails = (props) => {
   console.log("params", params);
 
   const Details = window.history.state.state;
+
+  const doAxios = () => {
+    Axios.get("/api/products")
+      .then((res) => {
+        // console.log(res.data);
+        setProductdetails(res.data);
+      })
+      .catch(function (error) {
+        //console.log(error);
+      });
+  };
 
   const HandleClick = () => {
     setTimeout(() => {
@@ -41,9 +52,27 @@ const ProductDetails = (props) => {
   let PD_ArrayLocation = "";
   let i = 0;
 
-  const Productdetails = useContext(ProductsContext);
-  const Productdetails_Json = JSON.parse(Productdetails);
-  // console.log("Productdetails_Json", Productdetails_Json);
+  let ProductdetailsList;
+  let Productdetails_Json;
+
+  const Context = useContext(ProductsContext);
+  console.log("Context", Context);
+  if (Context.length > 0) {
+    ProductdetailsList = Context;
+    Productdetails_Json = JSON.parse(ProductdetailsList);
+  } else {
+    Axios.get("/api/products")
+      .then((res) => {
+        // console.log(res.data);
+        setProductdetails(res.data);
+        Productdetails_Json = JSON.parse(Productdetails);
+      })
+      .catch(function (error) {
+        //console.log(error);
+      });
+  }
+  // const Productdetails_Json = JSON.parse(Productdetails);
+  console.log("Productdetails_Json", Productdetails_Json);
   if (Productdetails_Json) {
     for (i = 0; i < Productdetails_Json.length + 1; i++) {
       const id = Productdetails_Json[i]._id;
@@ -77,8 +106,8 @@ const ProductDetails = (props) => {
             to={{
               pathname:
                 i > 0
-                  ? "/api/Products/" + Productdetails_Json[i - 1]._id
-                  : "/api/Products/" + Productdetails_Json[i]._id,
+                  ? "/Products/" + Productdetails_Json[i - 1]._id
+                  : "/Products/" + Productdetails_Json[i]._id,
             }}
           >
             <span onClick={HandleClick}> הקודם </span>
@@ -89,8 +118,8 @@ const ProductDetails = (props) => {
             to={{
               pathname:
                 i < Productdetails_Json.length - 1
-                  ? "/api/Products/" + Productdetails_Json[i + 1]._id
-                  : "/api/Products/" + Productdetails_Json[i]._id,
+                  ? "/Products/" + Productdetails_Json[i + 1]._id
+                  : "/Products/" + Productdetails_Json[i]._id,
             }}
           >
             <span onClick={HandleClick}> הבא </span>

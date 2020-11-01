@@ -75,10 +75,10 @@ const LoginForm = (props) => {
   //console.log("WhoLogIn", props.WhoLogIn);
   const { Redirect_MangeProducts, Redirect_Home, UserId, Name } = State;
   if (Redirect_MangeProducts) {
-    return <Redirect push to="/api/Admin/ManageProducts" />;
+    return <Redirect push to="/Admin/ManageProducts" />;
   } else if (Redirect_Home) {
     //console.log("userid", { UserId }, { Name });
-    return <Redirect push to={"/api/LoginCustomer/Customer/" + Name} />;
+    return <Redirect push to={"/LoginCustomer/Customer/" + Name} />;
     // setTimeout(() => {
     //   return <Redirect push to="/LoginUser/:" {...UserId} />;
     // }, 1000);
