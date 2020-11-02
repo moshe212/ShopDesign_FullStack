@@ -68,17 +68,22 @@ const LoginForm = (props) => {
     Redirect_Home: false,
     UserId: "",
     Name: "",
+    Order: "",
   });
 
   const [form] = Form.useForm();
 
   //console.log("WhoLogIn", props.WhoLogIn);
-  const { Redirect_MangeProducts, Redirect_Home, UserId, Name } = State;
+  const { Redirect_MangeProducts, Redirect_Home, UserId, Name, Order } = State;
   if (Redirect_MangeProducts) {
     return <Redirect push to="/Admin/ManageProducts" />;
   } else if (Redirect_Home) {
     //console.log("userid", { UserId }, { Name });
-    return <Redirect push to={"/LoginCustomer/Customer/" + Name} />;
+    return (
+      <Redirect
+        to={{ pathname: "/LoginCustomer/Customer/" + Name, state: Order }}
+      />
+    );
     // setTimeout(() => {
     //   return <Redirect push to="/LoginUser/:" {...UserId} />;
     // }, 1000);
@@ -117,8 +122,14 @@ const LoginForm = (props) => {
             if (url === "/api/LogInCustomer") {
               const id = response.data[1];
               const name = response.data[2];
-              //console.log(id, name);
-              setState({ UserId: id, Redirect_Home: true, Name: name });
+              const order = response.data[3];
+              console.log("ino", id, name, order);
+              setState({
+                UserId: id,
+                Redirect_Home: true,
+                Name: name,
+                Order: order,
+              });
               // setUserId(id);
               // setRedirect_Home(true);
             } else if (url === "/api/LogInAdmin") {

@@ -1,12 +1,34 @@
 import React, { useEffect, useState } from "react";
 import "./CartMin.css";
 import ProductInCart from "./ProductInCart";
+import Axios from "axios";
 
 import { Drawer, Button, Radio, Space } from "antd";
 
 const CartMin = (props) => {
   const [Visible, setVisible] = useState(false);
   const [Placement, setPlacement] = useState("left");
+  const [OrderFromServer, setOrderFromServer] = useState([]);
+
+  const doAxiosGetOrderForCustomer = () => {
+    props.GetOrderForCustomer();
+  };
+  // // let OrderFromServer;
+  // const CustomerID = localStorage.getItem("LocalCustomerID");
+  // console.log("CustomerID", CustomerID);
+  useEffect(() => {
+    doAxiosGetOrderForCustomer();
+    // Axios.post("/api/GetOpenOrderForCustomer", { CustomerID: CustomerID })
+    //   .then((res) => {
+    //     console.log("GetOpenOrderForCustomer", res.data[2]);
+    //     setOrderFromServer = res.data[2];
+    //     // OrderFromServer = res.data[2];
+    //     // setAllProducts(JSON.stringify(res.data));
+    //   })
+    //   .catch(function (error) {
+    //     //console.log(error);
+    //   });
+  }, []);
 
   const showDrawer = () => {
     setVisible(true);
@@ -19,18 +41,20 @@ const CartMin = (props) => {
   const onChange = (e) => {
     setPlacement(e.target.value);
   };
-  //console.log(props.ProductListToCart);
+
   const ProductInCartItems = props.ProductListToCart;
+  // const ProductInCartItems = OrderFromServer;
+  console.log("ProductInCartItems", ProductInCartItems, OrderFromServer);
 
   // const TotalCount = 1;
   const Prices = ProductInCartItems.map(
     (product) => product.quantity * product.price
   );
-  //console.log(Prices);
+
   const getSum = (total, num) => total + num;
 
   const TotalPrice = Prices.reduce(getSum, 0);
-  //console.log("TotalPrice", TotalPrice, ProductInCartItems);
+  console.log("TotalPrice", TotalPrice, ProductInCartItems);
   return (
     <>
       <Space>

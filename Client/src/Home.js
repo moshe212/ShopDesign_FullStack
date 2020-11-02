@@ -32,6 +32,12 @@ const Home = (props) => {
   const [ProductCount, setProductCount] = useState([]);
 
   const [Cartv, setCartv] = useState(0);
+  const [SliderRange, setSliderRange] = useState({
+    Min: 0,
+    Max: 0,
+    Minimum: 0,
+    Maximum: 0,
+  });
   const [Min, setMin] = useState(0);
   const [Max, setMax] = useState(0);
   const [Minimum, setMinimum] = useState(0);
@@ -40,6 +46,12 @@ const Home = (props) => {
 
   const params = useParams();
   //console.log("params", params);
+
+  if (window.history.state) {
+    const Details = window.history.state.state;
+    console.log("Details", Details[0]);
+    // setProductListToCart(Details[0].Products);
+  }
 
   const doAxios = (isSlider, isSearch, isAddProduct, url, val1, val2) => {
     Axios.get(url)
@@ -71,16 +83,37 @@ const Home = (props) => {
           setProducts(res.data);
           //console.log("Products", Products);
           //console.log("Prices", Prices);
-          setMin(Math.min(...Prices));
-          setMax(Math.max(...Prices));
-          setMinimum(Math.min(...Prices));
-          setMaximum(Math.max(...Prices));
+          setSliderRange({
+            Min: Math.min(...Prices),
+            Max: Math.max(...Prices),
+            Minimum: Math.min(...Prices),
+            Maximum: Math.max(...Prices),
+          });
+          // setMin(Math.min(...Prices));
+          // setMax(Math.max(...Prices));
+          // setMinimum(Math.min(...Prices));
+          // setMaximum(Math.max(...Prices));
         }
       })
       .catch(function (error) {
         //console.log(error);
       });
   };
+
+  const GetOrderForCustomer = () => {
+    const CustomerID = localStorage.getItem("LocalCustomerID");
+    Axios.post("/api/GetOpenOrderForCustomer", { CustomerID: CustomerID })
+      .then((res) => {
+        console.log("GetOpenOrderForCustomer", res.data[2]);
+        setProductListToCart = res.data[2];
+        // OrderFromServer = res.data[2];
+        // setAllProducts(JSON.stringify(res.data));
+      })
+      .catch(function (error) {
+        //console.log(error);
+      });
+  };
+  useEffect(() => {}, [ProductListToCart]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -141,7 +174,11 @@ const Home = (props) => {
           }}
         />
       </div>
-      <CartMin ProductListToCart={ProductListToCart} Cartp={Cartv} />
+      <CartMin
+        ProductListToCart={ProductListToCart}
+        Cartp={Cartv}
+        GetOrderForCustomer={GetOrderForCustomer}
+      />
 
       {Products.length > 0 && (
         <div className="Products">

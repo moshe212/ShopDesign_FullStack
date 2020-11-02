@@ -501,27 +501,135 @@ app.post("/api/LogInAdmin", (req, res) => {
 });
 
 // כניסת לקוח == Mongo
-app.post("/api/LogInCustomer", (req, res) => {
+app.post("/api/LogInCustomer", async (req, res) => {
   console.log(req.body);
   const { Email, Pass } = req.body;
   console.log(Email, Pass);
   let Status = "";
-  const CustomerItem = Customer.find((err, Customers) => {
+  let CustomerID = "";
+  let CustomerFullName = "";
+  let OrderList = "";
+
+  const CustomerItem = Customer.find(async (err, Customers) => {
     if (err) return console.error(err);
     console.log(Customers);
     for (let i = 0; i < Customers.length; i++) {
       const { UserName, Password, FullName } = Customers[i];
       console.log(UserName, Email, Password, Pass, FullName);
       if (UserName === Email && Password === Pass) {
-        Status = ["OK", Customers[i]._id, FullName];
+        CustomerID = Customers[i]._id;
+        CustomerFullName = FullName;
+        console.log(CustomerID, CustomerFullName);
+
+        const Orderitem = Order.findOne(
+          { CustomerID: CustomerID, Status: false },
+          async (err, order) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log("OrderList0", order.Products[0]);
+              const ProductListCartInServer = [];
+              for (i = 0; i < order.Products.length; i++) {
+                const productId = order.Products[i].productid;
+                const quantity = order.Products[i].quantity;
+                await Product.findById(productId, (err, prod) => {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    console.log("find", prod);
+                    const Prod = {
+                      id: prod._id,
+                      title: prod.title,
+                      image: prod.image,
+                      quantity: quantity,
+                      price: prod.price,
+                    };
+                    ProductListCartInServer.push(Prod);
+                  }
+                });
+              }
+              console.log("ProductListCartInServer", ProductListCartInServer);
+              OrderList = order;
+              Status = [
+                "OK",
+                CustomerID,
+                CustomerFullName,
+                ProductListCartInServer,
+              ];
+              // console.log("Status", Status);
+              // console.log("OrderList", OrderList);
+              // console.log("OrderList", OrderList.Products._id);
+              res.status(200).send(Status);
+            }
+          }
+        );
+        // Status = ["OK", CustomerID, CustomerFullName, OrderList];
+        // console.log("Status", Status);
+        // res.status(200).send(Status);
         break;
       } else {
         Status = "Not_allow";
+        console.log("Status", Status);
       }
     }
-    console.log(Status);
-    res.status(200).send(Status);
+    // await res.status(200).send(Status);
+    // if (CustomerID.length > 0) {
+    //   Status = ["OK", CustomerID, CustomerFullName, OrderList];
+    // } else {
+    //   Status = "Not_allow";
+    // }
   });
+  if (CustomerID.length > 0) {
+    res.status(200).send(Status);
+  }
+});
+
+// משיכת עגלה פתוחה ללקוח == Mongo
+app.post("/api/GetOpenOrderForCustomer", async (req, res) => {
+  console.log("GetOpenOrderForCustomer", req.body);
+  const { CustomerID } = req.body;
+  console.log(CustomerID);
+
+  const Orderitem = Order.findOne(
+    { CustomerID: CustomerID, Status: false },
+    async (err, order) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("OrderList0", order.Products[0]);
+        const ProductListCartInServer = [];
+        for (i = 0; i < order.Products.length; i++) {
+          const productId = order.Products[i].productid;
+          const quantity = order.Products[i].quantity;
+          await Product.findById(productId, (err, prod) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log("find", prod);
+              const Prod = {
+                id: prod._id,
+                title: prod.title,
+                image: prod.image,
+                quantity: quantity,
+                price: prod.price,
+              };
+              ProductListCartInServer.push(Prod);
+            }
+          });
+        }
+        console.log("ProductListCartInServer", ProductListCartInServer);
+
+        Status = ["OK", CustomerID, ProductListCartInServer];
+        // console.log("Status", Status);
+        // console.log("OrderList", OrderList);
+        // console.log("OrderList", OrderList.Products._id);
+        if (ProductListCartInServer.length == order.Products.length) {
+          console.log("equal");
+          res.status(200).send(Status);
+        }
+      }
+    }
+  );
 });
 
 // כניסת משתמש == Mongo
