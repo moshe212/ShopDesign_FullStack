@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form, Input, InputNumber, Button } from "antd";
 import Axios from "axios";
 import { Redirect } from "react-router";
 import { message } from "antd";
 
 import "./LoginForm.css";
+
+import OrderContext from "./OrderContext";
 
 const success = () => {
   message.success({
@@ -73,6 +75,9 @@ const LoginForm = (props) => {
 
   const [form] = Form.useForm();
 
+  const IsNewOrder = useContext(OrderContext).data;
+  const changeIsNewOrder = useContext(OrderContext).changeIsNewOrder;
+
   //console.log("WhoLogIn", props.WhoLogIn);
   const { Redirect_MangeProducts, Redirect_Home, UserId, Name, Order } = State;
   if (Redirect_MangeProducts) {
@@ -81,7 +86,7 @@ const LoginForm = (props) => {
     //console.log("userid", { UserId }, { Name });
     return (
       <Redirect
-        to={{ pathname: "/LoginCustomer/Customer/" + Name, state: Order }}
+        to={{ pathname: "/LoginCustomer/Customer/" + Name, state: UserId }}
       />
     );
     // setTimeout(() => {
@@ -111,8 +116,16 @@ const LoginForm = (props) => {
         console.log("response", response.data);
         if (response.data[0] === "OK" || response.data === "OK") {
           if (url === "/api/LogInCustomer") {
-            Customeruccess();
+            // localStorage.clear();
+            localStorage.removeItem("LocalCustomerID");
             localStorage.setItem("LocalCustomerID", response.data[1]);
+
+            if (response.data[3]) {
+              changeIsNewOrder(false);
+            } else {
+              changeIsNewOrder(true);
+            }
+            Customeruccess();
           } else {
             success();
           }

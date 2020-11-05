@@ -19,6 +19,13 @@ const Product = (props) => {
   const IsNewOrder = useContext(OrderContext).data;
   const changeIsNewOrder = useContext(OrderContext).changeIsNewOrder;
 
+  // let BaseQuantityToCart;
+  // props.ProductListToCart.forEach((prod, prodIndex) => {
+  //   if (prod._id === props.id) {
+  //     BaseQuantityToCart = prod.quantity;
+  //   }
+  // });
+
   // console.log("AllProducts", props.AllProducts);
   let QuantityToCart;
   props.ProductCount.forEach((prod, prodIndex) => {

@@ -1,23 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import "./CartMin.css";
 import ProductInCart from "./ProductInCart";
 import Axios from "axios";
 
 import { Drawer, Button, Radio, Space } from "antd";
+import OrderContext from "./OrderContext";
 
 const CartMin = (props) => {
   const [Visible, setVisible] = useState(false);
   const [Placement, setPlacement] = useState("left");
-  const [OrderFromServer, setOrderFromServer] = useState([]);
+  // const [OrderFromServer, setOrderFromServer] = useState([]);
+  console.log("update", props);
+  console.log("update", props.UserID);
 
-  const doAxiosGetOrderForCustomer = () => {
-    props.GetOrderForCustomer();
+  const IsNewOrder = useContext(OrderContext).data;
+  const changeIsNewOrder = useContext(OrderContext).changeIsNewOrder;
+
+  const doAxiosGetOrderForCustomer = (UserId) => {
+    props.GetOrderForCustomer(UserId);
   };
   // // let OrderFromServer;
   // const CustomerID = localStorage.getItem("LocalCustomerID");
   // console.log("CustomerID", CustomerID);
   useEffect(() => {
-    doAxiosGetOrderForCustomer();
+    console.log("run", props.UserID);
+    doAxiosGetOrderForCustomer(props.UserID);
+
     // Axios.post("/api/GetOpenOrderForCustomer", { CustomerID: CustomerID })
     //   .then((res) => {
     //     console.log("GetOpenOrderForCustomer", res.data[2]);
@@ -28,7 +36,12 @@ const CartMin = (props) => {
     //   .catch(function (error) {
     //     //console.log(error);
     //   });
-  }, []);
+  }, [props.UserID]);
+
+  // if (props.UserID.length > 0) {
+  //   console.log("bigthen0", props.UserID);
+  //   doAxiosGetOrderForCustomer(props.UserID);
+  // }
 
   const showDrawer = () => {
     setVisible(true);
@@ -42,9 +55,29 @@ const CartMin = (props) => {
     setPlacement(e.target.value);
   };
 
-  const ProductInCartItems = props.ProductListToCart;
+  const LocalCart = JSON.parse(
+    localStorage.getItem("LocalOpenOrderForCustomer")
+  );
+  // console.log("LocalCart", LocalCart, props.ProductListToCart);
+
+  let ProductInCartItems;
+  if (props.ProductListToCart.length > 0) {
+    ProductInCartItems = props.ProductListToCart;
+  } else if (LocalCart != null) {
+    ProductInCartItems = LocalCart;
+  } else {
+    ProductInCartItems = props.ProductListToCart;
+  }
+
+  let ProductsCount;
+  if (props.Cartp > 0) {
+    ProductsCount = props.Cartp;
+  } else if (ProductInCartItems) {
+    ProductsCount = ProductInCartItems.length;
+  }
+
   // const ProductInCartItems = OrderFromServer;
-  console.log("ProductInCartItems", ProductInCartItems, OrderFromServer);
+  console.log("ProductInCartItems", ProductInCartItems);
 
   // const TotalCount = 1;
   const Prices = ProductInCartItems.map(
@@ -60,7 +93,7 @@ const CartMin = (props) => {
       <Space>
         <div className="CartImgDiv" onClick={showDrawer}>
           <div>
-            <div className="Count">{props.Cartp}</div>
+            <div className="Count">{ProductsCount}</div>
             <img
               className="CartImg"
               src="/Images/shopping_cart_PNG29.png"

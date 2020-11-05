@@ -510,82 +510,95 @@ app.post("/api/LogInCustomer", async (req, res) => {
   let CustomerFullName = "";
   let OrderList = "";
 
-  const CustomerItem = Customer.find(async (err, Customers) => {
-    if (err) return console.error(err);
-    console.log(Customers);
-    for (let i = 0; i < Customers.length; i++) {
-      const { UserName, Password, FullName } = Customers[i];
-      console.log(UserName, Email, Password, Pass, FullName);
-      if (UserName === Email && Password === Pass) {
-        CustomerID = Customers[i]._id;
-        CustomerFullName = FullName;
-        console.log(CustomerID, CustomerFullName);
-
-        const Orderitem = Order.findOne(
-          { CustomerID: CustomerID, Status: false },
-          async (err, order) => {
-            if (err) {
-              console.log(err);
+  const GetOrder = (ID) => {
+    console.log(ID);
+    let myPromise = new Promise((resolve, reject) => {
+      // resolve("5");
+      const Orderitem = Order.findOne(
+        { CustomerID: CustomerID, Status: false },
+        (err, order) => {
+          if (err) {
+            console.log(err);
+            reject(err);
+          } else {
+            console.log("OrderList0_LogIn", order);
+            if (order != null) {
+              IsOrder = true;
             } else {
-              console.log("OrderList0", order.Products[0]);
-              const ProductListCartInServer = [];
-              for (i = 0; i < order.Products.length; i++) {
-                const productId = order.Products[i].productid;
-                const quantity = order.Products[i].quantity;
-                await Product.findById(productId, (err, prod) => {
-                  if (err) {
-                    console.log(err);
-                  } else {
-                    console.log("find", prod);
-                    const Prod = {
-                      id: prod._id,
-                      title: prod.title,
-                      image: prod.image,
-                      quantity: quantity,
-                      price: prod.price,
-                    };
-                    ProductListCartInServer.push(Prod);
-                  }
-                });
-              }
-              console.log("ProductListCartInServer", ProductListCartInServer);
-              OrderList = order;
-              Status = [
-                "OK",
-                CustomerID,
-                CustomerFullName,
-                ProductListCartInServer,
-              ];
-              // console.log("Status", Status);
-              // console.log("OrderList", OrderList);
-              // console.log("OrderList", OrderList.Products._id);
-              res.status(200).send(Status);
+              IsOrder = false;
             }
+            resolve(order);
           }
-        );
-        // Status = ["OK", CustomerID, CustomerFullName, OrderList];
-        // console.log("Status", Status);
-        // res.status(200).send(Status);
-        break;
-      } else {
-        Status = "Not_allow";
-        console.log("Status", Status);
+        }
+      );
+    });
+    return myPromise;
+  };
+
+  const GetCustomer = (List) => {
+    console.log(List);
+    let myPromise2 = new Promise((resolve, reject) => {
+      // resolve("5");
+      for (let i = 0; i < List.length; i++) {
+        const { UserName, Password, FullName } = List[i];
+        console.log(UserName, Email, Password, Pass, FullName);
+        if (UserName === Email && Password === Pass) {
+          CustomerID = List[i]._id;
+          CustomerFullName = FullName;
+
+          console.log(CustomerID, CustomerFullName);
+          resolve(CustomerID);
+          break;
+        } else {
+          console.log("Status", Status);
+        }
       }
+      resolve("Not_Found_User");
+    });
+    return myPromise2;
+  };
+
+  const CustomerItem = Customer.find(async (err, Customers) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log(Customers);
+      await GetCustomer(Customers).then(
+        (result) => {
+          console.log("resultCust", result);
+          if (result === "Not_Found_User") {
+            Status = "Not_Allow";
+            res.status(200).send(Status);
+          } else {
+            GetOrder(CustomerID).then(
+              (result) => {
+                console.log("result", result);
+                if (result != null) {
+                  IsOrder = true;
+                } else {
+                  IsOrder = false;
+                }
+
+                Status = ["OK", CustomerID, CustomerFullName, IsOrder];
+                console.log("Status", Status);
+                res.status(200).send(Status);
+              },
+              (error) => {
+                console.log("error", error);
+              }
+            );
+          }
+        },
+        (error) => {
+          console.log("error", error);
+        }
+      );
     }
-    // await res.status(200).send(Status);
-    // if (CustomerID.length > 0) {
-    //   Status = ["OK", CustomerID, CustomerFullName, OrderList];
-    // } else {
-    //   Status = "Not_allow";
-    // }
   });
-  if (CustomerID.length > 0) {
-    res.status(200).send(Status);
-  }
 });
 
 // משיכת עגלה פתוחה ללקוח == Mongo
-app.post("/api/GetOpenOrderForCustomer", async (req, res) => {
+app.post("/api/GetOpenOrderForCustomer", (req, res) => {
   console.log("GetOpenOrderForCustomer", req.body);
   const { CustomerID } = req.body;
   console.log(CustomerID);
@@ -596,12 +609,12 @@ app.post("/api/GetOpenOrderForCustomer", async (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        console.log("OrderList0", order.Products[0]);
+        // console.log("OrderList0", order.Products[0]);
         const ProductListCartInServer = [];
         for (i = 0; i < order.Products.length; i++) {
           const productId = order.Products[i].productid;
           const quantity = order.Products[i].quantity;
-          await Product.findById(productId, (err, prod) => {
+          await Product.findById(productId, async (err, prod) => {
             if (err) {
               console.log(err);
             } else {
@@ -613,21 +626,27 @@ app.post("/api/GetOpenOrderForCustomer", async (req, res) => {
                 quantity: quantity,
                 price: prod.price,
               };
-              ProductListCartInServer.push(Prod);
+              await ProductListCartInServer.push(Prod);
             }
           });
         }
-        console.log("ProductListCartInServer", ProductListCartInServer);
+        console.log(
+          "ProductListCartInServer",
+          // ProductListCartInServer,
+          ProductListCartInServer.length,
+          order.Products.length
+        );
 
         Status = ["OK", CustomerID, ProductListCartInServer];
         // console.log("Status", Status);
         // console.log("OrderList", OrderList);
         // console.log("OrderList", OrderList.Products._id);
-        if (ProductListCartInServer.length == order.Products.length) {
-          console.log("equal");
-          res.status(200).send(Status);
-        }
+        // if (ProductListCartInServer.length === order.Products.length) {
+        //   console.log("equal");
+        //   res.status(200).send(Status);
+        // }
       }
+      res.status(200).send(Status);
     }
   );
 });
@@ -688,135 +707,175 @@ app.post("/api/AddToCart", async (req, res) => {
   console.log(req.body);
   const ProductId = req.body.ProductID;
   const Quantity = +req.body.Quantity;
-  const IsNewOrder = req.body.IsNewOrder;
+  // const IsNewOrder = req.body.IsNewOrder;
   const CustomerID = req.body.CustomerID;
   const UnitPrice = req.body.UnitPrice;
   const Total = UnitPrice * Quantity;
-
+  let Thisorder_ToClient;
   console.log("Total", Total);
 
+  let ShipStreet;
+  let ShipHome;
+  let ShipCity;
+
+  const AddToExistOrder = (ID) => {
+    console.log(ID);
+    let myPromise = new Promise((resolve, reject) => {
+      // resolve("5");
+      Order.find({ CustomerID: ID, Status: false }, async (err, order) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+        } else {
+          const OrderID = order[0]._id;
+          const OrderTotal = order[0].TotalAmount;
+          const OrderTotalEnd = OrderTotal + Total;
+          console.log("order[0]", order[0]);
+          // console.log("find", OrderID, OrderTotal, OrderTotalEnd);
+
+          const ThisOrder = await Order.findOne({
+            _id: OrderID,
+          });
+          await ThisOrder.Products.push({
+            productid: ProductId,
+            quantity: Quantity,
+          });
+          ThisOrder.TotalAmount = OrderTotalEnd;
+          await ThisOrder.save();
+
+          Thisorder_ToClient = ThisOrder;
+          console.log("ThisOrder", Thisorder_ToClient.Products);
+          console.log("ThisOrderTotal", Thisorder_ToClient.TotalAmount);
+          resolve(Thisorder_ToClient);
+        }
+      });
+    });
+    return myPromise;
+  };
+
+  const CreateOrderAndAddProd = () => {
+    console.log("CrateOrderAndAddProd");
+    let myPromise = new Promise((resolve, reject) => {
+      // resolve("5");
+      const newOrder = new Order({
+        CustomerID: CustomerID,
+        Products: { productid: ProductId, quantity: Quantity },
+        // Quantity: Quantity,
+        OrderDate: Date.now(),
+        RequiredDate: Date.now(),
+        ShippedDate: Date.now(),
+        ShipStreet: ShipStreet,
+        ShipHome: ShipHome,
+        ShipCity: ShipCity,
+        Status: false,
+        TotalAmount: Total,
+      });
+      newOrder.save();
+      console.log("newOrder", newOrder);
+      Thisorder_ToClient = newOrder;
+      resolve(Thisorder_ToClient);
+    });
+    return myPromise;
+  };
+
+  const FindProductsFromOrder = (ID, quantity) => {
+    console.log("FindProductsFromOrder");
+    let myPromise = new Promise((resolve, reject) => {
+      // resolve("5");
+      Product.findById(ID, async (err, prod) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+        } else {
+          console.log("find", prod);
+          const Prod = {
+            id: prod._id,
+            title: prod.title,
+            image: prod.image,
+            quantity: quantity,
+            price: prod.price,
+          };
+          resolve(Prod);
+        }
+      });
+    });
+    return myPromise;
+  };
+
   if (CustomerID) {
-    Customer.findById(CustomerID, async (err, customer) => {
+    await Order.find(
+      { CustomerID: CustomerID, Status: false },
+      async (err, order) => {
+        if (err) {
+          console.log(err);
+        } else {
+          if (order) {
+            IsNewOrder = false;
+          } else {
+            IsNewOrder = true;
+          }
+        }
+      }
+    );
+    await Customer.findById(CustomerID, async (err, customer) => {
       if (err) {
         console.log(err);
       } else {
-        console.log("find", customer);
-        const ShipStreet = customer.Street;
-        const ShipHome = customer.Home;
-        const ShipCity = customer.City;
+        console.log("findCust", customer);
+        console.log("IsNewOrder", IsNewOrder);
+        ShipStreet = customer.Street;
+        ShipHome = customer.Home;
+        ShipCity = customer.City;
         console.log("ShipAddress", ShipStreet, ShipHome, ShipCity);
         console.log(ProductId, Quantity, IsNewOrder);
         if (IsNewOrder) {
-          const newOrder = new Order({
-            CustomerID: CustomerID,
-            Products: { productid: ProductId, quantity: Quantity },
-            // Quantity: Quantity,
-            OrderDate: Date.now(),
-            RequiredDate: Date.now(),
-            ShippedDate: Date.now(),
-            ShipStreet: ShipStreet,
-            ShipHome: ShipHome,
-            ShipCity: ShipCity,
-            Status: false,
-            TotalAmount: Total,
+          await CreateOrderAndAddProd().then((result) => {
+            console.log("result", result);
+            if (result != null) {
+              const promises = [];
+              for (i = 0; i < result.Products.length; i++) {
+                const productId = result.Products[i].productid;
+                const quantity = result.Products[i].quantity;
+                promises.push(FindProductsFromOrder(productId, quantity));
+              }
+              Promise.all(promises).then((result) => {
+                console.log("result_FindProductsFromOrder", result);
+                if (result != null) {
+                  Status = ["OK", CustomerID, result];
+                  res.status(200).send(Status);
+                } else {
+                  console.log("Can not CreateProductListToClient");
+                }
+              });
+            }
           });
-          await newOrder.save();
-          // console.log(newOrder._id);
-
-          // const newOrderDetails = new OrderDetails({
-          //   OrderID: newOrder._id,
-          //   ProductID: ProductId,
-          //   Quantity: Quantity,
-          //   Price: UnitPrice,
-          // });
-          // await newOrderDetails.save();
         } else {
           console.log("not new");
-          Order.find(
-            { CustomerID: CustomerID, Status: false },
-            async (err, order) => {
-              if (err) {
-                console.log(err);
-              } else {
-                const OrderID = order[0]._id;
-                const OrderTotal = order[0].TotalAmount;
-                const OrderTotalEnd = OrderTotal + Total;
-                // console.log(order[0]);
-                // console.log("find", OrderID, OrderTotal, OrderTotalEnd);
-
-                const ThisOrder = await Order.findOne({
-                  _id: OrderID,
-                });
-                await ThisOrder.Products.push({
-                  productid: ProductId,
-                  quantity: Quantity,
-                });
-                ThisOrder.TotalAmount = OrderTotalEnd;
-                await ThisOrder.save();
-
-                // ThisOrder({
-                //   $push: {
-                //     Products: { productid: ProductId, quantity: Quantity },
-                //   },
-                // });
-                // ThisOrder({ TotalAmount: OrderTotalEnd });
-                // ThisOrder.save();
-                //   function (error, success) {
-                //     if (error) {
-                //       console.log(error);
-                //     } else {
-                //       console.log(success);
-                //     }
-                //   }
-                // );
-                // Order.findByIdAndUpdate(
-                //   { _id: OrderID },
-                //   {
-                //     $push: {
-                //       Products: { productid: ProductId, quantity: Quantity },
-                //     },
-                //   },
-                //   { TotalAmount: OrderTotalEnd },
-                //   { new: true, useFindAndModify: false },
-                //   function (error, success) {
-                //     if (error) {
-                //       console.log(error);
-                //     } else {
-                //       console.log(success);
-                //     }
-                //   }
-                // );
-                // const newOrderDetails = new OrderDetails({
-                //   OrderID: order[0]._id,
-                //   ProductID: ProductId,
-                //   Quantity: Quantity,
-                //   Price: UnitPrice,
-                // });
-                // await newOrderDetails.save();
+          await AddToExistOrder(CustomerID).then((result) => {
+            console.log("AddToExistOrder", result);
+            if (result != null) {
+              const promises = [];
+              for (i = 0; i < result.Products.length; i++) {
+                const productId = result.Products[i].productid;
+                const quantity = result.Products[i].quantity;
+                promises.push(FindProductsFromOrder(productId, quantity));
               }
+              Promise.all(promises).then((result) => {
+                console.log("result_FindProductsFromOrder", result);
+                if (result != null) {
+                  Status = ["OK", CustomerID, result];
+                  res.status(200).send(Status);
+                } else {
+                  console.log("Can not CreateProductListToClient");
+                }
+              });
             }
-          );
+          });
         }
       }
     });
   }
 
-  // Product.findByIdAndUpdate(
-  //   productId,
-  //   { $set: { ...req.body } },
-  //   // (options.new = true),
-  //   (err, prod) => {
-  //     if (err) {
-  //       console.log(err);
-  //     } else {
-  //       console.log("update", prod);
-  //     }
-  //   }
-  // );
-
-  // productItems = await Product.find().exec();
-
-  res.status(200).send("OK");
   // io.emit("UpdateQuantity", { id: productId, quantity: Quantity });
 });
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Header from "./Header";
 import Product from "./Product";
 import CartMin from "./CartMin";
@@ -16,6 +16,8 @@ import BackTopButton from "./BackTop";
 
 import "./Home.css";
 
+import OrderContext from "./OrderContext";
+
 import {
   useParams,
   BrowserRouter as Router,
@@ -30,6 +32,7 @@ const Home = (props) => {
   const [ProductFromcart, setProductFromcart] = useState({});
   const [ProductListToCart, setProductListToCart] = useState([]);
   const [ProductCount, setProductCount] = useState([]);
+  const [BaseProductCount, setBaseProductCount] = useState();
 
   const [Cartv, setCartv] = useState(0);
   const [SliderRange, setSliderRange] = useState({
@@ -45,13 +48,16 @@ const Home = (props) => {
   const [RendDrawer, setRendDrawer] = useState(false);
 
   const params = useParams();
-  //console.log("params", params);
-
+  console.log("params", params);
+  let Details;
   if (window.history.state) {
-    const Details = window.history.state.state;
-    console.log("Details", Details[0]);
+    Details = window.history.state.state;
+    console.log("Details", Details);
     // setProductListToCart(Details[0].Products);
   }
+
+  const IsNewOrder = useContext(OrderContext).data;
+  const changeIsNewOrder = useContext(OrderContext).changeIsNewOrder;
 
   const doAxios = (isSlider, isSearch, isAddProduct, url, val1, val2) => {
     Axios.get(url)
@@ -100,20 +106,33 @@ const Home = (props) => {
       });
   };
 
-  const GetOrderForCustomer = () => {
-    const CustomerID = localStorage.getItem("LocalCustomerID");
-    Axios.post("/api/GetOpenOrderForCustomer", { CustomerID: CustomerID })
-      .then((res) => {
-        console.log("GetOpenOrderForCustomer", res.data[2]);
-        setProductListToCart = res.data[2];
-        // OrderFromServer = res.data[2];
-        // setAllProducts(JSON.stringify(res.data));
-      })
-      .catch(function (error) {
-        //console.log(error);
-      });
+  const GetOrderForCustomer = (UserId) => {
+    // const CustomerID = localStorage.getItem("LocalCustomerID");
+    const CustomerID = UserId;
+    console.log("IsNewOrder_Home", IsNewOrder);
+    if (CustomerID != null && !IsNewOrder) {
+      console.log("local", CustomerID);
+      Axios.post("/api/GetOpenOrderForCustomer", { CustomerID: CustomerID })
+        .then((res) => {
+          console.log("GetOpenOrderForCustomer", res.data[2]);
+          localStorage.removeItem("LocalOpenOrderForCustomer");
+          localStorage.setItem(
+            "LocalOpenOrderForCustomer",
+            JSON.stringify(res.data[2])
+          );
+          setProductListToCart(res.data[2]);
+          setCartv(res.data[2].length);
+        })
+        .catch(function (error) {
+          //console.log(error);
+        });
+    }
   };
-  useEffect(() => {}, [ProductListToCart]);
+  const CustomerID = localStorage.getItem("LocalCustomerID");
+
+  // if (CustomerID) {
+  //   GetOrderForCustomer();
+  // }
 
   useEffect(() => {
     setTimeout(() => {
@@ -178,6 +197,7 @@ const Home = (props) => {
         ProductListToCart={ProductListToCart}
         Cartp={Cartv}
         GetOrderForCustomer={GetOrderForCustomer}
+        UserID={Details}
       />
 
       {Products.length > 0 && (
@@ -325,15 +345,25 @@ const Home = (props) => {
                 );
               }}
               addTocart={(ProductDetails) => {
-                setProductListToCart(ProductCount);
-                setCartv(Cartv + 1);
-                Axios.post("/api/AddToCart", ProductDetails)
-                  .then((res) => {
-                    console.log("res.data", res.data);
-                  })
-                  .catch(function (error) {
-                    //console.log(error);
-                  });
+                console.log("ProductDetails", ProductDetails);
+                if (ProductDetails.CustomerID === null) {
+                  setProductListToCart(ProductCount);
+                  setCartv(Cartv + 1);
+                } else {
+                  Axios.post("/api/AddToCart", ProductDetails)
+                    .then((res) => {
+                      console.log("res.data", res.data);
+                      localStorage.setItem(
+                        "LocalOpenOrderForCustomer",
+                        JSON.stringify(res.data[2])
+                      );
+                      setProductListToCart(res.data[2]);
+                      setCartv(res.data[2].length);
+                    })
+                    .catch(function (error) {
+                      //console.log(error);
+                    });
+                }
               }}
             />
           ))}
