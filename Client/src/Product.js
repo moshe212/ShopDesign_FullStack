@@ -34,6 +34,19 @@ const Product = (props) => {
     }
   });
 
+  const LocalCart = JSON.parse(
+    localStorage.getItem("LocalOpenOrderForCustomer")
+  );
+
+  console.log("LocalCart", LocalCart);
+  let OldQuantityToCart;
+  LocalCart.forEach((prod, prodIndex) => {
+    console.log("prod", prod.id, props.id);
+    if (String(prod.id).trim() === String(props.id).trim()) {
+      OldQuantityToCart = prod.quantity;
+    }
+  });
+
   // let IsNewOrder;
   // if (!props.IsNewOrder) {
   //   IsNewOrder = false;
@@ -135,6 +148,7 @@ const Product = (props) => {
         <img className="ProductImg" src={props.src} alt="" />
         <img className="Clone" src={props.src} alt="" />
         <p className="QuantityToCart">{QuantityToCart}</p>
+        <span className="OldQuantityToCart">{OldQuantityToCart}</span>
       </div>
       <div className="ProdDetails">
         <div className="Name">{props.name}</div>

@@ -736,12 +736,49 @@ app.post("/api/AddToCart", async (req, res) => {
           const ThisOrder = await Order.findOne({
             _id: OrderID,
           });
-          await ThisOrder.Products.push({
-            productid: ProductId,
-            quantity: Quantity,
-          });
-          ThisOrder.TotalAmount = OrderTotalEnd;
-          await ThisOrder.save();
+          console.log("ThisOrder.Products.length", ThisOrder.Products.length);
+          let IsNewProd;
+          for (i = 0; i < ThisOrder.Products.length; i++) {
+            console.log("i", i);
+
+            const Pid = ThisOrder.Products[i].productid;
+            console.log("ThisID", Pid, ProductId);
+            if (String(Pid).trim() === String(ProductId).trim()) {
+              console.log(
+                "This",
+                ThisOrder.Products[i].quantity,
+                ThisOrder.Products[i].quantity + Quantity
+              );
+              // Order.updateOne()
+              ThisOrder.Products[i].quantity =
+                ThisOrder.Products[i].quantity + Quantity;
+              ThisOrder.TotalAmount = OrderTotalEnd;
+
+              IsNewProd = false;
+
+              await ThisOrder.save();
+              break;
+            } else {
+              console.log("else");
+              IsNewProd = true;
+            }
+          }
+          if (IsNewProd) {
+            await ThisOrder.Products.push({
+              productid: ProductId,
+              quantity: Quantity,
+            });
+            ThisOrder.TotalAmount = OrderTotalEnd;
+            await ThisOrder.save();
+          }
+
+          // console.log("ThisProduct", ThisProduct);
+          // await ThisOrder.Products.push({
+          //   productid: ProductId,
+          //   quantity: Quantity,
+          // });
+          // ThisOrder.TotalAmount = OrderTotalEnd;
+          // await ThisOrder.save();
 
           Thisorder_ToClient = ThisOrder;
           console.log("ThisOrder", Thisorder_ToClient.Products);
@@ -805,11 +842,12 @@ app.post("/api/AddToCart", async (req, res) => {
   if (CustomerID) {
     await Order.find(
       { CustomerID: CustomerID, Status: false },
-      async (err, order) => {
+      (err, order) => {
         if (err) {
           console.log(err);
         } else {
-          if (order) {
+          console.log("findorder?", order);
+          if (order.length > 0) {
             IsNewOrder = false;
           } else {
             IsNewOrder = true;

@@ -349,6 +349,7 @@ const Home = (props) => {
                 if (ProductDetails.CustomerID === null) {
                   setProductListToCart(ProductCount);
                   setCartv(Cartv + 1);
+                  setProductCount([]);
                 } else {
                   Axios.post("/api/AddToCart", ProductDetails)
                     .then((res) => {
@@ -359,6 +360,7 @@ const Home = (props) => {
                       );
                       setProductListToCart(res.data[2]);
                       setCartv(res.data[2].length);
+                      setProductCount([]);
                     })
                     .catch(function (error) {
                       //console.log(error);

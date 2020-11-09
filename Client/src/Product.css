@@ -157,3 +157,19 @@ button.Plus {
 .PlusMinusBtns {
   position: absolute;
 }
+
+.OldQuantityToCart {
+  color: #af4176;
+  margin-left: 50px;
+  background-color: #bece39;
+  width: 20px;
+  border-radius: 30px;
+  top: 140px;
+  right: 105px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
