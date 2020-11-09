@@ -89,16 +89,11 @@ const Home = (props) => {
           setProducts(res.data);
           //console.log("Products", Products);
           //console.log("Prices", Prices);
-          setSliderRange({
-            Min: Math.min(...Prices),
-            Max: Math.max(...Prices),
-            Minimum: Math.min(...Prices),
-            Maximum: Math.max(...Prices),
-          });
-          // setMin(Math.min(...Prices));
-          // setMax(Math.max(...Prices));
-          // setMinimum(Math.min(...Prices));
-          // setMaximum(Math.max(...Prices));
+
+          setMin(Math.min(...Prices));
+          setMax(Math.max(...Prices));
+          setMinimum(Math.min(...Prices));
+          setMaximum(Math.max(...Prices));
         }
       })
       .catch(function (error) {

@@ -25,23 +25,9 @@ const CartMin = (props) => {
   useEffect(() => {
     console.log("run", props.UserID);
     doAxiosGetOrderForCustomer(props.UserID);
-
-    // Axios.post("/api/GetOpenOrderForCustomer", { CustomerID: CustomerID })
-    //   .then((res) => {
-    //     console.log("GetOpenOrderForCustomer", res.data[2]);
-    //     setOrderFromServer = res.data[2];
-    //     // OrderFromServer = res.data[2];
-    //     // setAllProducts(JSON.stringify(res.data));
-    //   })
-    //   .catch(function (error) {
-    //     //console.log(error);
-    //   });
   }, [props.UserID]);
 
-  // if (props.UserID.length > 0) {
-  //   console.log("bigthen0", props.UserID);
-  //   doAxiosGetOrderForCustomer(props.UserID);
-  // }
+  const getPay = () => {};
 
   const showDrawer = () => {
     setVisible(true);
@@ -140,8 +126,12 @@ const CartMin = (props) => {
                   {TotalPrice}
                 </span>
               </div>
-              <div className="ForPay"> :לתשלום</div>
+
+              <div className="ForPay"> :סה"כ</div>
             </div>
+            <button className="PayBtn" onClick={getPay}>
+              לתשלום
+            </button>
           </div>
         }
         key={Placement}

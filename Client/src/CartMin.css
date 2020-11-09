@@ -88,3 +88,20 @@
   justify-content: center;
   align-items: center;
 }
+
+.PayBtn {
+  font-weight: bold;
+  font-size: large;
+  width: 180px;
+  height: 30px;
+  margin-right: 20px;
+  margin-top: 5px;
+  border-radius: 10px;
+  background-color: #e06da5;
+  border: 1px solid #bece39;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
