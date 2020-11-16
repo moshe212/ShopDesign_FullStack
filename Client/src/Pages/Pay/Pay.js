@@ -10,9 +10,10 @@ import { Animated } from "react-animated-css";
 
 import { Redirect } from "react-router";
 
-const Pay = () => {
+const Pay = (props) => {
+  console.log(props);
   return (
-    <div classname="PayRoot">
+    <div className="PayRoot">
       <Header Render="Home" />
       <div className="GreenLine"></div>
       <div className="PayDiv" dir="rtl">

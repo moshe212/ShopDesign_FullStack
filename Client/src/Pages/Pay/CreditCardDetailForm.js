@@ -22,17 +22,6 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 
-const LocalCart = JSON.parse(localStorage.getItem("LocalOpenOrderForCustomer"));
-console.log("LocalCart", LocalCart);
-let TotalPrice = 0;
-if (LocalCart) {
-  for (let i = 0; i < LocalCart.length; i++) {
-    const Price = LocalCart[i].quantity * LocalCart[i].price;
-    console.log("Price", Price);
-    TotalPrice = TotalPrice + Price;
-  }
-}
-
 const useStyles = makeStyles((theme) => ({
   root: {
     "& .MuiTextField-root": {
@@ -77,6 +66,19 @@ const CreditCardDetailForm = (props) => {
     // popupPlacement: "bottomRight",
     // direction: "rtl",
   });
+
+  const LocalCartCredit = JSON.parse(
+    localStorage.getItem("LocalOpenOrderForCustomer")
+  );
+  console.log("LocalCartCredit", LocalCartCredit);
+  let TotalPrice = 0;
+  if (LocalCartCredit != null) {
+    for (let i = 0; i < LocalCartCredit.length; i++) {
+      const Price = LocalCartCredit[i].quantity * LocalCartCredit[i].price;
+      console.log("Price", Price);
+      TotalPrice = TotalPrice + Price;
+    }
+  }
 
   const IsDark_Credit = () => {
     props.IsDark();

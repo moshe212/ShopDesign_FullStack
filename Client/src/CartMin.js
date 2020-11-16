@@ -1,4 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 import "./CartMin.css";
 import ProductInCart from "./ProductInCart";
 import Axios from "axios";
@@ -29,9 +30,7 @@ const CartMin = (props) => {
     doAxiosGetOrderForCustomer(props.UserID);
   }, [props.UserID]);
 
-  const getPay = () => {
-    setPay(true);
-  };
+  let history = useHistory();
 
   const showDrawer = () => {
     setVisible(true);
@@ -78,6 +77,11 @@ const CartMin = (props) => {
 
   const TotalPrice = Prices.reduce(getSum, 0);
   console.log("TotalPrice", TotalPrice, ProductInCartItems);
+
+  const getPay = () => {
+    // setPay(true);
+    history.push("/PayCart", { TotalPrice: TotalPrice });
+  };
 
   if (Pay) {
     //console.log("props", props.id);

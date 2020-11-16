@@ -13,7 +13,7 @@
   max-width: 80%;
   max-height: 80%;
   margin: 0xp auto;
-  animation-name: fadeIn;
+  animation-name: fade;
   animation-duration: 4s;
   transition: width 2s, height 2s, transform 2s;
 }
@@ -36,7 +36,7 @@
   transform: rotate(360deg);
 } */
 
-@keyframes fadeIn {
+@keyframes fade {
   from {
     max-width: 20%;
   }
