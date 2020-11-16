@@ -27,7 +27,9 @@ const CartMin = (props) => {
   // console.log("CustomerID", CustomerID);
   useEffect(() => {
     console.log("run", props.UserID);
-    doAxiosGetOrderForCustomer(props.UserID);
+    if (props.UserID) {
+      doAxiosGetOrderForCustomer(props.UserID);
+    }
   }, [props.UserID]);
 
   let history = useHistory();
