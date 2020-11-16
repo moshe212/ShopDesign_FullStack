@@ -111,5 +111,5 @@
 }
 
 .react-modal-body {
-  background-color: transparent;
+  background-color: transparent !important;
 }
