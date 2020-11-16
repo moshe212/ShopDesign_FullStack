@@ -5,10 +5,12 @@ import Axios from "axios";
 
 import { Drawer, Button, Radio, Space } from "antd";
 import OrderContext from "./OrderContext";
+import { Redirect } from "react-router";
 
 const CartMin = (props) => {
   const [Visible, setVisible] = useState(false);
   const [Placement, setPlacement] = useState("left");
+  const [Pay, setPay] = useState(false);
   // const [OrderFromServer, setOrderFromServer] = useState([]);
   console.log("update", props);
   console.log("update", props.UserID);
@@ -27,7 +29,9 @@ const CartMin = (props) => {
     doAxiosGetOrderForCustomer(props.UserID);
   }, [props.UserID]);
 
-  const getPay = () => {};
+  const getPay = () => {
+    setPay(true);
+  };
 
   const showDrawer = () => {
     setVisible(true);
@@ -74,6 +78,24 @@ const CartMin = (props) => {
 
   const TotalPrice = Prices.reduce(getSum, 0);
   console.log("TotalPrice", TotalPrice, ProductInCartItems);
+
+  if (Pay) {
+    //console.log("props", props.id);
+    return (
+      <Redirect
+        to={{
+          pathname: "/PayCart",
+          state: {
+            TotalPrice: TotalPrice,
+            // ProductListToCart: props.ProductListToCart,
+            // Cartp: props.Cartv,
+            // AllProducts: props.AllProducts,
+          },
+        }}
+      ></Redirect>
+    );
+  }
+
   return (
     <>
       <Space>

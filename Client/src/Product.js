@@ -40,12 +40,14 @@ const Product = (props) => {
 
   console.log("LocalCart", LocalCart);
   let OldQuantityToCart;
-  LocalCart.forEach((prod, prodIndex) => {
-    console.log("prod", prod.id, props.id);
-    if (String(prod.id).trim() === String(props.id).trim()) {
-      OldQuantityToCart = prod.quantity;
-    }
-  });
+  if (LocalCart != null) {
+    LocalCart.forEach((prod, prodIndex) => {
+      console.log("prod", prod.id, props.id);
+      if (String(prod.id).trim() === String(props.id).trim()) {
+        OldQuantityToCart = prod.quantity;
+      }
+    });
+  }
 
   // let IsNewOrder;
   // if (!props.IsNewOrder) {

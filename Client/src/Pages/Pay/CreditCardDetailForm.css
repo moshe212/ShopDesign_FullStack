@@ -1,0 +1,115 @@
+.RootPayForm {
+  margin-top: 20px;
+  position: relative;
+}
+
+.PayForm {
+  margin-top: 20px;
+}
+
+.TotalPay_Form {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(
+    to top right,
+    #bece39 60%,
+    gray 75%,
+    white 75%,
+    white 100%
+  );
+  /* padding-top: 80px; */
+  position: relative;
+  border-radius: 100%;
+  text-align: center;
+  font: bold 20px helvetica;
+  box-shadow: 0 0 0 1px smokewhite;
+  right: 82%;
+  margin-top: -11%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.TotalPay_Form:before {
+  content: "";
+  position: absolute;
+  top: -44px;
+  left: 45px;
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(
+    to bottom left,
+    transparent 75%,
+    #e06da5 75%,
+    #e06da5 100%
+  );
+  border-radius: 100%;
+}
+
+.SmallIcon {
+  font-size: 12px;
+  font-weight: 900;
+  margin-top: 6%;
+}
+
+/* .T {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+} */
+
+.Isr {
+  width: 100px;
+  height: 60px;
+  margin: 10px;
+}
+
+.Visa {
+  width: 50px;
+  height: 50px;
+  margin: 10px;
+}
+
+.MC {
+  width: 80px;
+  height: 60px;
+  margin: 10px;
+}
+
+.Leumi {
+  width: 80px;
+  height: 60px;
+  margin: 10px;
+}
+
+.CreditCarrdImgs {
+  margin-top: 20px;
+}
+
+/* .anim {
+  animation: bounce;
+} */
+
+/* .animate__animated.animate__lightSpeedInRight {
+  --animate-duration: 2s;
+  --animate-delay: 5s;
+} */
+
+.Mod {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.react-modal {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.react-modal-body {
+  background-color: transparent;
+}

@@ -18,6 +18,8 @@ import ManageOrdersMaterial from "./Pages/ManageOrders/ManageOrdersMaterial";
 import SerratedTabs from "./Pages/ManageOrders/Tab";
 import SerratedTabs2 from "./Pages/ManageOrders/Tab2";
 
+import Pay from "./Pages/Pay/Pay";
+
 import { ProductsProvider } from "./ProductsContext";
 import { OrderProvider } from "./OrderContext";
 // import ProductsContext from "./ProductsContext";
@@ -94,6 +96,10 @@ const App = () => {
         <Route exact path="/Admin/ManageOrders">
           <SerratedTabs2 />
           {/* <ManageOrdersMaterial /> */}
+        </Route>
+
+        <Route exact path="/PayCart">
+          <Pay />
         </Route>
 
         {/* <Route path="/todos/:idParam">
