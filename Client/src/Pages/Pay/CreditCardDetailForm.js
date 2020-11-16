@@ -25,11 +25,14 @@ import {
 const LocalCart = JSON.parse(localStorage.getItem("LocalOpenOrderForCustomer"));
 console.log("LocalCart", LocalCart);
 let TotalPrice = 0;
-for (let i = 0; i < LocalCart.length; i++) {
-  const Price = LocalCart[i].quantity * LocalCart[i].price;
-  console.log("Price", Price);
-  TotalPrice = TotalPrice + Price;
+if (LocalCart) {
+  for (let i = 0; i < LocalCart.length; i++) {
+    const Price = LocalCart[i].quantity * LocalCart[i].price;
+    console.log("Price", Price);
+    TotalPrice = TotalPrice + Price;
+  }
 }
+
 const useStyles = makeStyles((theme) => ({
   root: {
     "& .MuiTextField-root": {
