@@ -1,0 +1,29 @@
+.map {
+  /* position: static !important; */
+  /* width: 100% !important; */
+  /* height: 100% !important; */
+  width: 800px !important;
+  height: 400px !important;
+}
+
+.BusImg {
+  float: right;
+  width: 20px;
+  height: 20px;
+}
+
+.BusHour {
+  float: right;
+  margin-right: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.PopUp {
+  width: 55px;
+  margin-top: 2px;
+}
+
+.Text {
+  margin-right: 25px;
+}

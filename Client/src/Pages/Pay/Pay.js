@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../../Header";
 import Footer from "../../Footer";
 import CreditCardDetailForm from "./CreditCardDetailForm";
+import DeliveryDetails from "./DeliveryDetails";
 
 import "./Pay.css";
 
@@ -20,6 +21,7 @@ const Pay = (props) => {
         <div className="DetailsBlock">
           <p className="Header">פרטי משלוח</p>
           <div className="DetailsLine"></div>
+          <DeliveryDetails />
         </div>
         <div className="PayBlock">
           <p className="Header">פרטי תשלום</p>

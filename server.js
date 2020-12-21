@@ -508,6 +508,12 @@ app.post("/api/LogInCustomer", async (req, res) => {
   let Status = "";
   let CustomerID = "";
   let CustomerFullName = "";
+  let UserHome = "";
+  let UserStreet = "";
+  let UserCity = "";
+  let UserTelephone = "";
+  let UserCellPhone = "";
+  let UserMail = "";
   let OrderList = "";
 
   const GetOrder = (ID) => {
@@ -540,13 +546,48 @@ app.post("/api/LogInCustomer", async (req, res) => {
     let myPromise2 = new Promise((resolve, reject) => {
       // resolve("5");
       for (let i = 0; i < List.length; i++) {
-        const { UserName, Password, FullName } = List[i];
-        console.log(UserName, Email, Password, Pass, FullName);
+        const {
+          UserName,
+          Password,
+          FullName,
+          Home,
+          Street,
+          City,
+          Telephone,
+          CellPhone,
+        } = List[i];
+        console.log(
+          UserName,
+          Email,
+          Password,
+          Pass,
+          FullName,
+          Home,
+          Street,
+          City,
+          Telephone,
+          CellPhone
+        );
         if (UserName === Email && Password === Pass) {
           CustomerID = List[i]._id;
           CustomerFullName = FullName;
+          UserHome = Home;
+          UserStreet = Street;
+          UserCity = City;
+          UserTelephone = Telephone;
+          UserCellPhone = CellPhone;
+          UserMail = UserName;
 
-          console.log(CustomerID, CustomerFullName);
+          console.log(
+            CustomerID,
+            CustomerFullName,
+            UserHome,
+            UserStreet,
+            UserCity,
+            UserTelephone,
+            UserCellPhone,
+            UserMail
+          );
           resolve(CustomerID);
           break;
         } else {
@@ -579,7 +620,18 @@ app.post("/api/LogInCustomer", async (req, res) => {
                   IsOrder = false;
                 }
 
-                Status = ["OK", CustomerID, CustomerFullName, IsOrder];
+                Status = [
+                  "OK",
+                  CustomerID,
+                  CustomerFullName,
+                  IsOrder,
+                  UserHome,
+                  UserStreet,
+                  UserCity,
+                  UserTelephone,
+                  UserCellPhone,
+                  UserMail,
+                ];
                 console.log("Status", Status);
                 res.status(200).send(Status);
               },
@@ -595,6 +647,33 @@ app.post("/api/LogInCustomer", async (req, res) => {
       );
     }
   });
+});
+
+//רישום לקוח
+app.post("/api/RegisterCustomer", async (req, res) => {
+  console.log(req.body);
+  const {
+    Email,
+    Pass,
+    FullName,
+    House,
+    Street,
+    City,
+    Phone,
+    CellPhone,
+  } = req.body;
+
+  const newCustomer = new Customer({
+    UserName: Email,
+    Password: Pass,
+    FullName: FullName,
+    Home: House,
+    Street: Street,
+    City: City,
+    Telephone: Phone,
+    CellPhone: CellPhone,
+  });
+  newCustomer.save();
 });
 
 // משיכת עגלה פתוחה ללקוח == Mongo
@@ -839,6 +918,28 @@ app.post("/api/AddToCart", async (req, res) => {
     return myPromise;
   };
 
+  const UpdateQuantity = (ProductId) => {
+    let myPromise = new Promise((resolve, reject) => {
+      // resolve("5");
+      const ThisProduct = Product.findById(ProductId, async (err, prod) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+        } else {
+          console.log("find2", prod);
+          prod.quantity = prod.quantity - 1;
+          await prod.save();
+          resolve(prod);
+          // resolve(prod);
+        }
+      });
+      // ThisProduct.quantity = ThisProduct.quantity - 1;
+      // await ThisProduct.save();
+      // resolve(ThisProduct);
+    });
+    return myPromise;
+  };
+
   if (CustomerID) {
     await Order.find(
       { CustomerID: CustomerID, Status: false },
@@ -889,6 +990,7 @@ app.post("/api/AddToCart", async (req, res) => {
           });
         } else {
           console.log("not new");
+
           await AddToExistOrder(CustomerID).then((result) => {
             console.log("AddToExistOrder", result);
             if (result != null) {
@@ -910,6 +1012,7 @@ app.post("/api/AddToCart", async (req, res) => {
             }
           });
         }
+        await UpdateQuantity(ProductId);
       }
     });
   }
@@ -917,6 +1020,10 @@ app.post("/api/AddToCart", async (req, res) => {
   // io.emit("UpdateQuantity", { id: productId, quantity: Quantity });
 });
 
+app.post("/api/OrderPay", async (req, res) => {
+  console.log(req.body);
+  res.status(200).send("error");
+});
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/Client/build/index.html"));
 });

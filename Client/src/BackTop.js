@@ -14,7 +14,7 @@ const BackTopButton = () => {
   };
 
   return (
-    <div style={{ height: "600vh", padding: 8 }}>
+    <div style={{ height: "250vh", padding: 8 }}>
       <BackTop>
         <div style={style}>^</div>
       </BackTop>

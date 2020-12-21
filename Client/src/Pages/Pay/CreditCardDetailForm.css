@@ -30,6 +30,7 @@
   justify-content: center;
   align-items: center;
 }
+
 .TotalPay_Form:before {
   content: "";
   position: absolute;
@@ -103,6 +104,13 @@
   right: 0;
 }
 
+.ModError {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
 .react-modal {
   top: 0;
   left: 0;
@@ -112,4 +120,15 @@
 
 .react-modal-body {
   background-color: transparent !important;
+}
+
+.modalTxt {
+  color: white;
+  font-size: x-large;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.bounceInRight-enter-done {
+  width: 500px;
 }

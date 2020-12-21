@@ -118,7 +118,16 @@ const LoginForm = (props) => {
           if (url === "/api/LogInCustomer") {
             // localStorage.clear();
             localStorage.removeItem("LocalCustomerID");
-            localStorage.setItem("LocalCustomerID", response.data[1]);
+            localStorage.setItem("LocalCustomerID", [
+              response.data[1],
+              response.data[2],
+              response.data[4],
+              response.data[5],
+              response.data[6],
+              response.data[7],
+              response.data[8],
+              response.data[9],
+            ]);
 
             if (response.data[3]) {
               changeIsNewOrder(false);

@@ -67,6 +67,7 @@ const LogInUser = (props) => {
         header={null}
         // onOk={handleOk}
         onCancel={() => handleCancel()}
+        zIndex="2000"
       >
         <LoginModalTabs closeModal={closeModal} />
         {/* <LogInForm onSubmit={closeModal} WhoLogIn={"User"} /> */}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-
+import { useHistory } from "react-router-dom";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
@@ -9,7 +9,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
 // import { Modal } from "antd";
-
+import Axios from "axios";
 import { Animated } from "react-animated-css";
 import Modal from "react-animated-modal";
 
@@ -54,13 +54,22 @@ const CreditCardDetailForm = (props) => {
   const classes = useStyles();
   const classes2 = useStyles2();
   const classes3 = useStyles3();
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = useState({
+    firstName: "",
+    lastName: "",
+    cardNum: "",
+    cvv: "",
+    month: "",
+    year: "",
+    idNum: "",
+  });
   const [selectedDate, setSelectedDate] = React.useState(
     new Date("2014-08-18T21:11:54")
   );
   const [state, setState] = useState({
     loading: false,
     visible: false,
+    visibleError: false,
     show: "hidden",
     animation: false,
     // popupPlacement: "bottomRight",
@@ -87,17 +96,26 @@ const CreditCardDetailForm = (props) => {
   const showModal = () => {
     setState({
       visible: true,
-      // show: "visible",
-      // animation: true,
     });
   };
 
-  const closeModal = () => {
-    setState({ visible: false });
+  const showErrorModal = () => {
+    setState({
+      visibleError: true,
+    });
+  };
 
-    // setTimeout(() => {
-    //   doAxiosAfterAddProduct();
-    // }, 500);
+  const sendPayOrderToServer = () => {
+    Axios.post("/api/OrderPay", {
+      Email: "moshe212@gmail.com",
+      Pass: "4351",
+    }).then((response) => {
+      if (response.data === "OK") {
+        showModal();
+      } else {
+        showErrorModal();
+      }
+    });
   };
 
   const handleCancel = () => {
@@ -105,23 +123,103 @@ const CreditCardDetailForm = (props) => {
   };
 
   const handleChange = (event) => {
-    setValue(event.target.value);
+    console.log(event.target.name);
+    switch (event.target.name) {
+      case "FirstName":
+        setValue({
+          firstName: event.target.value,
+          lastName: value.lastName,
+          cardNum: value.cardNum,
+          cvv: value.cvv,
+          month: value.month,
+          year: value.year,
+          idNum: value.idNum,
+        });
+        break;
+      case "LastName":
+        setValue({
+          firstName: value.firstName,
+          lastName: event.target.value,
+          cardNum: value.cardNum,
+          cvv: value.cvv,
+          month: value.month,
+          year: value.year,
+          idNum: value.idNum,
+        });
+        break;
+      case "CardNum":
+        setValue({
+          firstName: value.firstName,
+          lastName: value.lastName,
+          cardNum: event.target.value,
+          cvv: value.cvv,
+          month: value.month,
+          year: value.year,
+          idNum: value.idNum,
+        });
+        break;
+      case "Cvv":
+        setValue({
+          firstName: value.firstName,
+          lastName: value.lastName,
+          cardNum: value.cardNum,
+          cvv: event.target.value,
+          month: value.month,
+          year: value.year,
+          idNum: value.idNum,
+        });
+        break;
+      case "Month":
+        setValue({
+          firstName: value.firstName,
+          lastName: value.lastName,
+          cardNum: value.cardNum,
+          cvv: value.cvv,
+          month: event.target.value,
+          year: value.year,
+          idNum: value.idNum,
+        });
+        break;
+      case "Year":
+        setValue({
+          firstName: value.firstName,
+          lastName: value.lastName,
+          cardNum: value.cardNum,
+          cvv: value.cvv,
+          month: value.month,
+          year: event.target.value,
+          idNum: value.idNum,
+        });
+        break;
+      case "IDNum":
+        setValue({
+          firstName: value.firstName,
+          lastName: value.lastName,
+          cardNum: value.cardNum,
+          cvv: value.cvv,
+          month: value.month,
+          year: value.year,
+          idNum: event.target.value,
+        });
+        break;
+    }
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
+  // const handleDateChange = (date) => {
+  //   setSelectedDate(date);
+  // };
 
   const {
     animation,
     show,
     visible,
+    visibleError,
     loading,
     direction,
     popupPlacement,
   } = state;
-  console.log("show", show);
 
+  let history = useHistory();
   return (
     <div className="RootPayForm">
       <div className="T">
@@ -130,33 +228,33 @@ const CreditCardDetailForm = (props) => {
           <small className="SmallIcon">₪ </small>
         </span>
       </div>
-      {/* <h1
-        className="animate__animated animate__lightSpeedInRight "
-        // style={{ visibility: { show } }}
-      >
-        Hello!!
-      </h1> */}
-
-      {/* <Animated
-        animationIn="bounceInRight"
-        animationOut="fadeOut"
-        isVisible={animation}
-        animationInDelay={1000}
-      >
-        <div className="Animation">hello world ;</div>
-      </Animated>
-       */}
 
       <div className="Mod">
         <Modal
           visible={visible}
           closemodal={() => {
             setState({ visible: false });
-            alert("moshe");
+            history.push("/DeliveryTracking");
           }}
           type="bounceInRight"
         >
           <img src="/Images/clipart1580817.png"></img>
+          <div className="modalTxt">תודה שקניתם אצלנו.. המשלוח בדרך אליכם.</div>
+        </Modal>
+      </div>
+
+      <div className="ModError">
+        <Modal
+          visible={visibleError}
+          closemodal={() => {
+            setState({ visibleError: false });
+          }}
+          type="bounceInRight"
+        >
+          <img src="/Images/clipart1580817.png"></img>
+          <div className="modalTxt">
+            הנתונים שהוזנו אינם נכונים. אנא הזינו שוב.
+          </div>
         </Modal>
       </div>
 
@@ -164,21 +262,23 @@ const CreditCardDetailForm = (props) => {
         <form className={classes.root} noValidate autoComplete="off">
           <div dir="rtl">
             <TextField
-              id="outlined-multiline-flexible"
+              name="FirstName"
+              id="FirstName"
               label="שם פרטי"
               multiline
               rowsMax={4}
-              value={value}
+              value={value.firstName}
               onChange={handleChange}
               variant="outlined"
               size="small"
             />
             <TextField
-              id="outlined-multiline-flexible"
+              name="LastName"
+              id="LastName"
               label="שם משפחה"
               multiline
               rowsMax={4}
-              value={value}
+              value={value.lastName}
               onChange={handleChange}
               variant="outlined"
               //   labelWidth={120}
@@ -188,51 +288,42 @@ const CreditCardDetailForm = (props) => {
           </div>
           <div dir="rtl">
             <TextField
-              id="outlined-multiline-flexible"
+              name="CardNum"
+              id="CardNum"
               label="מס' אשראי"
               multiline
               rowsMax={4}
-              value={value}
+              value={value.cardNum}
               onChange={handleChange}
               variant="outlined"
               size="small"
               style={{ width: 350 }}
             />
             <TextField
-              id="outlined-multiline-flexible"
+              name="Cvv"
+              id="Cvv"
               label="cvv"
               multiline
               rowsMax={4}
-              value={value}
+              value={value.cvv}
               onChange={handleChange}
               variant="outlined"
-              //   labelWidth={120}
-
               size="small"
             />
           </div>
           <div>
             <FormControl variant="outlined" className={classes2.formControl}>
-              <InputLabel
-                // style={{ width: 40 }}
-                id="demo-simple-select-outlined-label"
-              >
-                חודש
-              </InputLabel>
+              <InputLabel id="Month">חודש</InputLabel>
               <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                value={value}
+                name="Month"
+                labelId="MonthSLabel"
+                id="MonthS"
+                value={value.month}
                 onChange={handleChange}
                 label="חודש"
-                // size="small"
                 style={{
                   height: 40,
                   width: 120,
-                  //   marginLeft: 0,
-                  //   marginRight: 0,
-                  //   marginBottom: 30,
-                  //   marginTop: 10,
                 }}
               >
                 <MenuItem value={1}>1</MenuItem>
@@ -253,14 +344,15 @@ const CreditCardDetailForm = (props) => {
             <FormControl variant="outlined" className={classes2.formControl}>
               <InputLabel
                 // style={{ width: 40 }}
-                id="demo-simple-select-outlined-label"
+                id="Year"
               >
                 שנה
               </InputLabel>
               <Select
+                name="Year"
                 labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                value={value}
+                id="YearS"
+                value={value.year}
                 onChange={handleChange}
                 label="שנה"
                 // size="small"
@@ -288,11 +380,12 @@ const CreditCardDetailForm = (props) => {
             </FormControl>
 
             <TextField
-              id="outlined-multiline-flexible"
+              name="IDNum"
+              id="IDNum"
               label="ת.ז"
               multiline
               rowsMax={4}
-              value={value}
+              value={value.idNum}
               onChange={handleChange}
               variant="outlined"
               //   labelWidth={120}
@@ -300,24 +393,7 @@ const CreditCardDetailForm = (props) => {
               size="small"
             />
           </div>
-          {/* <div dir="rtl">
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            disableToolbar
-            variant="inline"
-            format="MM/dd/yyyy"
-            margin="small"
-            id="date-picker-inline"
-            label="תוקף אשראי"
-            value={selectedDate}
-            onChange={handleDateChange}
-            size="small"
-            KeyboardButtonProps={{
-              "aria-label": "change date",
-            }}
-          />
-        </MuiPickersUtilsProvider>
-      </div> */}
+
           <Button
             variant="contained"
             style={{
@@ -327,7 +403,7 @@ const CreditCardDetailForm = (props) => {
               fontWeight: "bold",
               fontSize: 20,
             }}
-            onClick={showModal}
+            onClick={sendPayOrderToServer}
             //   color="#e06da5"
           >
             בצע תשלום

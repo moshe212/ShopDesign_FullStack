@@ -17,6 +17,7 @@ import ProductDetails from "./Pages/ProductDetails/ProductDetails";
 import ManageOrdersMaterial from "./Pages/ManageOrders/ManageOrdersMaterial";
 import SerratedTabs from "./Pages/ManageOrders/Tab";
 import SerratedTabs2 from "./Pages/ManageOrders/Tab2";
+import DeliveryTracking from "./Pages/DeliveryTracking/DeliveryTracking";
 
 import Pay from "./Pages/Pay/Pay";
 
@@ -100,6 +101,10 @@ const App = () => {
 
         <Route exact path="/PayCart">
           <Pay />
+        </Route>
+
+        <Route exact path="/DeliveryTracking">
+          <DeliveryTracking />
         </Route>
 
         {/* <Route path="/todos/:idParam">

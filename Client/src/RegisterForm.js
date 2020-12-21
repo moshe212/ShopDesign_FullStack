@@ -6,6 +6,19 @@ import { message } from "antd";
 
 import "./RegisterForm.css";
 
+function validatePrimeNumber(number) {
+  if (number === 11) {
+    return {
+      validateStatus: "success",
+      errorMsg: null,
+    };
+  }
+  return {
+    validateStatus: "error",
+    errorMsg: "The prime between 8 and 12 is 11!",
+  };
+}
+
 const success = () => {
   message.success({
     content: "הינך מועבר לדף הניהול",
@@ -58,7 +71,7 @@ const validateMessages = {
   },
 };
 
-const LoginForm = (props) => {
+const RegisterForm = (props) => {
   // const [Redirect_MangeProducts, setRedirect_MangeProducts] = useState(false);
   // const [Redirect_Home, setRedirect_Home] = useState(false);
   // const [UserId, setUserId] = useState("");
@@ -69,6 +82,14 @@ const LoginForm = (props) => {
     UserId: "",
     Name: "",
   });
+
+  const [number, setNumber] = useState({
+    value: 0,
+  });
+
+  const onNumberChange = (value) => {
+    setNumber({ ...validatePrimeNumber(value), value });
+  };
 
   const [form] = Form.useForm();
 
@@ -91,44 +112,51 @@ const LoginForm = (props) => {
   } else if (props.WhoLogIn === "Admin") {
     url = "/api/LogInAdmin";
   }
+
   //console.log(url);
   const onFinish = (values) => {
-    //console.log(values.LogIn.Username, values.LogIn.Password);
+    console.log(values.Register.Username, values.Register.Password);
 
     props.onSubmit();
     form.resetFields();
 
-    Axios.post(url, {
-      Email: values.LogIn.Username,
-      Pass: values.LogIn.Password,
+    Axios.post("/api/RegisterCustomer", {
+      Email: values.Register.Username,
+      Pass: values.Register.Password,
+      FullName: values.Register.FullName,
+      House: values.Register.Home,
+      Street: values.Register.Street,
+      City: values.Register.City,
+      Phone: values.Register.Phone,
+      CellPhone: values.Register.CellPhone,
     }).then(
       (response) => {
         console.log("response", response.data);
-        if (response.data[0] === "OK" || response.data === "OK") {
-          if (url === "/api/LogInCustomer") {
-            Customeruccess();
-            localStorage.setItem("LocalCustomerID", response.data[1]);
-          } else {
-            success();
-          }
+        // if (response.data[0] === "OK" || response.data === "OK") {
+        //   if (url === "/api/LogInCustomer") {
+        //     Customeruccess();
+        //     localStorage.setItem("LocalCustomerID", response.data[1]);
+        //   } else {
+        //     success();
+        //   }
 
-          setTimeout(() => {
-            //console.log("1000");
-            if (url === "/api/LogInCustomer") {
-              const id = response.data[1];
-              const name = response.data[2];
-              //console.log(id, name);
-              setState({ UserId: id, Redirect_Home: true, Name: name });
-              // setUserId(id);
-              // setRedirect_Home(true);
-            } else if (url === "/api/LogInAdmin") {
-              // setRedirect_MangeProducts(true);
-              setState({ Redirect_MangeProducts: true });
-            }
-          }, 4000);
-        } else {
-          error();
-        }
+        //   setTimeout(() => {
+        //     //console.log("1000");
+        //     if (url === "/api/LogInCustomer") {
+        //       const id = response.data[1];
+        //       const name = response.data[2];
+        //       //console.log(id, name);
+        //       setState({ UserId: id, Redirect_Home: true, Name: name });
+        //       // setUserId(id);
+        //       // setRedirect_Home(true);
+        //     } else if (url === "/api/LogInAdmin") {
+        //       // setRedirect_MangeProducts(true);
+        //       setState({ Redirect_MangeProducts: true });
+        //     }
+        //   }, 4000);
+        // } else {
+        //   error();
+        // }
       },
       (error) => {
         //console.log(error);
@@ -146,7 +174,7 @@ const LoginForm = (props) => {
         validateMessages={validateMessages}
       >
         <Form.Item
-          name={["LogIn", "Username"]}
+          name={["Register", "Username"]}
           label="אימייל"
           rules={[
             {
@@ -159,8 +187,81 @@ const LoginForm = (props) => {
         </Form.Item>
 
         <Form.Item
-          name={["LogIn", "Password"]}
+          name={["Register", "Password"]}
           label="ססמה"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name={["Register", "FullName"]}
+          label="שם מלא"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name={["Register", "Home"]}
+          label="מס' בית"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name={["Register", "Street"]}
+          label="רחוב"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name={["Register", "City"]}
+          label="עיר"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name={["Register", "Phone"]}
+          label="טלפון"
+          validateStatus={number.validateStatus}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name={["Register", "CellPhone"]}
+          label="טלפון נייד"
           rules={[
             {
               required: true,
@@ -172,7 +273,7 @@ const LoginForm = (props) => {
 
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
           <Button type="primary" htmlType="submit">
-            כניסה
+            הרשם
           </Button>
         </Form.Item>
       </Form>
@@ -180,4 +281,4 @@ const LoginForm = (props) => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
