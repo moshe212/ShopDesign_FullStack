@@ -46,7 +46,7 @@ const Product = (props) => {
   let OldQuantityToCart;
   if (LocalCart != null) {
     LocalCart.forEach((prod, prodIndex) => {
-      console.log("prod", prod.id, props.id);
+      // console.log("prod", prod.id, props.id);
       if (String(prod.id).trim() === String(props.id).trim()) {
         OldQuantityToCart = prod.quantity;
       }
@@ -67,7 +67,9 @@ const Product = (props) => {
       ProductID: props.id,
       UnitPrice: props.price,
       Quantity: QuantityToCart,
-      CustomerID: localStorage.getItem("LocalCustomerID").split(",")[0],
+      CustomerID: localStorage.getItem("LocalCustomerID")
+        ? localStorage.getItem("LocalCustomerID").split(",")[0]
+        : "",
     });
   };
 

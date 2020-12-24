@@ -29,11 +29,15 @@ const LogInUser = (props) => {
       console.log("e", e.target);
       console.log(props.ExitFuncprop);
       localStorage.clear();
-      props.ExitFuncprop();
+      // props.ExitFuncprop();
       // localStorage.removeItem("LocalOpenOrderForCustomer");
       // localStorage.removeItem("LocalCustomerID");
       // localStorage.removeItem("DeliveryDetails");
-      history.push("/");
+      // history.push("/");
+      history.push({
+        pathname: "/",
+        state: { exit: true },
+      });
     }
   };
 

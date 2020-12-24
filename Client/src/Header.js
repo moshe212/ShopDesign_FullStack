@@ -21,9 +21,9 @@ const Header = (props) => {
   const Render = props.Render;
   // console.log(Render);
 
-  const ExitFunc = () => {
-    props.Exitprop();
-  };
+  // const ExitFunc = () => {
+  //   props.Exitprop();
+  // };
 
   const GoHome = () => {
     setredirect_Home(true);
@@ -60,7 +60,7 @@ const Header = (props) => {
 
   return (
     <div className="header">
-      <LogInUser Username={props.UserName} ExitFuncprop={ExitFunc} />
+      <LogInUser Username={props.UserName} />
       <div className="AdinAndLogoDiv">
         <div onClick={GoHome} className="logo">
           <img src="/Images/clipart1580817.png"></img>

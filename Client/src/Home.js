@@ -11,6 +11,7 @@ import Axios from "axios";
 import cloneDeep from "lodash/cloneDeep";
 import { Slider, Switch } from "antd";
 import BackTopButton from "./BackTop";
+import { useLocation } from "react-router-dom";
 
 // import socketIOClient from "socket.io-client";
 
@@ -52,17 +53,29 @@ const Home = (props) => {
   let Details;
   if (window.history.state) {
     Details = window.history.state.state;
-    console.log("Details", Details);
+    // console.log("Details", Details);
+    // console.log("Details", Details.exit);
     // setProductListToCart(Details[0].Products);
   }
 
   const IsNewOrder = useContext(OrderContext).data;
   const changeIsNewOrder = useContext(OrderContext).changeIsNewOrder;
 
-  const Exit = () => {
-    setProductListToCart([]);
-    setCartv(0);
-  };
+  const location = useLocation();
+
+  if (location.state) {
+    if (location.state.exit) {
+      console.log("location.state.exit", location.state.exit);
+      setProductListToCart([]);
+      setCartv(0);
+      location.state.exit = false;
+    }
+  }
+
+  // const Exit = () => {
+  //   setProductListToCart([]);
+  //   setCartv(0);
+  // };
 
   const doAxios = (isSlider, isSearch, isAddProduct, url, val1, val2) => {
     Axios.get(url)
@@ -149,7 +162,7 @@ const Home = (props) => {
           doAxios(false, true, false, link);
         }}
         Render="Home"
-        Exitprop={Exit}
+        // Exitprop={Exit}
         UserName={
           params.name
             ? params.name
@@ -204,14 +217,18 @@ const Home = (props) => {
         ProductListToCart={ProductListToCart}
         Cartp={Cartv}
         GetOrderForCustomer={GetOrderForCustomer}
-        UserID={Details}
+        UserID={
+          localStorage.getItem("LocalCustomerID")
+            ? localStorage.getItem("LocalCustomerID").split(",")[0]
+            : ""
+        }
       />
 
       {Products.length > 0 && (
         <div className="Products">
           {Products.map((product, productIndex) => (
             <Product
-              Exitprop={Exit}
+              // Exitprop={Exit}
               key={product._id}
               id={product._id}
               src={product.image}
