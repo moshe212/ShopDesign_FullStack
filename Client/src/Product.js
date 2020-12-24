@@ -19,6 +19,10 @@ const Product = (props) => {
   const IsNewOrder = useContext(OrderContext).data;
   const changeIsNewOrder = useContext(OrderContext).changeIsNewOrder;
 
+  const ExitFunc = () => {
+    props.Exitprop();
+  };
+
   // let BaseQuantityToCart;
   // props.ProductListToCart.forEach((prod, prodIndex) => {
   //   if (prod._id === props.id) {
@@ -38,7 +42,7 @@ const Product = (props) => {
     localStorage.getItem("LocalOpenOrderForCustomer")
   );
 
-  console.log("LocalCart", LocalCart);
+  // console.log("LocalCart", LocalCart);
   let OldQuantityToCart;
   if (LocalCart != null) {
     LocalCart.forEach((prod, prodIndex) => {
@@ -55,7 +59,7 @@ const Product = (props) => {
   // } else {
   //   IsNewOrder = true;
   // }
-  console.log("IsNewOrder", IsNewOrder);
+  // console.log("IsNewOrder", IsNewOrder);
   const SaveProdinCart = () => {
     changeIsNewOrder(false);
     props.addTocart({
@@ -63,7 +67,7 @@ const Product = (props) => {
       ProductID: props.id,
       UnitPrice: props.price,
       Quantity: QuantityToCart,
-      CustomerID: localStorage.getItem("LocalCustomerID"),
+      CustomerID: localStorage.getItem("LocalCustomerID").split(",")[0],
     });
   };
 

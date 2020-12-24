@@ -65,6 +65,7 @@ const LoginForm = (props) => {
   // const [Redirect_Home, setRedirect_Home] = useState(false);
   // const [UserId, setUserId] = useState("");
 
+  console.log("loginformrender");
   const [State, setState] = useState({
     Redirect_MangeProducts: false,
     Redirect_Home: false,
@@ -168,6 +169,8 @@ const LoginForm = (props) => {
       }
     );
   };
+
+  console.log("render");
 
   return (
     <div dir="rtl">

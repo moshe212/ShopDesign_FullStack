@@ -94,6 +94,32 @@ const DeliveryDetails = (props) => {
     props.IsDark();
   };
 
+  const ChangCheckTotrue = () => {
+    setState({
+      checked: true,
+      disabled: true,
+      firstName_defaultValue: User_DeliveryDetails[1].split(" ")[0],
+      lastName_defaultValue: User_DeliveryDetails[1].split(" ")[1],
+      home_defaultValue: User_DeliveryDetails[2],
+      street_defaultValue: User_DeliveryDetails[3],
+      city_defaultValue: User_DeliveryDetails[4],
+      phone_defaultValue: User_DeliveryDetails[5],
+      cellPhone_defaultValue: User_DeliveryDetails[6],
+      email_defaultValue: User_DeliveryDetails[7],
+      shrink: true,
+    });
+    setValue({
+      firstName: User_DeliveryDetails[1].split(" ")[0],
+      lastName: User_DeliveryDetails[1].split(" ")[1],
+      home: User_DeliveryDetails[2],
+      street: User_DeliveryDetails[3],
+      city: User_DeliveryDetails[4],
+      phone: User_DeliveryDetails[5],
+      cellPhone: User_DeliveryDetails[6],
+      email: User_DeliveryDetails[7],
+      notes: value.notes,
+    });
+  };
   const User_DeliveryDetails = localStorage
     .getItem("LocalCustomerID")
     .split(",");
@@ -126,19 +152,7 @@ const DeliveryDetails = (props) => {
           email_defaultValue: "",
           shrink: false,
         })
-      : setState({
-          checked: true,
-          disabled: true,
-          firstName_defaultValue: User_DeliveryDetails[1].split(" ")[0],
-          lastName_defaultValue: User_DeliveryDetails[1].split(" ")[1],
-          home_defaultValue: User_DeliveryDetails[2],
-          street_defaultValue: User_DeliveryDetails[3],
-          city_defaultValue: User_DeliveryDetails[4],
-          phone_defaultValue: User_DeliveryDetails[5],
-          cellPhone_defaultValue: User_DeliveryDetails[6],
-          email_defaultValue: User_DeliveryDetails[7],
-          shrink: true,
-        });
+      : ChangCheckTotrue();
   };
 
   let DeliveryDetailsObj = {
@@ -311,6 +325,7 @@ const DeliveryDetails = (props) => {
 
           <div dir="rtl">
             <TextField
+              required
               id="FirstName"
               label="שם פרטי"
               value={
@@ -338,6 +353,7 @@ const DeliveryDetails = (props) => {
               }
             />
             <TextField
+              required
               id="LastName"
               label="שם משפחה"
               multiline
@@ -369,6 +385,7 @@ const DeliveryDetails = (props) => {
           </div>
           <div dir="rtl">
             <TextField
+              required
               id="Home"
               label="מס' בית"
               multiline
@@ -394,6 +411,7 @@ const DeliveryDetails = (props) => {
               }
             />
             <TextField
+              required
               id="Street"
               label="רחוב"
               multiline
@@ -420,6 +438,7 @@ const DeliveryDetails = (props) => {
               }
             />
             <TextField
+              required
               id="City"
               label="עיר"
               multiline
@@ -477,6 +496,7 @@ const DeliveryDetails = (props) => {
             />
 
             <TextField
+              required
               id="CellPhone"
               label="טלפון נייד"
               multiline
@@ -506,6 +526,7 @@ const DeliveryDetails = (props) => {
             />
 
             <TextField
+              required
               id="Email"
               label="דוא'ל"
               multiline

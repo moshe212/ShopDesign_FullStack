@@ -104,3 +104,7 @@
 .Search {
   z-index: 2;
 }
+
+.ant-slider-tooltip {
+  z-index: 1;
+}

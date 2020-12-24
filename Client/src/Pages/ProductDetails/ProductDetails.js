@@ -20,24 +20,29 @@ import ProductsContext from "../../ProductsContext";
 const ProductDetails = (props) => {
   const [ClickArrow, setClickArrow] = useState(false);
   const [Productdetails, setProductdetails] = useState();
+  const [Update, setUpdate] = useState(false);
+  const [LocalCart, setLocalCart] = useState(
+    JSON.parse(localStorage.getItem("LocalOpenOrderForCustomer"))
+  );
 
-  console.log("log");
+  // console.log("log");
 
   const params = useParams();
-  console.log("params", params);
+  // console.log("params", params);
 
   const Details = window.history.state.state;
+  // console.log("Details", Details);
 
-  const doAxios = () => {
-    Axios.get("/api/products")
-      .then((res) => {
-        // console.log(res.data);
-        setProductdetails(res.data);
-      })
-      .catch(function (error) {
-        //console.log(error);
-      });
-  };
+  // const doAxios = () => {
+  //   Axios.get("/api/products")
+  //     .then((res) => {
+  //       // console.log(res.data);
+  //       setProductdetails(res.data);
+  //     })
+  //     .catch(function (error) {
+  //       //console.log(error);
+  //     });
+  // };
 
   const HandleClick = () => {
     setTimeout(() => {
@@ -72,13 +77,13 @@ const ProductDetails = (props) => {
       });
   }
   // const Productdetails_Json = JSON.parse(Productdetails);
-  console.log("Productdetails_Json", Productdetails_Json);
+  // console.log("Productdetails_Json", Productdetails_Json);
   if (Productdetails_Json) {
     for (i = 0; i < Productdetails_Json.length + 1; i++) {
       const id = Productdetails_Json[i]._id;
       //console.log("id", id, parseInt(params.id));
       if (id === params.id) {
-        console.log("i", i, Productdetails_Json.length);
+        // console.log("i", i, Productdetails_Json.length);
         PD_Name = Productdetails_Json[i].title;
         PD_Quantity = Productdetails_Json[i].Quantity;
         PD_Img = Productdetails_Json[i].image;
@@ -89,14 +94,61 @@ const ProductDetails = (props) => {
       }
     }
   }
+
+  let ProdForCart;
+  if (localStorage.getItem("LocalCustomerID") !== null) {
+    ProdForCart = {
+      IsNewOrder: false,
+      ProductID: params.id,
+      UnitPrice: PD_Price,
+      Quantity: 1,
+      CustomerID: localStorage.getItem("LocalCustomerID").split(",")[0],
+    };
+  }
+
+  const AddToCartFromprodDetails = () => {
+    Axios.post("/api/AddToCart", ProdForCart)
+      .then((res) => {
+        // console.log("res.data", res.data);
+        localStorage.setItem(
+          "LocalOpenOrderForCustomer",
+          JSON.stringify(res.data[2])
+        );
+        setTimeout(() => {
+          setLocalCart(
+            JSON.parse(localStorage.getItem("LocalOpenOrderForCustomer"))
+          );
+        }, 100);
+
+        // setProductListToCart(res.data[2]);
+        // setCartv(res.data[2].length);
+        // setProductCount([]);
+      })
+      .catch(function (error) {
+        //console.log(error);
+      });
+  };
+
+  // const LocalCart = JSON.parse(
+  //   localStorage.getItem("LocalOpenOrderForCustomer")
+  // );
+  // console.log(localStorage.getItem("LocalCustomerID").split(","));
+  console.log("LocalCartDet", LocalCart);
+  console.log("Details", Details);
   if (!Productdetails_Json) {
     return <div>"hello"</div>;
   } else {
     return (
       <div className="PD_Root">
-        <Header />
+        <Header
+          UserName={
+            localStorage.getItem("LocalCustomerID")
+              ? localStorage.getItem("LocalCustomerID").split(",")[1]
+              : ""
+          }
+        />
         <CartMin
-          ProductListToCart={Details ? Details.ProductListToCart : []}
+          ProductListToCart={LocalCart ? LocalCart : []}
           Cartp={Details ? Details.Cartv || 0 : 0}
         />
 
@@ -139,7 +191,9 @@ const ProductDetails = (props) => {
           </div>
         </div>
         <div className="PD_BtnDiv">
-          <button className="PD_Btn">הוסף לסל</button>
+          <button className="PD_Btn" onClick={AddToCartFromprodDetails}>
+            הוסף לסל
+          </button>
         </div>
       </div>
     );

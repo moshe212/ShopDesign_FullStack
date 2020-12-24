@@ -20,7 +20,13 @@ const DeliveryTracking = () => {
   return (
     <div>
       <div>
-        <Header />
+        <Header
+          UserName={
+            localStorage.getItem("LocalCustomerID")
+              ? localStorage.getItem("LocalCustomerID").split(",")[1]
+              : ""
+          }
+        />
       </div>
       <h1>מעקב הזמנה</h1>
       <div dir="rtl" className="TrackingDetails_root">

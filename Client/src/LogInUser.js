@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Modal, Button } from "antd";
 import LogInForm from "./LogInForm";
 import LoginModalTabs from "./LoginModalTabs";
@@ -16,10 +17,24 @@ const LogInUser = (props) => {
     // direction: "rtl",
   });
 
-  const showModal = () => {
-    setState({
-      visible: true,
-    });
+  let history = useHistory();
+
+  const showModal = (e) => {
+    // console.log("e", e.target.innerText);
+    if (!e.target.innerText.includes("יציאה")) {
+      setState({
+        visible: true,
+      });
+    } else {
+      console.log("e", e.target);
+      console.log(props.ExitFuncprop);
+      localStorage.clear();
+      props.ExitFuncprop();
+      // localStorage.removeItem("LocalOpenOrderForCustomer");
+      // localStorage.removeItem("LocalCustomerID");
+      // localStorage.removeItem("DeliveryDetails");
+      history.push("/");
+    }
   };
 
   const doAxiosAfterAddProduct = () => {
@@ -40,7 +55,7 @@ const LogInUser = (props) => {
 
   let BtnText = "";
   if (props.Username) {
-    BtnText = "שלום " + props.Username;
+    BtnText = "שלום " + props.Username + " | יציאה";
   } else {
     BtnText = "התחבר/הרשם";
   }
@@ -50,7 +65,7 @@ const LogInUser = (props) => {
       <Button
         className="LogInuserBtn"
         type="primary"
-        onClick={() => showModal()}
+        onClick={(e) => showModal(e)}
       >
         <p>{BtnText} </p>
       </Button>

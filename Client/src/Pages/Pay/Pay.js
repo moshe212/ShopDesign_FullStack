@@ -15,7 +15,14 @@ const Pay = (props) => {
   console.log(props);
   return (
     <div className="PayRoot">
-      <Header Render="Home" />
+      <Header
+        Render="Home"
+        UserName={
+          localStorage.getItem("LocalCustomerID")
+            ? localStorage.getItem("LocalCustomerID").split(",")[1]
+            : ""
+        }
+      />
       <div className="GreenLine"></div>
       <div className="PayDiv" dir="rtl">
         <div className="DetailsBlock">

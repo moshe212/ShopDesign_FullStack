@@ -3,18 +3,21 @@ import { useHistory } from "react-router-dom";
 import "./CartMin.css";
 import ProductInCart from "./ProductInCart";
 import Axios from "axios";
-
+import Modal from "react-animated-modal";
 import { Drawer, Button, Radio, Space } from "antd";
 import OrderContext from "./OrderContext";
 import { Redirect } from "react-router";
 
 const CartMin = (props) => {
   const [Visible, setVisible] = useState(false);
+  const [modalVisible, setmodalVisible] = useState(false);
   const [Placement, setPlacement] = useState("left");
+  const [UpdateCart, setUpdateCart] = useState("");
+
   const [Pay, setPay] = useState(false);
   // const [OrderFromServer, setOrderFromServer] = useState([]);
-  console.log("update", props);
-  console.log("update", props.UserID);
+  // console.log("update", props);
+  // console.log("update", props.UserID);
 
   const IsNewOrder = useContext(OrderContext).data;
   const changeIsNewOrder = useContext(OrderContext).changeIsNewOrder;
@@ -25,12 +28,25 @@ const CartMin = (props) => {
   // // let OrderFromServer;
   // const CustomerID = localStorage.getItem("LocalCustomerID");
   // console.log("CustomerID", CustomerID);
+
+  // const LocalCart = JSON.parse(
+  //   localStorage.getItem("LocalOpenOrderForCustomer")
+  // );
+  //console.log("LocalCart", LocalCart, props.ProductListToCart);
+
   useEffect(() => {
-    console.log("run", props.UserID);
+    // console.log("run", props.UserID);
     if (props.UserID) {
       doAxiosGetOrderForCustomer(props.UserID);
     }
   }, [props.UserID]);
+
+  // useEffect(() => {
+  //   // setUpdateCart("Y");
+  //   setLocalCart(props.ProductListToCart);
+  //   console.log("LocalCart", props.ProductListToCart);
+  //   // console.log("run", props.UserID);
+  // }, [props.ProductListToCart]);
 
   let history = useHistory();
 
@@ -49,12 +65,12 @@ const CartMin = (props) => {
   const LocalCart = JSON.parse(
     localStorage.getItem("LocalOpenOrderForCustomer")
   );
-  // console.log("LocalCart", LocalCart, props.ProductListToCart);
+  console.log("LocalCart", LocalCart, props.ProductListToCart);
 
   let ProductInCartItems;
   if (props.ProductListToCart.length > 0) {
     ProductInCartItems = props.ProductListToCart;
-  } else if (LocalCart != null) {
+  } else if (LocalCart !== null) {
     ProductInCartItems = LocalCart;
   } else {
     ProductInCartItems = props.ProductListToCart;
@@ -68,7 +84,7 @@ const CartMin = (props) => {
   }
 
   // const ProductInCartItems = OrderFromServer;
-  console.log("ProductInCartItems", ProductInCartItems);
+  // console.log("ProductInCartItems", ProductInCartItems);
 
   // const TotalCount = 1;
   const Prices = ProductInCartItems.map(
@@ -78,29 +94,34 @@ const CartMin = (props) => {
   const getSum = (total, num) => total + num;
 
   const TotalPrice = Prices.reduce(getSum, 0);
-  console.log("TotalPrice", TotalPrice, ProductInCartItems);
+  // console.log("TotalPrice", TotalPrice, ProductInCartItems);
 
   const getPay = () => {
     // setPay(true);
-    history.push("/PayCart", { TotalPrice: TotalPrice });
+
+    if (localStorage.getItem("LocalCustomerID")) {
+      history.push("/PayCart", { TotalPrice: TotalPrice });
+    } else {
+      setmodalVisible(true);
+    }
   };
 
-  if (Pay) {
-    //console.log("props", props.id);
-    return (
-      <Redirect
-        to={{
-          pathname: "/PayCart",
-          state: {
-            TotalPrice: TotalPrice,
-            // ProductListToCart: props.ProductListToCart,
-            // Cartp: props.Cartv,
-            // AllProducts: props.AllProducts,
-          },
-        }}
-      ></Redirect>
-    );
-  }
+  // if (Pay) {
+  //   //console.log("props", props.id);
+  //   return (
+  //     <Redirect
+  //       to={{
+  //         pathname: "/PayCart",
+  //         state: {
+  //           TotalPrice: TotalPrice,
+  //           // ProductListToCart: props.ProductListToCart,
+  //           // Cartp: props.Cartv,
+  //           // AllProducts: props.AllProducts,
+  //         },
+  //       }}
+  //     ></Redirect>
+  //   );
+  // }
 
   return (
     <>
@@ -164,6 +185,22 @@ const CartMin = (props) => {
         }
         key={Placement}
       >
+        <div className="ModErrorCart">
+          <Modal
+            zIndex="2000"
+            visible={modalVisible}
+            closemodal={() => {
+              setmodalVisible(false);
+            }}
+            type="rotateIn"
+          >
+            <div className="modalTxtErrorCart">
+              {/* <div></div> */}
+              <div>.בכדי לעבור לתשלום עליך להירשם\לבצע כניסה</div>
+            </div>
+          </Modal>
+        </div>
+
         {ProductInCartItems.map((product) => (
           <ProductInCart
             key={product._id}

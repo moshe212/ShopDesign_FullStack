@@ -58,7 +58,7 @@ const App = () => {
 
   // const ProductsContext = React.createContext(AllProducts);
   // const AllProductContext = useContext(ProductsContext);
-  console.log("AllProducts", AllProducts);
+  // console.log("AllProducts", AllProducts);
   return (
     <Router>
       <SwitchRout>

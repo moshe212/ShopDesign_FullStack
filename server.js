@@ -661,7 +661,65 @@ app.post("/api/RegisterCustomer", async (req, res) => {
     City,
     Phone,
     CellPhone,
+    TempCart,
   } = req.body;
+
+  let CustomerID;
+
+  console.log("TempCart", JSON.parse(TempCart));
+
+  const AddProductsFromTempCart = (ID, TempCart) => {
+    console.log(ID);
+    let myPromise = new Promise((resolve, reject) => {
+      // resolve("5");
+
+      Order.findById(ID, async (err, order) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+        } else {
+          //   const ThisOrder = await Order.findOne({
+          //     _id: OrderID,
+          //   });
+          const ThisOrder = order;
+          console.log("TempCart.length", JSON.parse(TempCart).length, TempCart);
+          for (let p = 0; p < JSON.parse(TempCart).length; p++) {
+            await ThisOrder.Products.push({
+              productid: JSON.parse(TempCart)[p]._id,
+              quantity: JSON.parse(TempCart)[p].quantity,
+            });
+            await ThisOrder.save();
+          }
+
+          // const ThisOrder = order;
+          // await ThisOrder.Products.push({
+          //   productid: ProductId,
+          //   quantity: Quantity,
+          // });
+          // ThisOrder.TotalAmount = OrderTotalEnd;
+          // await ThisOrder.save();
+
+          const Thisorder_ToClient = ThisOrder;
+          console.log("ThisOrder", Thisorder_ToClient.Products);
+
+          resolve(Thisorder_ToClient);
+        }
+      });
+    });
+    return myPromise;
+  };
+
+  let ProductsArrayForOrder = JSON.parse(TempCart).map((prodObj) => ({
+    productid: prodObj._id,
+    quantity: prodObj.quantity,
+  }));
+  console.log("ProductsArrayForOrder", ProductsArrayForOrder);
+
+  const Totals = JSON.parse(TempCart).map(
+    (prodObj) => prodObj.quantity * prodObj.price
+  );
+
+  const TotalAmount = Totals.reduce((a, b) => a + b, 0);
 
   const newCustomer = new Customer({
     UserName: Email,
@@ -673,7 +731,55 @@ app.post("/api/RegisterCustomer", async (req, res) => {
     Telephone: Phone,
     CellPhone: CellPhone,
   });
-  newCustomer.save();
+  newCustomer.save(function async(err, cust) {
+    if (err) {
+      console.log(err);
+    } else {
+      CustomerID = cust._id;
+      console.log("custimerID", CustomerID);
+
+      const newOrder = new Order({
+        CustomerID: CustomerID,
+        Products: [],
+        // Quantity: Quantity,
+        OrderDate: Date.now(),
+        RequiredDate: Date.now(),
+        ShippedDate: Date.now(),
+        ShipStreet: "",
+        ShipHome: "",
+        ShipCity: "",
+        Status: false,
+        TotalAmount: TotalAmount,
+      });
+      newOrder.save(function async(err, order) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("orderid", order._id);
+          // const ThisOrder = await Order.findOne({
+          //   _id: OrderID,
+          // });
+          // console.log("ThisOrder.Products.length", ThisOrder.Products.length);
+
+          AddProductsFromTempCart(order._id, TempCart).then((result) => {
+            console.log("resulte", result);
+
+            res.status(200).send(result);
+          });
+        }
+
+        // for (let p = 0; p < TempCart.length; p++) {
+        //   order.Products.push({
+        //     productid: TempCart[p].productId,
+        //     quantity: TempCart[p].quantity,
+        //   });
+
+        //   order.save();
+        // }
+        // res.status(200).send(order);
+      });
+    }
+  });
 });
 
 // משיכת עגלה פתוחה ללקוח == Mongo
@@ -688,6 +794,7 @@ app.post("/api/GetOpenOrderForCustomer", (req, res) => {
       if (err) {
         console.log(err);
       } else {
+        console.log("order", order);
         // console.log("OrderList0", order.Products[0]);
         const ProductListCartInServer = [];
         for (i = 0; i < order.Products.length; i++) {
@@ -1022,7 +1129,7 @@ app.post("/api/AddToCart", async (req, res) => {
 
 app.post("/api/OrderPay", async (req, res) => {
   console.log(req.body);
-  res.status(200).send("error");
+  res.status(200).send("OK");
 });
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/Client/build/index.html"));

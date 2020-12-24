@@ -70,11 +70,32 @@ const CreditCardDetailForm = (props) => {
     loading: false,
     visible: false,
     visibleError: false,
+    visibleErrorFields: false,
     show: "hidden",
     animation: false,
-    // popupPlacement: "bottomRight",
-    // direction: "rtl",
+    btnDisabled: true,
   });
+
+  const LocalDeliveryDetails = JSON.parse(
+    localStorage.getItem("DeliveryDetails")
+  );
+  console.log("LocalDeliveryDetails", LocalDeliveryDetails.firstName);
+
+  let DataToServer;
+  if (LocalDeliveryDetails.firstName) {
+    DataToServer = {
+      ...LocalDeliveryDetails,
+      OwnerFirstName: value.firstName,
+      OwnerLastName: value.lastName,
+      CardNum: value.cardNum,
+      Cvv: value.cvv,
+      ExpMonth: value.month,
+      ExpYear: value.year,
+      IDNum: value.idNum,
+    };
+    console.log("DataToServer", DataToServer);
+  } else {
+  }
 
   const LocalCartCredit = JSON.parse(
     localStorage.getItem("LocalOpenOrderForCustomer")
@@ -106,16 +127,27 @@ const CreditCardDetailForm = (props) => {
   };
 
   const sendPayOrderToServer = () => {
-    Axios.post("/api/OrderPay", {
-      Email: "moshe212@gmail.com",
-      Pass: "4351",
-    }).then((response) => {
-      if (response.data === "OK") {
-        showModal();
-      } else {
-        showErrorModal();
+    let FormFieldsFull = [];
+    for (const property in DataToServer) {
+      // console.log(`${property}: ${DataToServer[property]}`);
+      if (property !== "phone" && property !== "notes") {
+        if (DataToServer[property]) {
+          FormFieldsFull.push(property);
+        }
       }
-    });
+    }
+    console.log("FormFieldsFull.length", FormFieldsFull.length);
+    if (FormFieldsFull.length === 14) {
+      Axios.post("/api/OrderPay", DataToServer).then((response) => {
+        if (response.data === "OK") {
+          showModal();
+        } else {
+          showErrorModal();
+        }
+      });
+    } else {
+      setState({ visibleErrorFields: true });
+    }
   };
 
   const handleCancel = () => {
@@ -214,9 +246,8 @@ const CreditCardDetailForm = (props) => {
     show,
     visible,
     visibleError,
+    visibleErrorFields,
     loading,
-    direction,
-    popupPlacement,
   } = state;
 
   let history = useHistory();
@@ -243,6 +274,21 @@ const CreditCardDetailForm = (props) => {
         </Modal>
       </div>
 
+      <div className="ModErrorFields">
+        <Modal
+          visible={visibleErrorFields}
+          closemodal={() => {
+            setState({ visibleErrorFields: false });
+          }}
+          type="rotateIn"
+        >
+          <div className="modalTxtErrorFields">
+            {/* <div></div> */}
+            <div>חסרים נתונים. אנא הזינו את כל השדות עם הכוכבית.</div>
+          </div>
+        </Modal>
+      </div>
+
       <div className="ModError">
         <Modal
           visible={visibleError}
@@ -262,9 +308,10 @@ const CreditCardDetailForm = (props) => {
         <form className={classes.root} noValidate autoComplete="off">
           <div dir="rtl">
             <TextField
+              required
               name="FirstName"
               id="FirstName"
-              label="שם פרטי"
+              label="שם פרטי בעל הכרטיס"
               multiline
               rowsMax={4}
               value={value.firstName}
@@ -273,9 +320,10 @@ const CreditCardDetailForm = (props) => {
               size="small"
             />
             <TextField
+              required
               name="LastName"
               id="LastName"
-              label="שם משפחה"
+              label=" שם משפחה בעל הכרטיס"
               multiline
               rowsMax={4}
               value={value.lastName}
@@ -288,6 +336,7 @@ const CreditCardDetailForm = (props) => {
           </div>
           <div dir="rtl">
             <TextField
+              required
               name="CardNum"
               id="CardNum"
               label="מס' אשראי"
@@ -300,6 +349,7 @@ const CreditCardDetailForm = (props) => {
               style={{ width: 350 }}
             />
             <TextField
+              required
               name="Cvv"
               id="Cvv"
               label="cvv"
@@ -313,8 +363,11 @@ const CreditCardDetailForm = (props) => {
           </div>
           <div>
             <FormControl variant="outlined" className={classes2.formControl}>
-              <InputLabel id="Month">חודש</InputLabel>
+              <InputLabel required id="Month">
+                חודש
+              </InputLabel>
               <Select
+                required
                 name="Month"
                 labelId="MonthSLabel"
                 id="MonthS"
@@ -345,10 +398,12 @@ const CreditCardDetailForm = (props) => {
               <InputLabel
                 // style={{ width: 40 }}
                 id="Year"
+                required
               >
                 שנה
               </InputLabel>
               <Select
+                required
                 name="Year"
                 labelId="demo-simple-select-outlined-label"
                 id="YearS"
@@ -380,6 +435,7 @@ const CreditCardDetailForm = (props) => {
             </FormControl>
 
             <TextField
+              required
               name="IDNum"
               id="IDNum"
               label="ת.ז"
@@ -404,6 +460,7 @@ const CreditCardDetailForm = (props) => {
               fontSize: 20,
             }}
             onClick={sendPayOrderToServer}
+            // disabled={state.btnDisabled}
             //   color="#e06da5"
           >
             בצע תשלום

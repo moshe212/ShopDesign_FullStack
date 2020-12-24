@@ -75,7 +75,7 @@ const RegisterForm = (props) => {
   // const [Redirect_MangeProducts, setRedirect_MangeProducts] = useState(false);
   // const [Redirect_Home, setRedirect_Home] = useState(false);
   // const [UserId, setUserId] = useState("");
-
+  const [modalVisible, setmodalVisible] = useState(false);
   const [State, setState] = useState({
     Redirect_MangeProducts: false,
     Redirect_Home: false,
@@ -113,6 +113,7 @@ const RegisterForm = (props) => {
     url = "/api/LogInAdmin";
   }
 
+  const TempCart = localStorage.getItem("TempCart");
   //console.log(url);
   const onFinish = (values) => {
     console.log(values.Register.Username, values.Register.Password);
@@ -129,34 +130,13 @@ const RegisterForm = (props) => {
       City: values.Register.City,
       Phone: values.Register.Phone,
       CellPhone: values.Register.CellPhone,
+      TempCart: TempCart,
     }).then(
       (response) => {
         console.log("response", response.data);
-        // if (response.data[0] === "OK" || response.data === "OK") {
-        //   if (url === "/api/LogInCustomer") {
-        //     Customeruccess();
-        //     localStorage.setItem("LocalCustomerID", response.data[1]);
-        //   } else {
-        //     success();
-        //   }
-
-        //   setTimeout(() => {
-        //     //console.log("1000");
-        //     if (url === "/api/LogInCustomer") {
-        //       const id = response.data[1];
-        //       const name = response.data[2];
-        //       //console.log(id, name);
-        //       setState({ UserId: id, Redirect_Home: true, Name: name });
-        //       // setUserId(id);
-        //       // setRedirect_Home(true);
-        //     } else if (url === "/api/LogInAdmin") {
-        //       // setRedirect_MangeProducts(true);
-        //       setState({ Redirect_MangeProducts: true });
-        //     }
-        //   }, 4000);
-        // } else {
-        //   error();
-        // }
+        if (response.data === "RegOK") {
+          setmodalVisible(true);
+        }
       },
       (error) => {
         //console.log(error);

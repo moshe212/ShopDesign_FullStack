@@ -48,7 +48,7 @@ const Home = (props) => {
   const [RendDrawer, setRendDrawer] = useState(false);
 
   const params = useParams();
-  console.log("params", params);
+  // console.log("params", params);
   let Details;
   if (window.history.state) {
     Details = window.history.state.state;
@@ -58,6 +58,11 @@ const Home = (props) => {
 
   const IsNewOrder = useContext(OrderContext).data;
   const changeIsNewOrder = useContext(OrderContext).changeIsNewOrder;
+
+  const Exit = () => {
+    setProductListToCart([]);
+    setCartv(0);
+  };
 
   const doAxios = (isSlider, isSearch, isAddProduct, url, val1, val2) => {
     Axios.get(url)
@@ -104,7 +109,7 @@ const Home = (props) => {
   const GetOrderForCustomer = (UserId) => {
     // const CustomerID = localStorage.getItem("LocalCustomerID");
     const CustomerID = UserId;
-    console.log("IsNewOrder_Home", IsNewOrder);
+    // console.log("IsNewOrder_Home", IsNewOrder);
     if (CustomerID != null && !IsNewOrder) {
       console.log("local", CustomerID);
       Axios.post("/api/GetOpenOrderForCustomer", { CustomerID: CustomerID })
@@ -123,7 +128,7 @@ const Home = (props) => {
         });
     }
   };
-  const CustomerID = localStorage.getItem("LocalCustomerID");
+  // const CustomerID = localStorage.getItem("LocalCustomerID").split(",")[0];
 
   // if (CustomerID) {
   //   GetOrderForCustomer();
@@ -144,7 +149,14 @@ const Home = (props) => {
           doAxios(false, true, false, link);
         }}
         Render="Home"
-        UserName={params.name}
+        Exitprop={Exit}
+        UserName={
+          params.name
+            ? params.name
+            : localStorage.getItem("LocalCustomerID")
+            ? localStorage.getItem("LocalCustomerID").split(",")[1]
+            : ""
+        }
       />
       <div className="SliderAndSearch">
         <div className="Slider">
@@ -199,6 +211,7 @@ const Home = (props) => {
         <div className="Products">
           {Products.map((product, productIndex) => (
             <Product
+              Exitprop={Exit}
               key={product._id}
               id={product._id}
               src={product.image}
@@ -340,15 +353,34 @@ const Home = (props) => {
                 );
               }}
               addTocart={(ProductDetails) => {
-                console.log("ProductDetails", ProductDetails);
                 if (ProductDetails.CustomerID === null) {
-                  setProductListToCart(ProductCount);
-                  setCartv(Cartv + 1);
+                  let resultArray = ProductListToCart.filter(function (item) {
+                    return item["_id"] === ProductCount[0]._id;
+                  });
+
+                  if (resultArray.length > 0) {
+                    ProductListToCart.forEach(function (obj) {
+                      if (obj._id === ProductCount[0]._id) {
+                        obj.quantity = obj.quantity + 1;
+                        setProductListToCart(ProductListToCart);
+                      }
+                    });
+                  } else {
+                    ProductListToCart.push(ProductCount[0]);
+                    setProductListToCart(ProductListToCart);
+                    setCartv(Cartv + 1);
+                  }
+
+                  localStorage.setItem(
+                    "TempCart",
+                    JSON.stringify(ProductListToCart)
+                  );
+
                   setProductCount([]);
                 } else {
                   Axios.post("/api/AddToCart", ProductDetails)
                     .then((res) => {
-                      console.log("res.data", res.data);
+                      // console.log("res.data", res.data);
                       localStorage.setItem(
                         "LocalOpenOrderForCustomer",
                         JSON.stringify(res.data[2])
