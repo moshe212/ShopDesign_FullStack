@@ -370,7 +370,7 @@ const Home = (props) => {
                 );
               }}
               addTocart={(ProductDetails) => {
-                if (ProductDetails.CustomerID === null) {
+                if (!ProductDetails.CustomerID) {
                   let resultArray = ProductListToCart.filter(function (item) {
                     return item["_id"] === ProductCount[0]._id;
                   });
