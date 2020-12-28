@@ -1,5 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Form, Input, InputNumber, Button } from "antd";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import Axios from "axios";
 import { Redirect } from "react-router";
 import { message } from "antd";
@@ -7,6 +9,8 @@ import { message } from "antd";
 import "./LoginForm.css";
 
 import OrderContext from "./OrderContext";
+
+const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 const success = () => {
   message.success({
@@ -72,22 +76,39 @@ const LoginForm = (props) => {
     UserId: "",
     Name: "",
     Order: "",
+    District_IsNewOrder: "",
   });
 
   const [form] = Form.useForm();
 
   const IsNewOrder = useContext(OrderContext).data;
   const changeIsNewOrder = useContext(OrderContext).changeIsNewOrder;
+  let District_IsNewOrder_Var;
 
+  // const Context = useContext();
+  const Context = useContext(OrderContext);
   //console.log("WhoLogIn", props.WhoLogIn);
-  const { Redirect_MangeProducts, Redirect_Home, UserId, Name, Order } = State;
+  const {
+    Redirect_MangeProducts,
+    Redirect_Home,
+    UserId,
+    Name,
+    District_IsNewOrder,
+    Order,
+  } = State;
   if (Redirect_MangeProducts) {
     return <Redirect push to="/Admin/ManageProducts" />;
   } else if (Redirect_Home) {
     //console.log("userid", { UserId }, { Name });
     return (
       <Redirect
-        to={{ pathname: "/LoginCustomer/Customer/" + Name, state: UserId }}
+        to={{
+          pathname: "/LoginCustomer/Customer/" + Name,
+          state: {
+            UserId: UserId,
+            District_IsNewOrder_Var: District_IsNewOrder,
+          },
+        }}
       />
     );
     // setTimeout(() => {
@@ -108,7 +129,7 @@ const LoginForm = (props) => {
 
     props.onSubmit();
     form.resetFields();
-
+    setState({ Spin: true });
     Axios.post(url, {
       Email: values.LogIn.Username,
       Pass: values.LogIn.Password,
@@ -130,10 +151,17 @@ const LoginForm = (props) => {
               response.data[9],
             ]);
 
-            if (response.data[3]) {
-              changeIsNewOrder(false);
+            if (changeIsNewOrder) {
+              console.log("changeIsNewOrder", changeIsNewOrder);
+              if (response.data[3]) {
+                changeIsNewOrder(false);
+              } else {
+                changeIsNewOrder(true);
+              }
+            } else if (response.data[3]) {
+              District_IsNewOrder_Var = false;
             } else {
-              changeIsNewOrder(true);
+              District_IsNewOrder_Var = true;
             }
             Customeruccess();
           } else {
@@ -152,6 +180,7 @@ const LoginForm = (props) => {
                 Redirect_Home: true,
                 Name: name,
                 Order: order,
+                District_IsNewOrder: District_IsNewOrder_Var,
               });
               // setUserId(id);
               // setRedirect_Home(true);
@@ -159,7 +188,7 @@ const LoginForm = (props) => {
               // setRedirect_MangeProducts(true);
               setState({ Redirect_MangeProducts: true });
             }
-          }, 4000);
+          }, 0);
         } else {
           error();
         }

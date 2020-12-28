@@ -19,6 +19,11 @@ import SerratedTabs from "./Pages/ManageOrders/Tab";
 import SerratedTabs2 from "./Pages/ManageOrders/Tab2";
 import DeliveryTracking from "./Pages/DeliveryTracking/DeliveryTracking";
 
+import Recipes from "./Pages/Recipes/Recipes";
+import ContactUs from "./Pages/ContactUs/ContactUs";
+import Specials from "./Pages/Specials/Specials";
+import About from "./Pages/About/About";
+
 import Pay from "./Pages/Pay/Pay";
 
 import { ProductsProvider } from "./ProductsContext";
@@ -107,6 +112,21 @@ const App = () => {
           <DeliveryTracking />
         </Route>
 
+        <Route exact path="/Recipes">
+          <Recipes />
+        </Route>
+
+        <Route exact path="/ContactUs">
+          <ContactUs />
+        </Route>
+
+        <Route exact path="/Specials">
+          <Specials />
+        </Route>
+
+        <Route exact path="/About">
+          <About />
+        </Route>
         {/* <Route path="/todos/:idParam">
           <Todo />
         </Route> */}

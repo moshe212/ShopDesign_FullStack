@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { message, Button } from "antd";
 import Header from "../../Header";
 import Footer from "../../Footer";
 import CartMin from "../../CartMin";
@@ -17,6 +18,12 @@ import { parseInt } from "lodash";
 
 import ProductsContext from "../../ProductsContext";
 
+const success = () => {
+  const hide = message.loading("Action in progress..", 0);
+  // Dismiss manually and asynchronously
+  setTimeout(hide, 2500);
+};
+
 const ProductDetails = (props) => {
   const [ClickArrow, setClickArrow] = useState(false);
   const [Productdetails, setProductdetails] = useState();
@@ -25,24 +32,10 @@ const ProductDetails = (props) => {
     JSON.parse(localStorage.getItem("LocalOpenOrderForCustomer"))
   );
 
-  // console.log("log");
-
   const params = useParams();
   // console.log("params", params);
 
   const Details = window.history.state.state;
-  // console.log("Details", Details);
-
-  // const doAxios = () => {
-  //   Axios.get("/api/products")
-  //     .then((res) => {
-  //       // console.log(res.data);
-  //       setProductdetails(res.data);
-  //     })
-  //     .catch(function (error) {
-  //       //console.log(error);
-  //     });
-  // };
 
   const HandleClick = () => {
     setTimeout(() => {
@@ -107,6 +100,8 @@ const ProductDetails = (props) => {
   }
 
   const AddToCartFromprodDetails = () => {
+    message.loading("..מוסיף את המוצר לעגלה", 0);
+
     Axios.post("/api/AddToCart", ProdForCart)
       .then((res) => {
         // console.log("res.data", res.data);
@@ -114,11 +109,12 @@ const ProductDetails = (props) => {
           "LocalOpenOrderForCustomer",
           JSON.stringify(res.data[2])
         );
-        setTimeout(() => {
-          setLocalCart(
-            JSON.parse(localStorage.getItem("LocalOpenOrderForCustomer"))
-          );
-        }, 100);
+        // setTimeout(() => {
+        setLocalCart(
+          JSON.parse(localStorage.getItem("LocalOpenOrderForCustomer"))
+        );
+        // }, 100);
+        message.destroy();
 
         // setProductListToCart(res.data[2]);
         // setCartv(res.data[2].length);
@@ -129,10 +125,6 @@ const ProductDetails = (props) => {
       });
   };
 
-  // const LocalCart = JSON.parse(
-  //   localStorage.getItem("LocalOpenOrderForCustomer")
-  // );
-  // console.log(localStorage.getItem("LocalCustomerID").split(","));
   console.log("LocalCartDet", LocalCart);
   console.log("Details", Details);
   if (!Productdetails_Json) {
@@ -191,9 +183,9 @@ const ProductDetails = (props) => {
           </div>
         </div>
         <div className="PD_BtnDiv">
-          <button className="PD_Btn" onClick={AddToCartFromprodDetails}>
+          <Button className="PD_Btn" onClick={AddToCartFromprodDetails}>
             הוסף לסל
-          </button>
+          </Button>
         </div>
       </div>
     );

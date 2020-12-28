@@ -216,22 +216,4 @@ const CartMin = (props) => {
   );
 };
 
-// const CartMin = (props) => {
-//   // const [ProductsIncarts, setProductsInCarts] = useState([]);
-
-//   //console.log(1);
-
-//   //console.log(props.ProductListToCart);
-//   // //console.log(props.RenderDrawer);
-
-//   return (
-//     <div className="CartImgDiv" onClick={(e) => //console.log("g")}>
-//       <div>
-//         <div className="Count">{props.Cartp}</div>
-//         <img className="CartImg" src="/Images/shopping_cart_PNG29.png"></img>
-//       </div>
-//     </div>
-//   );
-// };
-
 export default CartMin;

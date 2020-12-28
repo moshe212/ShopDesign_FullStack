@@ -69,6 +69,7 @@ const Home = (props) => {
       setProductListToCart([]);
       setCartv(0);
       location.state.exit = false;
+      console.log("location.state.exit2", location.state.exit);
     }
   }
 
@@ -119,12 +120,21 @@ const Home = (props) => {
       });
   };
 
+  console.log("Restrict_IsNewOrder_Val", location.state);
   const GetOrderForCustomer = (UserId) => {
     // const CustomerID = localStorage.getItem("LocalCustomerID");
     const CustomerID = UserId;
-    // console.log("IsNewOrder_Home", IsNewOrder);
-    if (CustomerID != null && !IsNewOrder) {
-      console.log("local", CustomerID);
+    console.log("IsNewOrder_Home", IsNewOrder);
+    if (
+      (CustomerID != null && !IsNewOrder) || location.state
+        ? CustomerID != null && !location.state.District_IsNewOrder_Var
+        : 1 === 2
+    ) {
+      // console.log("local", CustomerID);
+      console.log(
+        "location.state.District_IsNewOrder_Var",
+        location.state.District_IsNewOrder_Var
+      );
       Axios.post("/api/GetOpenOrderForCustomer", { CustomerID: CustomerID })
         .then((res) => {
           console.log("GetOpenOrderForCustomer", res.data[2]);

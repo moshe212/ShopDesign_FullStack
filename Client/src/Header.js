@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Header.css";
 import Search from "./Search";
 import { Redirect } from "react-router";
+import { useHistory } from "react-router-dom";
 
 import AdminLogIn from "./AdminLogin";
 import LogInUser from "./LogInUser";
@@ -16,14 +17,32 @@ const Header = (props) => {
   const [redirect_Home, setredirect_Home] = useState(false);
   const [redirect_ManageOrders, setredirect_ManageOrders] = useState(false);
 
-  //console.log("HeaderProps", props);
-  // console.log(props.Render);
-  const Render = props.Render;
-  // console.log(Render);
+  let history = useHistory();
 
-  // const ExitFunc = () => {
-  //   props.Exitprop();
-  // };
+  const clickPage = (e) => {
+    switch (e.target.innerText) {
+      case "מתכונים לשייקים":
+        // code block
+        history.push("/Recipes");
+        break;
+      case "צור קשר":
+        // code block
+        history.push("/ContactUs");
+        break;
+      case "מבצעים":
+        // code block
+        history.push("/Specials");
+        break;
+      case "אודות":
+        // code block
+        history.push("/About");
+        break;
+      default:
+      // code block
+    }
+  };
+
+  const Render = props.Render;
 
   const GoHome = () => {
     setredirect_Home(true);
@@ -69,10 +88,10 @@ const Header = (props) => {
       </div>
       {Render === "Home" && (
         <div className="Menu">
-          <div>אודות</div>
-          <div>מבצעים</div>
-          <div>צור קשר</div>
-          <div>מתכונים לשייקים</div>
+          <div onClick={(e) => clickPage(e)}>אודות</div>
+          <div onClick={(e) => clickPage(e)}>מבצעים</div>
+          <div onClick={(e) => clickPage(e)}>צור קשר</div>
+          <div onClick={(e) => clickPage(e)}>מתכונים לשייקים</div>
         </div>
       )}
       {Render === "Admin" && (
