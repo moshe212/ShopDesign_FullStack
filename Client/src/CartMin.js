@@ -99,7 +99,10 @@ const CartMin = (props) => {
   const getPay = () => {
     // setPay(true);
 
-    if (localStorage.getItem("LocalCustomerID")) {
+    if (
+      localStorage.getItem("LocalCustomerID") &&
+      localStorage.getItem("LocalOpenOrderForCustomer")
+    ) {
       history.push("/PayCart", { TotalPrice: TotalPrice });
     } else {
       setmodalVisible(true);
@@ -196,7 +199,12 @@ const CartMin = (props) => {
           >
             <div className="modalTxtErrorCart">
               {/* <div></div> */}
-              <div>.בכדי לעבור לתשלום עליך להירשם\לבצע כניסה</div>
+              {localStorage.getItem("LocalCustomerID") ? (
+                <div>.בכדי לעבור לתשלום עליך להוסיף מוצרים לעגלה</div>
+              ) : (
+                <div>.בכדי לעבור לתשלום עליך להירשם\לבצע כניסה</div>
+              )}
+              {/* <div>.בכדי לעבור לתשלום עליך להירשם\לבצע כניסה</div> */}
             </div>
           </Modal>
         </div>

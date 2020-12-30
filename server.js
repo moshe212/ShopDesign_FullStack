@@ -653,6 +653,21 @@ app.post("/api/LogInCustomer", async (req, res) => {
                   if (TempCart) {
                     SaveTempCart = TempCart;
                   }
+                  Status = [
+                    "OK",
+                    CustomerID,
+                    CustomerFullName,
+                    IsOrder,
+                    UserHome,
+                    UserStreet,
+                    UserCity,
+                    UserTelephone,
+                    UserCellPhone,
+                    UserMail,
+                    SaveTempCart,
+                  ];
+                  console.log("Status", Status);
+                  res.status(200).send(Status);
                 } else if (TempCart) {
                   let ProductsArrayForOrder;
                   let Totals;

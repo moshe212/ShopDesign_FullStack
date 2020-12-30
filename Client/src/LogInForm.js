@@ -1,10 +1,9 @@
 import React, { useState, useContext } from "react";
-import { Form, Input, InputNumber, Button } from "antd";
+import { Form, Input, InputNumber, Button, message } from "antd";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import Axios from "axios";
 import { Redirect } from "react-router";
-import { message } from "antd";
 
 import "./LoginForm.css";
 
@@ -22,17 +21,31 @@ const success = () => {
   });
 };
 
-const Customeruccess = () => {
-  message.success({
-    content: "הנתונים נכונים, אנו אוספים את הנתונים שלך ומיד תועבר להמשך קניה.",
-    className: "custom-class",
-    style: {
-      marginTop: "10vh",
-      margin: "0px auto",
-      width: "500px",
-      height: "400px",
-    },
-  });
+const Customeruccess = (existOrder) => {
+  console.log("existOrder", existOrder);
+  !existOrder
+    ? message.success({
+        content:
+          "הנתונים נכונים, אנו אוספים את הנתונים שלך ומיד תועבר להמשך קניה.",
+        className: "custom-class",
+        style: {
+          marginTop: "10vh",
+          margin: "0px auto",
+          width: "500px",
+          height: "400px",
+        },
+      })
+    : message.success({
+        content:
+          "נמצאה הזמנה בסטטוס טרם שולם בשרת, ההזמנה שהתחלתה עכשיו תבוטל ובמקומה תופיע ההזמנה שהתקבלה מהשרת.",
+        className: "custom-class",
+        style: {
+          marginTop: "10vh",
+          margin: "0px auto",
+          width: "500px",
+          height: "400px",
+        },
+      });
 };
 
 const error = () => {
@@ -126,16 +139,17 @@ const LoginForm = (props) => {
   //console.log(url);
   const onFinish = (values) => {
     //console.log(values.LogIn.Username, values.LogIn.Password);
-
+    message.loading("..מבצע אימות נתונים מול השרת, מיד תועבר להמשך קניה", 0);
     props.onSubmit();
     form.resetFields();
-    setState({ Spin: true });
+    // setState({ Spin: true });
     Axios.post(url, {
       Email: values.LogIn.Username,
       Pass: values.LogIn.Password,
       TempCart: localStorage.getItem("TempCart"),
     }).then(
       (response) => {
+        message.destroy();
         console.log("response", response.data);
         if (response.data[0] === "OK" || response.data === "OK") {
           localStorage.removeItem("TempCart");
@@ -166,7 +180,7 @@ const LoginForm = (props) => {
             } else {
               District_IsNewOrder_Var = true;
             }
-            Customeruccess();
+            Customeruccess(response.data[10]);
           } else {
             success();
           }
@@ -191,7 +205,7 @@ const LoginForm = (props) => {
               // setRedirect_MangeProducts(true);
               setState({ Redirect_MangeProducts: true });
             }
-          }, 0);
+          }, 1000);
         } else {
           error();
         }

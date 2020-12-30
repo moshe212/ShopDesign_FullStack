@@ -143,7 +143,10 @@ const Home = (props) => {
           //console.log(error);
         });
     } else if (location.state) {
-      if (CustomerID != null && location.state.District_IsNewOrder === false) {
+      if (
+        CustomerID != null &&
+        location.state.District_IsNewOrder_Var === false
+      ) {
         console.log(
           "location.state.District_IsNewOrder_Var",
           location.state.District_IsNewOrder_Var
