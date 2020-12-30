@@ -503,7 +503,7 @@ app.post("/api/LogInAdmin", (req, res) => {
 // כניסת לקוח == Mongo
 app.post("/api/LogInCustomer", async (req, res) => {
   console.log(req.body);
-  const { Email, Pass } = req.body;
+  const { Email, Pass, TempCart } = req.body;
   console.log(Email, Pass);
   let Status = "";
   let CustomerID = "";
@@ -515,6 +515,7 @@ app.post("/api/LogInCustomer", async (req, res) => {
   let UserCellPhone = "";
   let UserMail = "";
   let OrderList = "";
+  let SaveTempCart = "";
 
   const GetOrder = (ID) => {
     console.log(ID);
@@ -599,6 +600,39 @@ app.post("/api/LogInCustomer", async (req, res) => {
     return myPromise2;
   };
 
+  const AddProductsFromTempCart = (ID, TempCart) => {
+    console.log(ID);
+    let myPromise = new Promise((resolve, reject) => {
+      // resolve("5");
+
+      Order.findById(ID, async (err, order) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+        } else {
+          //   const ThisOrder = await Order.findOne({
+          //     _id: OrderID,
+          //   });
+          const ThisOrder = order;
+          console.log("TempCart.length", JSON.parse(TempCart).length, TempCart);
+          for (let p = 0; p < JSON.parse(TempCart).length; p++) {
+            await ThisOrder.Products.push({
+              productid: JSON.parse(TempCart)[p]._id,
+              quantity: JSON.parse(TempCart)[p].quantity,
+            });
+            await ThisOrder.save();
+          }
+
+          const Thisorder_ToClient = ThisOrder;
+          console.log("ThisOrder", Thisorder_ToClient.Products);
+
+          resolve(Thisorder_ToClient);
+        }
+      });
+    });
+    return myPromise;
+  };
+
   const CustomerItem = Customer.find(async (err, Customers) => {
     if (err) {
       console.error(err);
@@ -616,24 +650,90 @@ app.post("/api/LogInCustomer", async (req, res) => {
                 console.log("result", result);
                 if (result != null) {
                   IsOrder = true;
+                  if (TempCart) {
+                    SaveTempCart = TempCart;
+                  }
+                } else if (TempCart) {
+                  let ProductsArrayForOrder;
+                  let Totals;
+                  let TotalAmount = 0;
+
+                  ProductsArrayForOrder = JSON.parse(TempCart).map(
+                    (prodObj) => ({
+                      productid: prodObj._id,
+                      quantity: prodObj.quantity,
+                    })
+                  );
+                  console.log("ProductsArrayForOrder", ProductsArrayForOrder);
+
+                  Totals = JSON.parse(TempCart).map(
+                    (prodObj) => prodObj.quantity * prodObj.price
+                  );
+
+                  TotalAmount = Totals.reduce((a, b) => a + b, 0);
+
+                  const newOrder = new Order({
+                    CustomerID: CustomerID,
+                    Products: [],
+                    // Quantity: Quantity,
+                    OrderDate: Date.now(),
+                    RequiredDate: Date.now(),
+                    ShippedDate: Date.now(),
+                    ShipStreet: "",
+                    ShipHome: "",
+                    ShipCity: "",
+                    Status: false,
+                    TotalAmount: TotalAmount,
+                  });
+                  newOrder.save(function async(err, order) {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      console.log("orderid", order._id);
+
+                      AddProductsFromTempCart(order._id, TempCart).then(
+                        (result) => {
+                          console.log("AddProductsFromTempCartresulte", result);
+                          IsOrder = true;
+
+                          Status = [
+                            "OK",
+                            CustomerID,
+                            CustomerFullName,
+                            IsOrder,
+                            UserHome,
+                            UserStreet,
+                            UserCity,
+                            UserTelephone,
+                            UserCellPhone,
+                            UserMail,
+                            SaveTempCart,
+                          ];
+                          console.log("Status", Status);
+                          res.status(200).send(Status);
+                        }
+                      );
+                    }
+                  });
                 } else {
                   IsOrder = false;
-                }
 
-                Status = [
-                  "OK",
-                  CustomerID,
-                  CustomerFullName,
-                  IsOrder,
-                  UserHome,
-                  UserStreet,
-                  UserCity,
-                  UserTelephone,
-                  UserCellPhone,
-                  UserMail,
-                ];
-                console.log("Status", Status);
-                res.status(200).send(Status);
+                  Status = [
+                    "OK",
+                    CustomerID,
+                    CustomerFullName,
+                    IsOrder,
+                    UserHome,
+                    UserStreet,
+                    UserCity,
+                    UserTelephone,
+                    UserCellPhone,
+                    UserMail,
+                    SaveTempCart,
+                  ];
+                  console.log("Status", Status);
+                  res.status(200).send(Status);
+                }
               },
               (error) => {
                 console.log("error", error);
@@ -709,17 +809,23 @@ app.post("/api/RegisterCustomer", async (req, res) => {
     return myPromise;
   };
 
-  let ProductsArrayForOrder = JSON.parse(TempCart).map((prodObj) => ({
-    productid: prodObj._id,
-    quantity: prodObj.quantity,
-  }));
-  console.log("ProductsArrayForOrder", ProductsArrayForOrder);
+  let ProductsArrayForOrder;
+  let Totals;
+  let TotalAmount = 0;
 
-  const Totals = JSON.parse(TempCart).map(
-    (prodObj) => prodObj.quantity * prodObj.price
-  );
+  if (TempCart) {
+    ProductsArrayForOrder = JSON.parse(TempCart).map((prodObj) => ({
+      productid: prodObj._id,
+      quantity: prodObj.quantity,
+    }));
+    console.log("RegProductsArrayForOrder", ProductsArrayForOrder);
 
-  const TotalAmount = Totals.reduce((a, b) => a + b, 0);
+    Totals = JSON.parse(TempCart).map(
+      (prodObj) => prodObj.quantity * prodObj.price
+    );
+
+    TotalAmount = Totals.reduce((a, b) => a + b, 0);
+  }
 
   const newCustomer = new Customer({
     UserName: Email,
@@ -738,103 +844,73 @@ app.post("/api/RegisterCustomer", async (req, res) => {
       CustomerID = cust._id;
       console.log("custimerID", CustomerID);
 
-      const newOrder = new Order({
-        CustomerID: CustomerID,
-        Products: [],
-        // Quantity: Quantity,
-        OrderDate: Date.now(),
-        RequiredDate: Date.now(),
-        ShippedDate: Date.now(),
-        ShipStreet: "",
-        ShipHome: "",
-        ShipCity: "",
-        Status: false,
-        TotalAmount: TotalAmount,
-      });
-      newOrder.save(function async(err, order) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log("orderid", order._id);
-          // const ThisOrder = await Order.findOne({
-          //   _id: OrderID,
-          // });
-          // console.log("ThisOrder.Products.length", ThisOrder.Products.length);
+      if (TempCart) {
+        const newOrder = new Order({
+          CustomerID: CustomerID,
+          Products: [],
+          // Quantity: Quantity,
+          OrderDate: Date.now(),
+          RequiredDate: Date.now(),
+          ShippedDate: Date.now(),
+          ShipStreet: "",
+          ShipHome: "",
+          ShipCity: "",
+          Status: false,
+          TotalAmount: TotalAmount,
+        });
+        newOrder.save(function async(err, order) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("orderid", order._id);
+            // const ThisOrder = await Order.findOne({
+            //   _id: OrderID,
+            // });
+            // console.log("ThisOrder.Products.length", ThisOrder.Products.length);
 
-          AddProductsFromTempCart(order._id, TempCart).then((result) => {
-            console.log("resulte", result);
+            AddProductsFromTempCart(order._id, TempCart).then((result) => {
+              console.log("resulte", result);
 
-            res.status(200).send(result);
-          });
-        }
-
-        // for (let p = 0; p < TempCart.length; p++) {
-        //   order.Products.push({
-        //     productid: TempCart[p].productId,
-        //     quantity: TempCart[p].quantity,
-        //   });
-
-        //   order.save();
-        // }
-        // res.status(200).send(order);
-      });
+              res.status(200).send("RegOK");
+            });
+          }
+        });
+      } else {
+        res.status(200).send("RegOK");
+      }
     }
   });
 });
 
-// משיכת עגלה פתוחה ללקוח == Mongo
-app.post("/api/GetOpenOrderForCustomer", (req, res) => {
+app.post("/api/GetOpenOrderForCustomer", async (req, res) => {
   console.log("GetOpenOrderForCustomer", req.body);
   const { CustomerID } = req.body;
   console.log(CustomerID);
 
-  const Orderitem = Order.findOne(
-    { CustomerID: CustomerID, Status: false },
-    async (err, order) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("order", order);
-        // console.log("OrderList0", order.Products[0]);
-        const ProductListCartInServer = [];
-        for (i = 0; i < order.Products.length; i++) {
-          const productId = order.Products[i].productid;
-          const quantity = order.Products[i].quantity;
-          await Product.findById(productId, async (err, prod) => {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log("find", prod);
-              const Prod = {
-                id: prod._id,
-                title: prod.title,
-                image: prod.image,
-                quantity: quantity,
-                price: prod.price,
-              };
-              await ProductListCartInServer.push(Prod);
-            }
-          });
-        }
-        console.log(
-          "ProductListCartInServer",
-          // ProductListCartInServer,
-          ProductListCartInServer.length,
-          order.Products.length
-        );
+  const Orderitem = await Order.findOne({
+    CustomerID: CustomerID,
+    Status: false,
+  })
+    .populate("Products.productid")
+    .exec();
 
-        Status = ["OK", CustomerID, ProductListCartInServer];
-        // console.log("Status", Status);
-        // console.log("OrderList", OrderList);
-        // console.log("OrderList", OrderList.Products._id);
-        // if (ProductListCartInServer.length === order.Products.length) {
-        //   console.log("equal");
-        //   res.status(200).send(Status);
-        // }
-      }
-      res.status(200).send(Status);
+  const getArray = async () => {
+    let ProductListCartInServer = [];
+    for (let i = 0; i < Orderitem.Products.length; i++) {
+      const Prod = {
+        id: Orderitem.Products[i].productid._id,
+        title: Orderitem.Products[i].productid.title,
+        image: Orderitem.Products[i].productid.image,
+        quantity: Orderitem.Products[i].quantity,
+        price: Orderitem.Products[i].productid.price,
+      };
+      ProductListCartInServer.push(Prod);
     }
-  );
+    return ProductListCartInServer;
+  };
+  const ArrayForClient = await getArray();
+  console.log("ArrayForClient", ArrayForClient);
+  res.status(200).send(ArrayForClient);
 });
 
 // כניסת משתמש == Mongo
@@ -1129,8 +1205,21 @@ app.post("/api/AddToCart", async (req, res) => {
 
 app.post("/api/OrderPay", async (req, res) => {
   console.log(req.body);
-  res.status(200).send("OK");
+  const CustomerID = req.body.CustomerID;
+  const Orderitem = Order.findOne(
+    { CustomerID: CustomerID, Status: false },
+    async (err, order) => {
+      if (err) {
+        console.log(err);
+      } else {
+        order.Status = true;
+        await order.save();
+        res.status(200).send("OK");
+      }
+    }
+  );
 });
+
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/Client/build/index.html"));
 });

@@ -31,6 +31,11 @@ const ProductDetails = (props) => {
   const [LocalCart, setLocalCart] = useState(
     JSON.parse(localStorage.getItem("LocalOpenOrderForCustomer"))
   );
+  const [TempCart, setTempCart] = useState(
+    localStorage.getItem("TempCart")
+      ? JSON.parse(localStorage.getItem("TempCart"))
+      : []
+  );
 
   const params = useParams();
   // console.log("params", params);
@@ -97,36 +102,63 @@ const ProductDetails = (props) => {
       Quantity: 1,
       CustomerID: localStorage.getItem("LocalCustomerID").split(",")[0],
     };
+  } else {
+    ProdForCart = {
+      _id: params.id,
+      title: PD_Name,
+      image: PD_Img,
+      quantity: 1,
+      price: PD_Price,
+    };
   }
 
+  let TempProductListToCart = [];
   const AddToCartFromprodDetails = () => {
     message.loading("..מוסיף את המוצר לעגלה", 0);
+    if (localStorage.getItem("LocalCustomerID")) {
+      Axios.post("/api/AddToCart", ProdForCart)
+        .then((res) => {
+          // console.log("res.data", res.data);
+          localStorage.setItem(
+            "LocalOpenOrderForCustomer",
+            JSON.stringify(res.data[2])
+          );
+          // setTimeout(() => {
+          setLocalCart(
+            JSON.parse(localStorage.getItem("LocalOpenOrderForCustomer"))
+          );
+          // }, 100);
+          message.destroy();
 
-    Axios.post("/api/AddToCart", ProdForCart)
-      .then((res) => {
-        // console.log("res.data", res.data);
-        localStorage.setItem(
-          "LocalOpenOrderForCustomer",
-          JSON.stringify(res.data[2])
-        );
-        // setTimeout(() => {
-        setLocalCart(
-          JSON.parse(localStorage.getItem("LocalOpenOrderForCustomer"))
-        );
-        // }, 100);
+          // setProductListToCart(res.data[2]);
+          // setCartv(res.data[2].length);
+          // setProductCount([]);
+        })
+        .catch(function (error) {
+          //console.log(error);
+        });
+    } else {
+      if (!localStorage.getItem("TempCart")) {
+        console.log("!");
+        TempProductListToCart.push(ProdForCart);
+        localStorage.setItem("TempCart", JSON.stringify(TempProductListToCart));
+        setTempCart(JSON.parse(localStorage.getItem("TempCart")));
         message.destroy();
+      } else {
+        const ExistTempCart = JSON.parse(localStorage.getItem("TempCart"));
+        ExistTempCart.push(ProdForCart);
 
-        // setProductListToCart(res.data[2]);
-        // setCartv(res.data[2].length);
-        // setProductCount([]);
-      })
-      .catch(function (error) {
-        //console.log(error);
-      });
+        console.log("ExistTempCart", ExistTempCart);
+        localStorage.setItem("TempCart", JSON.stringify(ExistTempCart));
+        setTempCart(ExistTempCart);
+        message.destroy();
+      }
+    }
   };
 
-  console.log("LocalCartDet", LocalCart);
-  console.log("Details", Details);
+  // console.log("LocalCartDet", LocalCart);
+  // console.log("Details", Details);
+  console.log("TempProductListToCart", TempProductListToCart);
   if (!Productdetails_Json) {
     return <div>"hello"</div>;
   } else {
@@ -140,7 +172,13 @@ const ProductDetails = (props) => {
           }
         />
         <CartMin
-          ProductListToCart={LocalCart ? LocalCart : []}
+          ProductListToCart={
+            LocalCart
+              ? LocalCart
+              : localStorage.getItem("TempCart")
+              ? TempCart
+              : []
+          }
           Cartp={Details ? Details.Cartv || 0 : 0}
         />
 

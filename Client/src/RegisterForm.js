@@ -29,9 +29,9 @@ const success = () => {
   });
 };
 
-const Customeruccess = () => {
+const RegCustomeruccess = () => {
   message.success({
-    content: "הנתונים נכונים, אנו אוספים את הנתונים שלך ומיד תועבר להמשך קניה.",
+    content: "הרישום בוצע בהצלחה, ניתן להתחבר ולבצע הזמנה.",
     className: "custom-class",
     style: {
       marginTop: "10vh",
@@ -135,7 +135,9 @@ const RegisterForm = (props) => {
       (response) => {
         console.log("response", response.data);
         if (response.data === "RegOK") {
-          setmodalVisible(true);
+          localStorage.removeItem("TempCart");
+          RegCustomeruccess();
+        } else {
         }
       },
       (error) => {

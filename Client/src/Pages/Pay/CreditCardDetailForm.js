@@ -92,9 +92,11 @@ const CreditCardDetailForm = (props) => {
       ExpMonth: value.month,
       ExpYear: value.year,
       IDNum: value.idNum,
+      CustomerID: localStorage.getItem("LocalCustomerID").split(",")[0],
     };
     console.log("DataToServer", DataToServer);
   } else {
+    DataToServer = {};
   }
 
   const LocalCartCredit = JSON.parse(
@@ -129,17 +131,19 @@ const CreditCardDetailForm = (props) => {
   const sendPayOrderToServer = () => {
     let FormFieldsFull = [];
     for (const property in DataToServer) {
-      // console.log(`${property}: ${DataToServer[property]}`);
+      console.log(`${property}: ${DataToServer[property]}`);
       if (property !== "phone" && property !== "notes") {
+        console.log(DataToServer[property]);
         if (DataToServer[property]) {
           FormFieldsFull.push(property);
         }
       }
     }
     console.log("FormFieldsFull.length", FormFieldsFull.length);
-    if (FormFieldsFull.length === 14) {
+    if (FormFieldsFull.length === 15) {
       Axios.post("/api/OrderPay", DataToServer).then((response) => {
         if (response.data === "OK") {
+          localStorage.removeItem("LocalOpenOrderForCustomer");
           showModal();
         } else {
           showErrorModal();

@@ -133,13 +133,16 @@ const LoginForm = (props) => {
     Axios.post(url, {
       Email: values.LogIn.Username,
       Pass: values.LogIn.Password,
+      TempCart: localStorage.getItem("TempCart"),
     }).then(
       (response) => {
         console.log("response", response.data);
         if (response.data[0] === "OK" || response.data === "OK") {
+          localStorage.removeItem("TempCart");
           if (url === "/api/LogInCustomer") {
             // localStorage.clear();
             localStorage.removeItem("LocalCustomerID");
+
             localStorage.setItem("LocalCustomerID", [
               response.data[1],
               response.data[2],

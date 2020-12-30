@@ -125,30 +125,44 @@ const Home = (props) => {
     // const CustomerID = localStorage.getItem("LocalCustomerID");
     const CustomerID = UserId;
     console.log("IsNewOrder_Home", IsNewOrder);
-    if (
-      (CustomerID != null && !IsNewOrder) || location.state
-        ? CustomerID != null && !location.state.District_IsNewOrder_Var
-        : 1 === 2
-    ) {
+    if (CustomerID != null && !IsNewOrder) {
       // console.log("local", CustomerID);
-      console.log(
-        "location.state.District_IsNewOrder_Var",
-        location.state.District_IsNewOrder_Var
-      );
+
       Axios.post("/api/GetOpenOrderForCustomer", { CustomerID: CustomerID })
         .then((res) => {
-          console.log("GetOpenOrderForCustomer", res.data[2]);
+          console.log("GetOpenOrderForCustomer", res.data);
           localStorage.removeItem("LocalOpenOrderForCustomer");
           localStorage.setItem(
             "LocalOpenOrderForCustomer",
-            JSON.stringify(res.data[2])
+            JSON.stringify(res.data)
           );
-          setProductListToCart(res.data[2]);
-          setCartv(res.data[2].length);
+          setProductListToCart(res.data);
+          setCartv(res.data.length);
         })
         .catch(function (error) {
           //console.log(error);
         });
+    } else if (location.state) {
+      if (CustomerID != null && location.state.District_IsNewOrder === false) {
+        console.log(
+          "location.state.District_IsNewOrder_Var",
+          location.state.District_IsNewOrder_Var
+        );
+        Axios.post("/api/GetOpenOrderForCustomer", { CustomerID: CustomerID })
+          .then((res) => {
+            console.log("GetOpenOrderForCustomer", res.data);
+            localStorage.removeItem("LocalOpenOrderForCustomer");
+            localStorage.setItem(
+              "LocalOpenOrderForCustomer",
+              JSON.stringify(res.data)
+            );
+            setProductListToCart(res.data);
+            setCartv(res.data.length);
+          })
+          .catch(function (error) {
+            //console.log(error);
+          });
+      }
     }
   };
   // const CustomerID = localStorage.getItem("LocalCustomerID").split(",")[0];
@@ -224,7 +238,11 @@ const Home = (props) => {
         />
       </div>
       <CartMin
-        ProductListToCart={ProductListToCart}
+        ProductListToCart={
+          localStorage.getItem("TempCart")
+            ? JSON.parse(localStorage.getItem("TempCart"))
+            : ProductListToCart
+        }
         Cartp={Cartv}
         GetOrderForCustomer={GetOrderForCustomer}
         UserID={
