@@ -146,12 +146,32 @@ const ProductDetails = (props) => {
         message.destroy();
       } else {
         const ExistTempCart = JSON.parse(localStorage.getItem("TempCart"));
-        ExistTempCart.push(ProdForCart);
+        // ExistTempCart.push(ProdForCart);
 
-        console.log("ExistTempCart", ExistTempCart);
-        localStorage.setItem("TempCart", JSON.stringify(ExistTempCart));
-        setTempCart(ExistTempCart);
-        message.destroy();
+        let resultArray = ExistTempCart.filter(function (item) {
+          return item["_id"] === params.id;
+        });
+
+        if (resultArray.length > 0) {
+          ExistTempCart.forEach(function (obj) {
+            if (obj._id === params.id) {
+              obj.quantity = obj.quantity + 1;
+              localStorage.setItem("TempCart", JSON.stringify(ExistTempCart));
+              setTempCart(ExistTempCart);
+              message.destroy();
+            }
+          });
+        } else {
+          ExistTempCart.push(ProdForCart);
+          localStorage.setItem("TempCart", JSON.stringify(ExistTempCart));
+          setTempCart(ExistTempCart);
+          message.destroy();
+        }
+
+        // console.log("ExistTempCart", ExistTempCart);
+        // localStorage.setItem("TempCart", JSON.stringify(ExistTempCart));
+        // setTempCart(ExistTempCart);
+        // message.destroy();
       }
     }
   };
