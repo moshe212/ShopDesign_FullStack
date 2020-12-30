@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Form, Input, InputNumber, Button, message } from "antd";
-import { Spin } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import Axios from "axios";
 import { Redirect } from "react-router";
@@ -78,11 +77,6 @@ const validateMessages = {
 };
 
 const LoginForm = (props) => {
-  // const [Redirect_MangeProducts, setRedirect_MangeProducts] = useState(false);
-  // const [Redirect_Home, setRedirect_Home] = useState(false);
-  // const [UserId, setUserId] = useState("");
-
-  console.log("loginformrender");
   const [State, setState] = useState({
     Redirect_MangeProducts: false,
     Redirect_Home: false,
@@ -98,9 +92,8 @@ const LoginForm = (props) => {
   const changeIsNewOrder = useContext(OrderContext).changeIsNewOrder;
   let District_IsNewOrder_Var;
 
-  // const Context = useContext();
   const Context = useContext(OrderContext);
-  //console.log("WhoLogIn", props.WhoLogIn);
+
   const {
     Redirect_MangeProducts,
     Redirect_Home,
@@ -112,7 +105,6 @@ const LoginForm = (props) => {
   if (Redirect_MangeProducts) {
     return <Redirect push to="/Admin/ManageProducts" />;
   } else if (Redirect_Home) {
-    //console.log("userid", { UserId }, { Name });
     return (
       <Redirect
         to={{
@@ -124,9 +116,6 @@ const LoginForm = (props) => {
         }}
       />
     );
-    // setTimeout(() => {
-    //   return <Redirect push to="/LoginUser/:" {...UserId} />;
-    // }, 1000);
   }
 
   let url = "";
@@ -136,13 +125,11 @@ const LoginForm = (props) => {
   } else if (props.WhoLogIn === "Admin") {
     url = "/api/LogInAdmin";
   }
-  //console.log(url);
+
   const onFinish = (values) => {
-    //console.log(values.LogIn.Username, values.LogIn.Password);
     message.loading("..מבצע אימות נתונים מול השרת, מיד תועבר להמשך קניה", 0);
     props.onSubmit();
     form.resetFields();
-    // setState({ Spin: true });
     Axios.post(url, {
       Email: values.LogIn.Username,
       Pass: values.LogIn.Password,
@@ -154,7 +141,6 @@ const LoginForm = (props) => {
         if (response.data[0] === "OK" || response.data === "OK") {
           localStorage.removeItem("TempCart");
           if (url === "/api/LogInCustomer") {
-            // localStorage.clear();
             localStorage.removeItem("LocalCustomerID");
 
             localStorage.setItem("LocalCustomerID", [
@@ -186,7 +172,6 @@ const LoginForm = (props) => {
           }
 
           setTimeout(() => {
-            //console.log("1000");
             if (url === "/api/LogInCustomer") {
               const id = response.data[1];
               const name = response.data[2];
@@ -199,10 +184,7 @@ const LoginForm = (props) => {
                 Order: order,
                 District_IsNewOrder: District_IsNewOrder_Var,
               });
-              // setUserId(id);
-              // setRedirect_Home(true);
             } else if (url === "/api/LogInAdmin") {
-              // setRedirect_MangeProducts(true);
               setState({ Redirect_MangeProducts: true });
             }
           }, 1000);

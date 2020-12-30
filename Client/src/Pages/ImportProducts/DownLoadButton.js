@@ -12,9 +12,7 @@ const DownLoadButton = () => {
       .then((res) => {
         FileDownload(res.data, "Products.csv");
       })
-      .catch(function (error) {
-        //console.log(error);
-      });
+      .catch(function (error) {});
   };
   const size = "large";
   return (

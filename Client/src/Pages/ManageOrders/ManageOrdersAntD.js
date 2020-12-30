@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import { Table } from "antd";
 import reqwest from "reqwest";
-import Axios from "axios";
 
 const columns = [
   {
@@ -77,51 +76,6 @@ export default class ManageOrdersAntD extends React.Component {
       });
     });
   };
-
-  //     reqwest({
-  //       //   url: "https://randomuser.me/api",
-  //       url: "/api/orders",
-  //       method: "get",
-  //       type: "json",
-  //       data: getRandomuserParams(params),
-  //     }).then((data) => {
-  //       console.log(data);
-  //       this.setState({
-  //         loading: false,
-  //         data: data.results,
-  //         pagination: {
-  //           ...params.pagination,
-  //           total: 200,
-  //           // 200 is mock data, you should read it from server
-  //           // total: data.totalCount,
-  //         },
-  //       });
-  //     });
-  //   };
-
-  //   fetch = (params = {}) => {
-  //     this.setState({ loading: true });
-  //     reqwest({
-  //       //   url: "https://randomuser.me/api",
-  //       url: "/api/orders",
-  //       method: "get",
-  //       type: "json",
-  //       data: getRandomuserParams(params),
-  //     }).then((data) => {
-  //       console.log(data);
-  //       this.setState({
-  //         loading: false,
-  //         data: data.results,
-  //         pagination: {
-  //           ...params.pagination,
-  //           total: 200,
-  //           // 200 is mock data, you should read it from server
-  //           // total: data.totalCount,
-  //         },
-  //       });
-  //     });
-  //   };
-
   render() {
     const { data, pagination, loading } = this.state;
     return (
@@ -136,5 +90,3 @@ export default class ManageOrdersAntD extends React.Component {
     );
   }
 }
-
-// ReactDOM.render(<App />, mountNode);

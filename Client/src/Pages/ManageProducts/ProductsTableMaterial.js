@@ -57,8 +57,6 @@ const theme = createMuiTheme({
   },
 });
 const ProductsTableMaterial = () => {
-  // const { useState } = React;
-
   const [columns, setColumns] = useState([
     { title: "כמות", field: "quantity", type: "numeric" },
     { title: "מחיר", field: "price", type: "numeric" },
@@ -89,8 +87,6 @@ const ProductsTableMaterial = () => {
   const doAxios = (operation, url, obj) => {
     Axios[operation](url, obj)
       .then((res) => {
-        //console.log("res.data", res.data);
-        //console.log(url);
         setData(res.data);
       })
       .catch(function (error) {
@@ -138,10 +134,8 @@ const ProductsTableMaterial = () => {
                     quantity: newData.quantity,
                     price: newData.price,
                   };
-                  //console.log(obj);
 
                   doAxios("post", url, obj);
-                  //   setData([...data, newData]);
 
                   resolve();
                 }, 1000);
@@ -154,22 +148,13 @@ const ProductsTableMaterial = () => {
 
                   dataUpdate[index] = newData;
 
-                  //   setData([...dataUpdate]);
                   const url = "/api/products/" + dataUpdate[index]._id;
                   const obj = {
                     title: dataUpdate[index].title,
                     quantity: dataUpdate[index].quantity,
                     price: dataUpdate[index].price,
                   };
-                  //console.log(
-                  //   "RowUpdate",
-                  //   dataUpdate,
-                  //   index,
-                  //   dataUpdate[index],
-                  //   dataUpdate[index]._id,
-                  //   url,
-                  //   obj
-                  // );
+
                   doAxios("put", url, obj);
                   resolve();
                 }, 1000);
@@ -180,16 +165,8 @@ const ProductsTableMaterial = () => {
                   const dataDelete = [...data];
                   const index = oldData.tableData.id;
                   const url = "/api/products/" + dataDelete[index]._id;
-                  //console.log(
-                  //   dataDelete,
-                  //   index,
-                  //   dataDelete[index],
-                  //   dataDelete[index]._id,
-                  //   url
-                  // );
+
                   doAxios("delete", url);
-                  // dataDelete.splice(index, 1);
-                  // setData([...dataDelete]);
 
                   resolve();
                 }, 1000);

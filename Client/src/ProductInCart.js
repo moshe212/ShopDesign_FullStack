@@ -1,24 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import "./ProductInCart.css";
 
 const ProductInCart = (props) => {
-  //console.log("ProductTotalPrice", props.Quantity * props.price);
   const ProductTotalPrice = props.Quantity * props.price;
   return (
     <div className="Cart_Product" id={props.id}>
-      {/* <div className="Cart_Quantity">כמות: {props.Quantity}</div> */}
-
-      {/* {props.addTocart && (
-        <div>
-          <button className="Cart_Plus" onClick={(e) => props.addTocart(e)}>
-            +
-          </button>
-          <button className="Cart_Minus" onClick={(e) => props.addTocart(e)}>
-            -
-          </button>
-        </div>
-      )} */}
-
       <span className="TotalPriceincart">
         <small className="SmallIcon">₪ </small>
         <span className="ProdInCartTotalPrice">{ProductTotalPrice}</span>

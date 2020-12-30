@@ -53,13 +53,6 @@
   margin-top: 6%;
 }
 
-/* .T {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-} */
-
 .Isr {
   width: 100px;
   height: 60px;
@@ -87,15 +80,6 @@
 .CreditCarrdImgs {
   margin-top: 20px;
 }
-
-/* .anim {
-  animation: bounce;
-} */
-
-/* .animate__animated.animate__lightSpeedInRight {
-  --animate-duration: 2s;
-  --animate-delay: 5s;
-} */
 
 .Mod {
   top: 0;
@@ -152,7 +136,5 @@
 }
 
 .modalTxtErrorFields div {
-  /* margin-top: 20px !important; */
-  /* height: 30px !important; */
   padding: 30px;
 }

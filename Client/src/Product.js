@@ -1,36 +1,15 @@
-import React, { useState, useContext, useEffect } from "react";
-import socketIOClient from "socket.io-client";
-import cloneDeep from "lodash/cloneDeep";
+import React, { useState, useContext } from "react";
 import "./Product.css";
-
 import { Redirect } from "react-router";
-
 import OrderContext from "./OrderContext";
 
 const Product = (props) => {
-  // const [Active, setActive] = useState(false);
-  // const ActiveProd = (ActivID) => {
-  //   //console.log("+", ActivID);
-  //   setActive(ActivID);
-  // };
   const [Click, setClick] = useState(false);
   const [Product, setProduct] = useState({ props: props, isSocket: false });
 
   const IsNewOrder = useContext(OrderContext).data;
   const changeIsNewOrder = useContext(OrderContext).changeIsNewOrder;
 
-  const ExitFunc = () => {
-    props.Exitprop();
-  };
-
-  // let BaseQuantityToCart;
-  // props.ProductListToCart.forEach((prod, prodIndex) => {
-  //   if (prod._id === props.id) {
-  //     BaseQuantityToCart = prod.quantity;
-  //   }
-  // });
-
-  // console.log("AllProducts", props.AllProducts);
   let QuantityToCart;
   props.ProductCount.forEach((prod, prodIndex) => {
     if (prod._id === props.id) {
@@ -42,64 +21,40 @@ const Product = (props) => {
     localStorage.getItem("LocalOpenOrderForCustomer")
   );
 
-  // console.log("LocalCart", LocalCart);
   let OldQuantityToCart;
   if (LocalCart != null) {
     LocalCart.forEach((prod, prodIndex) => {
-      // console.log("prod", prod.id, props.id);
       if (String(prod.id).trim() === String(props.id).trim()) {
         OldQuantityToCart = prod.quantity;
       }
     });
   }
 
-  // let IsNewOrder;
-  // if (!props.IsNewOrder) {
-  //   IsNewOrder = false;
-  // } else {
-  //   IsNewOrder = true;
-  // }
-  // console.log("IsNewOrder", IsNewOrder);
   const SaveProdinCart = () => {
-    changeIsNewOrder(false);
-    props.addTocart({
-      IsNewOrder: IsNewOrder,
-      ProductID: props.id,
-      UnitPrice: props.price,
-      Quantity: QuantityToCart,
-      CustomerID: localStorage.getItem("LocalCustomerID")
-        ? localStorage.getItem("LocalCustomerID").split(",")[0]
-        : "",
-    });
+    if (QuantityToCart > 0) {
+      changeIsNewOrder(false);
+      props.addTocart({
+        IsNewOrder: IsNewOrder,
+        ProductID: props.id,
+        UnitPrice: props.price,
+        Quantity: QuantityToCart,
+        CustomerID: localStorage.getItem("LocalCustomerID")
+          ? localStorage.getItem("LocalCustomerID").split(",")[0]
+          : "",
+      });
+    }
   };
 
-  //console.log("props", props);
-  // useEffect(() => {
-  //   let socket = socketIOClient("https://shopfullstack.herokuapp.com",{secure: true});
-  //   // const socket = socketIOClient("https://shopfullstack.herokuapp.com");
-  //   socket.on("UpdateQuantity", (data) => {
-  //     if (props.id === data.id) {
-  //       props.ChangQuantity(data);
-  //     }
-  //   });
-  // }, []);
-
   const ClickImg = () => {
-    //console.log("clickimg");
     setClick(true);
   };
 
   if (Click) {
-    //console.log("props", props.id);
     return (
       <Redirect
         to={{
           pathname: "/Products/" + props.id,
           state: {
-            // Name: props.name,
-            // Quantity: props.Quantity,
-            // Img: props.src,
-            // Price: props.price,
             ProductListToCart: props.ProductListToCart,
             Cartp: props.Cartv,
             AllProducts: props.AllProducts,
@@ -110,15 +65,10 @@ const Product = (props) => {
   }
 
   const makeFixedPosition = (e) => {
-    //console.log("props.Quantity", props.Quantity);
-    if (props.Quantity > 0) {
+    if (props.Quantity > 0 && QuantityToCart > 0) {
       const item = document.getElementById([props.id]);
-      // const ElemPosition = item.getBoundingClientRect();
-      // //console.log(ElemPosition.y, ElemPosition.x, e.clientY, e.clientX);
       const img = item.querySelector(".ProductImg");
       const CloneImg = item.querySelector(".Clone");
-      // const CloneImg = React.cloneElement(item);
-      // //console.log("CloneImg", CloneImg);
       const rect = item.querySelector(".ProductImg").getBoundingClientRect();
       const offset = {
         top: rect.top + window.scrollY,
@@ -146,8 +96,6 @@ const Product = (props) => {
         CloneImg.style.opacity = 0;
         CloneImg.style.transform = null;
       }, 1500);
-
-      //console.log("style", img.style);
     }
   };
   return (
@@ -160,7 +108,6 @@ const Product = (props) => {
       </div>
       <div className="ProdDetails">
         <div className="Name">{props.name}</div>
-        {/* <div className="Quantity">כמות: {props.Quantity}</div> */}
         <div className="Price"> ₪{props.price}</div>
         {props.addTocart && (
           <div className="PlusMinusBtns">
@@ -186,7 +133,6 @@ const Product = (props) => {
             onClick={(e) => {
               makeFixedPosition(e);
               SaveProdinCart();
-              // props.addTocart
             }}
           >
             הוסף לסל

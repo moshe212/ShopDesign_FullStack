@@ -20,7 +20,6 @@ import ProductsContext from "../../ProductsContext";
 
 const success = () => {
   const hide = message.loading("Action in progress..", 0);
-  // Dismiss manually and asynchronously
   setTimeout(hide, 2500);
 };
 
@@ -38,7 +37,6 @@ const ProductDetails = (props) => {
   );
 
   const params = useParams();
-  // console.log("params", params);
 
   const Details = window.history.state.state;
 
@@ -66,7 +64,6 @@ const ProductDetails = (props) => {
   } else {
     Axios.get("/api/products")
       .then((res) => {
-        // console.log(res.data);
         setProductdetails(res.data);
         Productdetails_Json = JSON.parse(Productdetails);
       })
@@ -74,14 +71,11 @@ const ProductDetails = (props) => {
         //console.log(error);
       });
   }
-  // const Productdetails_Json = JSON.parse(Productdetails);
-  // console.log("Productdetails_Json", Productdetails_Json);
+
   if (Productdetails_Json) {
     for (i = 0; i < Productdetails_Json.length + 1; i++) {
       const id = Productdetails_Json[i]._id;
-      //console.log("id", id, parseInt(params.id));
       if (id === params.id) {
-        // console.log("i", i, Productdetails_Json.length);
         PD_Name = Productdetails_Json[i].title;
         PD_Quantity = Productdetails_Json[i].Quantity;
         PD_Img = Productdetails_Json[i].image;
@@ -118,7 +112,6 @@ const ProductDetails = (props) => {
     if (localStorage.getItem("LocalCustomerID")) {
       Axios.post("/api/AddToCart", ProdForCart)
         .then((res) => {
-          // console.log("res.data", res.data);
           localStorage.setItem(
             "LocalOpenOrderForCustomer",
             JSON.stringify(res.data[2])
@@ -146,7 +139,6 @@ const ProductDetails = (props) => {
         message.destroy();
       } else {
         const ExistTempCart = JSON.parse(localStorage.getItem("TempCart"));
-        // ExistTempCart.push(ProdForCart);
 
         let resultArray = ExistTempCart.filter(function (item) {
           return item["_id"] === params.id;
@@ -167,18 +159,10 @@ const ProductDetails = (props) => {
           setTempCart(ExistTempCart);
           message.destroy();
         }
-
-        // console.log("ExistTempCart", ExistTempCart);
-        // localStorage.setItem("TempCart", JSON.stringify(ExistTempCart));
-        // setTempCart(ExistTempCart);
-        // message.destroy();
       }
     }
   };
 
-  // console.log("LocalCartDet", LocalCart);
-  // console.log("Details", Details);
-  console.log("TempProductListToCart", TempProductListToCart);
   if (!Productdetails_Json) {
     return <div>"hello"</div>;
   } else {

@@ -8,19 +8,12 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
-// import { Modal } from "antd";
+
 import Axios from "axios";
 import { Animated } from "react-animated-css";
 import Modal from "react-animated-modal";
 
 import "./CreditCardDetailForm.css";
-
-import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -418,10 +411,6 @@ const CreditCardDetailForm = (props) => {
                 style={{
                   height: 40,
                   width: 120,
-                  //   marginLeft: 0,
-                  //   marginRight: 8,
-                  //   marginBottom: 30,
-                  //   marginTop: 10,
                 }}
               >
                 <MenuItem value={2020}>2020</MenuItem>

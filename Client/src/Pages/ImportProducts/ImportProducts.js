@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Header from "../../Header";
 import Footer from "../../Footer";
 import DownLoadButton from "./DownLoadButton";
-import UploadFile from "./UploadFile";
 import Axios from "axios";
 import "./ImportProducts.css";
 
 const ImportProducts = () => {
   const uploadFile = () => {
-    //console.log("l");
     const uploadedFile = document.querySelector(".InputUpload #uploadedFile");
-    // console.log(uploadedFile);
     console.log(uploadedFile.files[0]);
     if (uploadedFile.files[0]) {
       Axios.post("/api/upload", uploadedFile.files[0], {
@@ -19,7 +16,6 @@ const ImportProducts = () => {
           const percentCompleted = Math.round(
             (progressEvent.loaded * 100) / progressEvent.total
           );
-          //console.log(percentCompleted);
         },
       }).then((res) => {
         console.log(res.data);
@@ -46,7 +42,7 @@ const ImportProducts = () => {
           להעלאת קובץ נא בחר קובץ באמצעות הכפתור המיועד או גרור קובץ לתוך האזור
           המיועד.
         </p>
-        {/* <UploadFile /> */}
+
         <div className="InputUpload">
           <input type="file" id="uploadedFile" />
           <button onClick={uploadFile}>Upload File</button>

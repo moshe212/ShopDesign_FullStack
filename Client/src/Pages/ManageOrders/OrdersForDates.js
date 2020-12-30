@@ -1,4 +1,3 @@
-/* eslint-disable react/no-multi-comp */
 import React, { useEffect, PureComponent } from "react";
 import Axios from "axios";
 import {

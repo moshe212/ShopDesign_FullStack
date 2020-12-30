@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { Modal, Button } from "antd";
 import LogInForm from "./LogInForm";
-// import { ConfigProvider } from "antd";
 import "./AdminLogin.css";
 
 const AdminLogIn = (props) => {
-  //console.log("ax");
-  //console.log(props.CloseModal);
   const [state, setState] = useState({
     loading: false,
     visible: false,
@@ -26,10 +23,6 @@ const AdminLogIn = (props) => {
 
   const closeModal = () => {
     setState({ visible: false });
-
-    // setTimeout(() => {
-    //   doAxiosAfterAddProduct();
-    // }, 500);
   };
 
   const handleCancel = () => {
@@ -61,12 +54,8 @@ const AdminLogIn = (props) => {
         // onOk={handleOk}
         onCancel={() => handleCancel()}
       >
-        {/* <MyForm /> */}
         <LogInForm onSubmit={closeModal} WhoLogIn={"Admin"} />
       </Modal>
-      {/* <ConfigProvider direction={direction}>
-        
-      </ConfigProvider> */}
     </>
   );
 };

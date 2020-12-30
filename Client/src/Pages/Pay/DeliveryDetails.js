@@ -2,26 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
-
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Button from "@material-ui/core/Button";
-// import { Modal } from "antd";
-
-import { Animated } from "react-animated-css";
-import Modal from "react-animated-modal";
-
 import "./DeliveryDetails.css";
-
-import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -123,7 +104,7 @@ const DeliveryDetails = (props) => {
   const User_DeliveryDetails = localStorage
     .getItem("LocalCustomerID")
     .split(",");
-  //   console.log(User_DeliveryDetails);
+
   const changeCheckbox = () => {
     console.log(User_DeliveryDetails[1].split(" ")[0]);
     console.log(state.checked);
@@ -288,8 +269,6 @@ const DeliveryDetails = (props) => {
         });
         break;
     }
-
-    // setState({ checked: event.target.value });
   };
 
   const handleDateChange = (date) => {
@@ -579,21 +558,6 @@ const DeliveryDetails = (props) => {
               }
             />
           </div>
-
-          {/* <Button
-            variant="contained"
-            style={{
-              width: 558,
-              marginTop: 25,
-              backgroundColor: "#e06da5",
-              fontWeight: "bold",
-              fontSize: 20,
-            }}
-            onClick={showModal}
-            //   color="#e06da5"
-          >
-            בצע תשלום
-          </Button> */}
         </form>
       </div>
     </div>

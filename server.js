@@ -15,12 +15,10 @@ const mongoose = require("mongoose");
 const autoIncrement = require("mongoose-auto-increment");
 
 const ProductSchema = new mongoose.Schema({
-  // _id: String,
   title: String,
   image: String,
   quantity: Number,
   price: Number,
-  // Orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
 });
 
 const CustomerSchema = new mongoose.Schema({
@@ -174,9 +172,7 @@ app.get("/api/orders", async (req, res) => {
 
 //החזרת כמות הזמנות לפי תאריך
 app.get("/api/orders/dates", async (req, res) => {
-  console.log("QUERY:", req.query);
   const search = req.query.search;
-  console.log(search);
   const OrdersCount = await Order.aggregate([
     {
       $group: {
@@ -187,29 +183,15 @@ app.get("/api/orders/dates", async (req, res) => {
     },
     { $sort: { _id: 1 } },
   ]);
-  // const day = await Order.aggregate([
-  //   { $project: { day: OrdersCount[0]._id } },
-  // ]);
-  // console.log(day);
 
   console.log(OrdersCount);
 
   res.send(OrdersCount);
-
-  // const filteredProducts = Order.find(
-  //   { title: { $regex: search, $options: "i" } },
-  //   (err, filteredProducts) => {
-  //     if (err) return console.error(err);
-  //     res.send(filteredProducts);
-  //   }
-  // );
 });
 
 //החזרת סהכ הכנסות לחודש
 app.get("/api/orders/total_income", async (req, res) => {
-  console.log("QUERY:", req.query);
   const search = req.query.search;
-  console.log(search);
   const OrdersTotalIncome = await Order.aggregate([
     {
       $group: {
@@ -229,38 +211,7 @@ app.get("/api/orders/total_income", async (req, res) => {
   console.log(OrdersTotalIncome);
 
   res.send(OrdersTotalIncome);
-
-  // const filteredProducts = Order.find(
-  //   { title: { $regex: search, $options: "i" } },
-  //   (err, filteredProducts) => {
-  //     if (err) return console.error(err);
-  //     res.send(filteredProducts);
-  //   }
-  // );
 });
-
-//החזרת כל המוצרים או לפי חיפוש אם יש חיפוש == Mongo
-// app.get("/api/products", (req, res) => {
-//   console.log("QUERY:", req.query);
-//   const search = req.query.search;
-//   console.log(search);
-
-//   if (search) {
-//     const filteredProducts = Product.find(
-//       { title: { $regex: search, $options: "i" } },
-//       (err, filteredProducts) => {
-//         if (err) return console.error(err);
-//         res.send(filteredProducts);
-//       }
-//     );
-//   } else {
-//     Product.find((err, productItems) => {
-//       if (err) return console.error(err);
-//       console.log(productItems);
-//       res.send(productItems);
-//     });
-//   }
-// });
 
 app.get("/api/products/Admin/ManageProducts", (req, res) => {
   console.log("QUERY:", req.query);
@@ -270,10 +221,7 @@ app.get("/api/products/Admin/ManageProducts", (req, res) => {
     const Total = products.length;
     const size = req.query.per_page;
     const items = products.slice(0, size);
-    console.log(items);
-    // var items = list.slice(0, size).map(i => {
-    //     return <myview item={i} key={i.id} />
-    // }
+
     const resp = {
       page: req.query.page,
       per_page: req.query.per_page,
@@ -304,7 +252,6 @@ app.post("/api/products", async (req, res) => {
   await newProduct.save();
   Product.find((err, productItems) => {
     if (err) return console.error(err);
-    // console.log(productItems);
     res.send(productItems);
   });
 });
@@ -366,7 +313,6 @@ app.post("/api/AddOrder", async (req, res) => {
   await newProduct.save();
   Product.find((err, productItems) => {
     if (err) return console.error(err);
-    // console.log(productItems);
     res.send(productItems);
   });
 });
@@ -404,9 +350,8 @@ app.post("/api/upload", (req, res) => {
         }
         Product.find((err, productItems) => {
           if (err) return console.error(err);
-          // console.log(productItems);
+
           res.status(200).send("OK");
-          // res.send(productItems);
         });
       });
   }
@@ -434,7 +379,7 @@ app.post("/api/AddProductWithImgFile", (req, res) => {
 
   Product.find((err, productItems) => {
     if (err) return console.error(err);
-    // console.log(productItems);
+
     res.send(productItems);
   });
 });
@@ -474,7 +419,6 @@ app.put("/api/UpdateProduct", async (req, res) => {
 
   productItems = await Product.find().exec();
 
-  // res.send("YOU SUCCEED!!!");
   res.send(productItems);
 });
 
@@ -520,7 +464,6 @@ app.post("/api/LogInCustomer", async (req, res) => {
   const GetOrder = (ID) => {
     console.log(ID);
     let myPromise = new Promise((resolve, reject) => {
-      // resolve("5");
       const Orderitem = Order.findOne(
         { CustomerID: CustomerID, Status: false },
         (err, order) => {
@@ -545,7 +488,6 @@ app.post("/api/LogInCustomer", async (req, res) => {
   const GetCustomer = (List) => {
     console.log(List);
     let myPromise2 = new Promise((resolve, reject) => {
-      // resolve("5");
       for (let i = 0; i < List.length; i++) {
         const {
           UserName,
@@ -557,18 +499,7 @@ app.post("/api/LogInCustomer", async (req, res) => {
           Telephone,
           CellPhone,
         } = List[i];
-        console.log(
-          UserName,
-          Email,
-          Password,
-          Pass,
-          FullName,
-          Home,
-          Street,
-          City,
-          Telephone,
-          CellPhone
-        );
+
         if (UserName === Email && Password === Pass) {
           CustomerID = List[i]._id;
           CustomerFullName = FullName;
@@ -579,16 +510,6 @@ app.post("/api/LogInCustomer", async (req, res) => {
           UserCellPhone = CellPhone;
           UserMail = UserName;
 
-          console.log(
-            CustomerID,
-            CustomerFullName,
-            UserHome,
-            UserStreet,
-            UserCity,
-            UserTelephone,
-            UserCellPhone,
-            UserMail
-          );
           resolve(CustomerID);
           break;
         } else {
@@ -601,20 +522,13 @@ app.post("/api/LogInCustomer", async (req, res) => {
   };
 
   const AddProductsFromTempCart = (ID, TempCart) => {
-    console.log(ID);
     let myPromise = new Promise((resolve, reject) => {
-      // resolve("5");
-
       Order.findById(ID, async (err, order) => {
         if (err) {
           console.log(err);
           reject(err);
         } else {
-          //   const ThisOrder = await Order.findOne({
-          //     _id: OrderID,
-          //   });
           const ThisOrder = order;
-          console.log("TempCart.length", JSON.parse(TempCart).length, TempCart);
           for (let p = 0; p < JSON.parse(TempCart).length; p++) {
             await ThisOrder.Products.push({
               productid: JSON.parse(TempCart)[p]._id,
@@ -624,7 +538,6 @@ app.post("/api/LogInCustomer", async (req, res) => {
           }
 
           const Thisorder_ToClient = ThisOrder;
-          console.log("ThisOrder", Thisorder_ToClient.Products);
 
           resolve(Thisorder_ToClient);
         }
@@ -637,17 +550,14 @@ app.post("/api/LogInCustomer", async (req, res) => {
     if (err) {
       console.error(err);
     } else {
-      console.log(Customers);
       await GetCustomer(Customers).then(
         (result) => {
-          console.log("resultCust", result);
           if (result === "Not_Found_User") {
             Status = "Not_Allow";
             res.status(200).send(Status);
           } else {
             GetOrder(CustomerID).then(
               (result) => {
-                console.log("result", result);
                 if (result != null) {
                   IsOrder = true;
                   if (TempCart) {
@@ -666,7 +576,7 @@ app.post("/api/LogInCustomer", async (req, res) => {
                     UserMail,
                     SaveTempCart,
                   ];
-                  console.log("Status", Status);
+
                   res.status(200).send(Status);
                 } else if (TempCart) {
                   let ProductsArrayForOrder;
@@ -679,7 +589,6 @@ app.post("/api/LogInCustomer", async (req, res) => {
                       quantity: prodObj.quantity,
                     })
                   );
-                  console.log("ProductsArrayForOrder", ProductsArrayForOrder);
 
                   Totals = JSON.parse(TempCart).map(
                     (prodObj) => prodObj.quantity * prodObj.price
@@ -690,7 +599,6 @@ app.post("/api/LogInCustomer", async (req, res) => {
                   const newOrder = new Order({
                     CustomerID: CustomerID,
                     Products: [],
-                    // Quantity: Quantity,
                     OrderDate: Date.now(),
                     RequiredDate: Date.now(),
                     ShippedDate: Date.now(),
@@ -704,8 +612,6 @@ app.post("/api/LogInCustomer", async (req, res) => {
                     if (err) {
                       console.log(err);
                     } else {
-                      console.log("orderid", order._id);
-
                       AddProductsFromTempCart(order._id, TempCart).then(
                         (result) => {
                           console.log("AddProductsFromTempCartresulte", result);
@@ -746,7 +652,7 @@ app.post("/api/LogInCustomer", async (req, res) => {
                     UserMail,
                     SaveTempCart,
                   ];
-                  console.log("Status", Status);
+
                   res.status(200).send(Status);
                 }
               },
@@ -781,23 +687,14 @@ app.post("/api/RegisterCustomer", async (req, res) => {
 
   let CustomerID;
 
-  console.log("TempCart", JSON.parse(TempCart));
-
   const AddProductsFromTempCart = (ID, TempCart) => {
-    console.log(ID);
     let myPromise = new Promise((resolve, reject) => {
-      // resolve("5");
-
       Order.findById(ID, async (err, order) => {
         if (err) {
           console.log(err);
           reject(err);
         } else {
-          //   const ThisOrder = await Order.findOne({
-          //     _id: OrderID,
-          //   });
           const ThisOrder = order;
-          console.log("TempCart.length", JSON.parse(TempCart).length, TempCart);
           for (let p = 0; p < JSON.parse(TempCart).length; p++) {
             await ThisOrder.Products.push({
               productid: JSON.parse(TempCart)[p]._id,
@@ -806,16 +703,7 @@ app.post("/api/RegisterCustomer", async (req, res) => {
             await ThisOrder.save();
           }
 
-          // const ThisOrder = order;
-          // await ThisOrder.Products.push({
-          //   productid: ProductId,
-          //   quantity: Quantity,
-          // });
-          // ThisOrder.TotalAmount = OrderTotalEnd;
-          // await ThisOrder.save();
-
           const Thisorder_ToClient = ThisOrder;
-          console.log("ThisOrder", Thisorder_ToClient.Products);
 
           resolve(Thisorder_ToClient);
         }
@@ -833,7 +721,6 @@ app.post("/api/RegisterCustomer", async (req, res) => {
       productid: prodObj._id,
       quantity: prodObj.quantity,
     }));
-    console.log("RegProductsArrayForOrder", ProductsArrayForOrder);
 
     Totals = JSON.parse(TempCart).map(
       (prodObj) => prodObj.quantity * prodObj.price
@@ -857,13 +744,11 @@ app.post("/api/RegisterCustomer", async (req, res) => {
       console.log(err);
     } else {
       CustomerID = cust._id;
-      console.log("custimerID", CustomerID);
 
       if (TempCart) {
         const newOrder = new Order({
           CustomerID: CustomerID,
           Products: [],
-          // Quantity: Quantity,
           OrderDate: Date.now(),
           RequiredDate: Date.now(),
           ShippedDate: Date.now(),
@@ -877,12 +762,6 @@ app.post("/api/RegisterCustomer", async (req, res) => {
           if (err) {
             console.log(err);
           } else {
-            console.log("orderid", order._id);
-            // const ThisOrder = await Order.findOne({
-            //   _id: OrderID,
-            // });
-            // console.log("ThisOrder.Products.length", ThisOrder.Products.length);
-
             AddProductsFromTempCart(order._id, TempCart).then((result) => {
               console.log("resulte", result);
 
@@ -898,9 +777,7 @@ app.post("/api/RegisterCustomer", async (req, res) => {
 });
 
 app.post("/api/GetOpenOrderForCustomer", async (req, res) => {
-  console.log("GetOpenOrderForCustomer", req.body);
   const { CustomerID } = req.body;
-  console.log(CustomerID);
 
   const Orderitem = await Order.findOne({
     CustomerID: CustomerID,
@@ -924,33 +801,8 @@ app.post("/api/GetOpenOrderForCustomer", async (req, res) => {
     return ProductListCartInServer;
   };
   const ArrayForClient = await getArray();
-  console.log("ArrayForClient", ArrayForClient);
   res.status(200).send(ArrayForClient);
 });
-
-// כניסת משתמש == Mongo
-// app.post("/api/LogInCustomer", (req, res) => {
-//   console.log(req.body);
-//   const { Email, Pass } = req.body;
-//   console.log(Email, Pass);
-//   let Status = "";
-//   const CustomerItem = Customer.find({ Admin: false }, (err, Customers) => {
-//     if (err) return console.error(err);
-//     console.log(Customers);
-//     for (let i = 0; i < Customers.length; i++) {
-//       const { UserName, Password, FirstName, LastNmme } = Customers[i];
-//       console.log(UserName, Password, FirstName, LastNmme);
-//       if (UserName === Email && Password === parseInt(Pass)) {
-//         Status = ["OK", Customers[i]._id, FirstName + " " + LastNmme];
-//         break;
-//       } else {
-//         Status = "Not_allow";
-//       }
-//     }
-//     console.log(Status);
-//     res.status(200).send(Status);
-//   });
-// });
 
 //עדכון מלאי
 // app.put("/UpdateQuantity/:id", async (req, res) => {
@@ -984,21 +836,17 @@ app.post("/api/AddToCart", async (req, res) => {
   console.log(req.body);
   const ProductId = req.body.ProductID;
   const Quantity = +req.body.Quantity;
-  // const IsNewOrder = req.body.IsNewOrder;
   const CustomerID = req.body.CustomerID;
   const UnitPrice = req.body.UnitPrice;
   const Total = UnitPrice * Quantity;
   let Thisorder_ToClient;
-  console.log("Total", Total);
 
   let ShipStreet;
   let ShipHome;
   let ShipCity;
 
   const AddToExistOrder = (ID) => {
-    console.log(ID);
     let myPromise = new Promise((resolve, reject) => {
-      // resolve("5");
       Order.find({ CustomerID: ID, Status: false }, async (err, order) => {
         if (err) {
           console.log(err);
@@ -1007,26 +855,14 @@ app.post("/api/AddToCart", async (req, res) => {
           const OrderID = order[0]._id;
           const OrderTotal = order[0].TotalAmount;
           const OrderTotalEnd = OrderTotal + Total;
-          console.log("order[0]", order[0]);
-          // console.log("find", OrderID, OrderTotal, OrderTotalEnd);
 
           const ThisOrder = await Order.findOne({
             _id: OrderID,
           });
-          console.log("ThisOrder.Products.length", ThisOrder.Products.length);
           let IsNewProd;
           for (i = 0; i < ThisOrder.Products.length; i++) {
-            console.log("i", i);
-
             const Pid = ThisOrder.Products[i].productid;
-            console.log("ThisID", Pid, ProductId);
             if (String(Pid).trim() === String(ProductId).trim()) {
-              console.log(
-                "This",
-                ThisOrder.Products[i].quantity,
-                ThisOrder.Products[i].quantity + Quantity
-              );
-              // Order.updateOne()
               ThisOrder.Products[i].quantity =
                 ThisOrder.Products[i].quantity + Quantity;
               ThisOrder.TotalAmount = OrderTotalEnd;
@@ -1036,7 +872,6 @@ app.post("/api/AddToCart", async (req, res) => {
               await ThisOrder.save();
               break;
             } else {
-              console.log("else");
               IsNewProd = true;
             }
           }
@@ -1049,17 +884,8 @@ app.post("/api/AddToCart", async (req, res) => {
             await ThisOrder.save();
           }
 
-          // console.log("ThisProduct", ThisProduct);
-          // await ThisOrder.Products.push({
-          //   productid: ProductId,
-          //   quantity: Quantity,
-          // });
-          // ThisOrder.TotalAmount = OrderTotalEnd;
-          // await ThisOrder.save();
-
           Thisorder_ToClient = ThisOrder;
-          console.log("ThisOrder", Thisorder_ToClient.Products);
-          console.log("ThisOrderTotal", Thisorder_ToClient.TotalAmount);
+
           resolve(Thisorder_ToClient);
         }
       });
@@ -1068,13 +894,10 @@ app.post("/api/AddToCart", async (req, res) => {
   };
 
   const CreateOrderAndAddProd = () => {
-    console.log("CrateOrderAndAddProd");
     let myPromise = new Promise((resolve, reject) => {
-      // resolve("5");
       const newOrder = new Order({
         CustomerID: CustomerID,
         Products: { productid: ProductId, quantity: Quantity },
-        // Quantity: Quantity,
         OrderDate: Date.now(),
         RequiredDate: Date.now(),
         ShippedDate: Date.now(),
@@ -1085,7 +908,6 @@ app.post("/api/AddToCart", async (req, res) => {
         TotalAmount: Total,
       });
       newOrder.save();
-      console.log("newOrder", newOrder);
       Thisorder_ToClient = newOrder;
       resolve(Thisorder_ToClient);
     });
@@ -1093,15 +915,12 @@ app.post("/api/AddToCart", async (req, res) => {
   };
 
   const FindProductsFromOrder = (ID, quantity) => {
-    console.log("FindProductsFromOrder");
     let myPromise = new Promise((resolve, reject) => {
-      // resolve("5");
       Product.findById(ID, async (err, prod) => {
         if (err) {
           console.log(err);
           reject(err);
         } else {
-          console.log("find", prod);
           const Prod = {
             id: prod._id,
             title: prod.title,
@@ -1118,22 +937,16 @@ app.post("/api/AddToCart", async (req, res) => {
 
   const UpdateQuantity = (ProductId) => {
     let myPromise = new Promise((resolve, reject) => {
-      // resolve("5");
       const ThisProduct = Product.findById(ProductId, async (err, prod) => {
         if (err) {
           console.log(err);
           reject(err);
         } else {
-          console.log("find2", prod);
           prod.quantity = prod.quantity - 1;
           await prod.save();
           resolve(prod);
-          // resolve(prod);
         }
       });
-      // ThisProduct.quantity = ThisProduct.quantity - 1;
-      // await ThisProduct.save();
-      // resolve(ThisProduct);
     });
     return myPromise;
   };
@@ -1145,7 +958,6 @@ app.post("/api/AddToCart", async (req, res) => {
         if (err) {
           console.log(err);
         } else {
-          console.log("findorder?", order);
           if (order.length > 0) {
             IsNewOrder = false;
           } else {
@@ -1158,13 +970,10 @@ app.post("/api/AddToCart", async (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        console.log("findCust", customer);
-        console.log("IsNewOrder", IsNewOrder);
         ShipStreet = customer.Street;
         ShipHome = customer.Home;
         ShipCity = customer.City;
-        console.log("ShipAddress", ShipStreet, ShipHome, ShipCity);
-        console.log(ProductId, Quantity, IsNewOrder);
+
         if (IsNewOrder) {
           await CreateOrderAndAddProd().then((result) => {
             console.log("result", result);
@@ -1176,7 +985,6 @@ app.post("/api/AddToCart", async (req, res) => {
                 promises.push(FindProductsFromOrder(productId, quantity));
               }
               Promise.all(promises).then((result) => {
-                console.log("result_FindProductsFromOrder", result);
                 if (result != null) {
                   Status = ["OK", CustomerID, result];
                   res.status(200).send(Status);
@@ -1190,7 +998,6 @@ app.post("/api/AddToCart", async (req, res) => {
           console.log("not new");
 
           await AddToExistOrder(CustomerID).then((result) => {
-            console.log("AddToExistOrder", result);
             if (result != null) {
               const promises = [];
               for (i = 0; i < result.Products.length; i++) {

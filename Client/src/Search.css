@@ -12,15 +12,12 @@
   width: 60px;
   height: 30px;
   border-radius: 5px;
-  /* display: inline; */
   color: white;
   background-color: #af4176;
 }
 
 .Search {
   margin-left: 75%;
-  /* float: left; */
-  /* width: 45%; */
   position: absolute;
   margin-top: 80px;
 }

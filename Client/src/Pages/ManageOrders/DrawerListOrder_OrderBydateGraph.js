@@ -19,18 +19,17 @@ const CartMin = (props) => {
   const onChange = (e) => {
     setPlacement(e.target.value);
   };
-  //console.log(props.ProductListToCart);
+
   const ProductInCartItems = props.ProductListToCart;
 
-  // const TotalCount = 1;
   const Prices = ProductInCartItems.map(
     (product) => product.quantity * product.price
   );
-  //console.log(Prices);
+
   const getSum = (total, num) => total + num;
 
   const TotalPrice = Prices.reduce(getSum, 0);
-  //console.log("TotalPrice", TotalPrice, ProductInCartItems);
+
   return (
     <>
       <Space>

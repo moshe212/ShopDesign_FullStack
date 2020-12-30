@@ -13,16 +13,6 @@ Table {
   margin-top: 20px;
 }
 
-/* td {
-  width: 10px;
-}
-
-tr {
-  height: 5px;
-}
-.MuiTableCell-body {
-  width: 10px;
-}*/
 .MuiTableCell-root {
   padding: 2px !important;
 }
@@ -39,21 +29,3 @@ tr {
   width: 5px !important;
   text-align: center !important;
 }
-/* table,
-th,
-td {
-  border: 1px solid black;
-  text-align: center;
-} */
-/* 
-.Component-horizontalScrollContainer-12 {
-  position: relative;
-} */
-
-/* .MuiTable-root {
-  position: absolute;
-}
-
-.MTableToolbar-root-5 {
-  position: relative;
-} */

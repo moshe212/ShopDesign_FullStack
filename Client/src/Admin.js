@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-// import AddProduct from "./AddProduct";
 import "./Admin.css";
 
 const Admin = (props) => {

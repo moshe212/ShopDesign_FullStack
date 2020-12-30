@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./Cart.css";
 import Product from "./Product";
 
 const Cart = (props) => {
-  // const [ProductsIncarts, setProductsInCarts] = useState([]);
-
-  //console.log(1);
-
-  //console.log(props.ProductListToCart);
-
   return (
     <div className="Cart">
       <div className="CartHeader">Cart</div>

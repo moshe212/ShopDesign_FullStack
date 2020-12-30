@@ -1,14 +1,7 @@
 .header {
-  /* display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid red; */
   width: 100vw;
   height: 160px;
-  /* margin: 0px auto !important; */
-  /* margin-top: 30px; */
   background-color: #e06da5;
-  /* position: fixed; */
 }
 
 .logo img {
@@ -18,10 +11,6 @@
 }
 
 .logo {
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; */
   margin-left: 50%;
 }
 
@@ -41,29 +30,12 @@
 }
 
 .Menu div:hover {
-  /* border-top: white; */
   border-top: 4px solid #ffba26;
   color: green;
   margin-top: 30px;
   cursor: pointer;
   padding-top: 8px;
 }
-
-/* .AdminButton {
-  height: 30px;
-  width: 100px;
-  margin-right: 25px;
-  border-radius: 5px;
- display: inline; 
-  color: #e06da5;
-  background-color: white;
-  margin-left: auto;
-  margin-top: -65px;
-}
-
-.AdminButton:hover {
-  cursor: pointer;
-} */
 
 .AdinAndLogoDiv {
   display: flex;
@@ -72,12 +44,6 @@
   align-items: center;
   margin-top: -3%;
 }
-
-/* .AdminIcon {
-  max-width: 75%;
-  max-height: 75%;
-  margin-left: 10px;
-} */
 
 .AdinAndLogoDiv :hover {
   cursor: pointer;

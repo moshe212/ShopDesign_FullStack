@@ -57,47 +57,30 @@ const theme = createMuiTheme({
   },
 });
 const ManageOrdersMaterial = () => {
-  // const { useState } = React;
-
   const [columns, setColumns] = useState([
-    // { title: "כמות", field: "quantity", type: "numeric" },
-    // { title: "מחיר", field: "price", type: "numeric" },
-    // { title: "מוצר", field: "title" },
-    // {
-    //   title: "תמונה",
-    //   field: "avatar",
-    //   render: (rowData) => (
-    //     <img style={{ height: 36, borderRadius: "50%" }} src={rowData.image} />
-    //   ),
-    // },
     {
       title: "עיר משלוח",
       field: "ShipCity",
-      // type: "numeric",
       editable: "never",
     },
     {
       title: "כתובת משלוח",
       field: "ShioAddress",
-      // type: "numeric",
       editable: "never",
     },
     {
       title: "תאריך משלוח",
       field: "ShippedDate",
-      // type: "numeric",
       editable: "never",
     },
     {
       title: "תאריך ביקוש",
       field: "RequiredDate",
-      // type: "numeric",
       editable: "never",
     },
     {
       title: "תאריך הזמנה",
       field: "OrderDate",
-      // type: "numeric",
       editable: "never",
     },
     {
@@ -125,12 +108,10 @@ const ManageOrdersMaterial = () => {
   const doAxios = (operation, url, obj) => {
     Axios[operation](url, obj)
       .then((res) => {
-        //console.log("res.data", res.data);
-        //console.log(url);
         setData(res.data);
       })
       .catch(function (error) {
-        //console.log(error);
+        console.log(error);
       });
   };
 
@@ -176,7 +157,6 @@ const ManageOrdersMaterial = () => {
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {
                 setTimeout(() => {
-                  //console.log(newData);
                   const url = "/api/products";
                   const obj = {
                     title: newData.title,
@@ -199,23 +179,13 @@ const ManageOrdersMaterial = () => {
                   const index = oldData.tableData.id;
 
                   dataUpdate[index] = newData;
-
-                  //   setData([...dataUpdate]);
                   const url = "/api/products/" + dataUpdate[index]._id;
                   const obj = {
                     title: dataUpdate[index].title,
                     quantity: dataUpdate[index].quantity,
                     price: dataUpdate[index].price,
                   };
-                  //console.log(
-                  //   "RowUpdate",
-                  //   dataUpdate,
-                  //   index,
-                  //   dataUpdate[index],
-                  //   dataUpdate[index]._id,
-                  //   url,
-                  //   obj
-                  // );
+
                   doAxios("put", url, obj);
                   resolve();
                 }, 1000);
@@ -226,16 +196,8 @@ const ManageOrdersMaterial = () => {
                   const dataDelete = [...data];
                   const index = oldData.tableData.id;
                   const url = "/api/products/" + dataDelete[index]._id;
-                  //console.log(
-                  //   dataDelete,
-                  //   index,
-                  //   dataDelete[index],
-                  //   dataDelete[index]._id,
-                  //   url
-                  // );
+
                   doAxios("delete", url);
-                  // dataDelete.splice(index, 1);
-                  // setData([...dataDelete]);
 
                   resolve();
                 }, 1000);

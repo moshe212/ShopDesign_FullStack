@@ -41,10 +41,6 @@
   transform: rotate(360deg);
 }
 
-/* .Clone:hover {
-  transform: rotate(360deg);
-} */
-
 @keyframes fade {
   from {
     max-width: 20%;
@@ -99,7 +95,6 @@ button.Minus {
   color: #af4176;
   font-weight: bold;
   cursor: pointer;
-  /* position: absolute; */
 }
 
 button.Plus {
@@ -117,8 +112,6 @@ button.Plus {
   font-weight: bold;
   cursor: pointer;
   margin-right: 50px;
-  /* top: 20px; */
-  /* position: absolute; */
 }
 
 .AddToCartOne {
@@ -137,7 +130,6 @@ button.Plus {
 .QuantityToCart {
   font-size: 6em;
   -webkit-text-stroke: 1px #bece39;
-  /* color: transparent; */
   color: white;
   position: absolute;
   top: 0;
@@ -148,19 +140,16 @@ button.Plus {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* position: relative; */
 }
 
 .Name {
   font-weight: bold;
   letter-spacing: 1.5px;
-  /* position: absolute; */
 }
 
 .Price {
   font-variant-numeric: normal;
   font-weight: bold;
-  /* position: absolute; */
 }
 
 .PlusMinusBtns {

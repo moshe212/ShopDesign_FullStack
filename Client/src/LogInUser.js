@@ -20,20 +20,12 @@ const LogInUser = (props) => {
   let history = useHistory();
 
   const showModal = (e) => {
-    // console.log("e", e.target.innerText);
     if (!e.target.innerText.includes("יציאה")) {
       setState({
         visible: true,
       });
     } else {
-      console.log("e", e.target);
-      console.log(props.ExitFuncprop);
       localStorage.clear();
-      // props.ExitFuncprop();
-      // localStorage.removeItem("LocalOpenOrderForCustomer");
-      // localStorage.removeItem("LocalCustomerID");
-      // localStorage.removeItem("DeliveryDetails");
-      // history.push("/");
       history.push({
         pathname: "/",
         state: { exit: true },
@@ -47,10 +39,6 @@ const LogInUser = (props) => {
 
   const closeModal = () => {
     setState({ visible: false });
-
-    // setTimeout(() => {
-    //   doAxiosAfterAddProduct();
-    // }, 500);
   };
 
   const handleCancel = () => {
@@ -63,7 +51,7 @@ const LogInUser = (props) => {
   } else {
     BtnText = "התחבר/הרשם";
   }
-  const { visible, loading, direction, popupPlacement } = state;
+  const { visible } = state;
   return (
     <>
       <Button
@@ -89,11 +77,7 @@ const LogInUser = (props) => {
         zIndex="2000"
       >
         <LoginModalTabs closeModal={closeModal} />
-        {/* <LogInForm onSubmit={closeModal} WhoLogIn={"User"} /> */}
       </Modal>
-      {/* <ConfigProvider direction={direction}>
-        
-      </ConfigProvider> */}
     </>
   );
 };

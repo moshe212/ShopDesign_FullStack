@@ -3,38 +3,7 @@ import socketIOClient from "socket.io-client";
 import cloneDeep from "lodash/cloneDeep";
 import "./Product.css";
 
-import { Redirect } from "react-router";
-
 const Order = (props) => {
-  //   const [Click, setClick] = useState(false);
-  //   const [Product, setProduct] = useState({ props: props, isSocket: false });
-
-  //   const ClickImg = () => {
-  //     //console.log("clickimg");
-  //     setClick(true);
-  //   };
-
-  //   if (Click) {
-  //     //console.log("props", props.id);
-  //     return (
-  //       <Redirect
-  //         to={{
-  //           pathname: "/Products/" + props.id,
-  //           state: {
-  //             // Name: props.name,
-  //             // Quantity: props.Quantity,
-  //             // Img: props.src,
-  //             // Price: props.price,
-  //             ProductListToCart: props.ProductListToCart,
-  //             Cartp: props.Cartv,
-  //             AllProducts: props.AllProducts,
-  //           },
-  //         }}
-  //       ></Redirect>
-  //     );
-  //   }
-
-  //   };
   return (
     <div id={props.id} className="Product">
       <div className="ImgContent" onClick={ClickImg}>
@@ -44,7 +13,7 @@ const Order = (props) => {
       </div>
       <div className="ProdDetails">
         <div className="Name">{props.name}</div>
-        {/* <div className="Quantity">כמות: {props.Quantity}</div> */}
+
         <div className="Price"> ₪{props.price}</div>
         {props.addTocart && (
           <div className="PlusMinusBtns">
@@ -70,7 +39,6 @@ const Order = (props) => {
             onClick={(e) => {
               makeFixedPosition(e);
               SaveProdinCart();
-              // props.addTocart
             }}
           >
             הוסף לסל

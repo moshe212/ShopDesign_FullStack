@@ -2,14 +2,11 @@ import React, { useState, useContext, useEffect } from "react";
 import Header from "./Header";
 import Product from "./Product";
 import CartMin from "./CartMin";
-import Carta from "./Cart";
 import Search from "./Search";
-import Admin from "./Admin";
-// import AddProduct from "./AddProduct";
 import Footer from "./Footer";
 import Axios from "axios";
 import cloneDeep from "lodash/cloneDeep";
-import { Slider, Switch } from "antd";
+import { Slider } from "antd";
 import BackTopButton from "./BackTop";
 import { useLocation } from "react-router-dom";
 
@@ -23,8 +20,6 @@ import {
   useParams,
   BrowserRouter as Router,
   Switch as SwitchRout,
-  Route,
-  Link,
 } from "react-router-dom";
 
 const Home = (props) => {
@@ -49,13 +44,9 @@ const Home = (props) => {
   const [RendDrawer, setRendDrawer] = useState(false);
 
   const params = useParams();
-  // console.log("params", params);
   let Details;
   if (window.history.state) {
     Details = window.history.state.state;
-    // console.log("Details", Details);
-    // console.log("Details", Details.exit);
-    // setProductListToCart(Details[0].Products);
   }
 
   const IsNewOrder = useContext(OrderContext).data;
@@ -65,24 +56,15 @@ const Home = (props) => {
 
   if (location.state) {
     if (location.state.exit) {
-      console.log("location.state.exit", location.state.exit);
       setProductListToCart([]);
       setCartv(0);
       location.state.exit = false;
-      console.log("location.state.exit2", location.state.exit);
     }
   }
-
-  // const Exit = () => {
-  //   setProductListToCart([]);
-  //   setCartv(0);
-  // };
 
   const doAxios = (isSlider, isSearch, isAddProduct, url, val1, val2) => {
     Axios.get(url)
       .then((res) => {
-        //console.log("res.data", res.data);
-        //console.log(url);
         let Prices = res.data.map((prod) => prod.price);
         if (isSlider) {
           const newProducts = res.data.filter(
@@ -93,21 +75,14 @@ const Home = (props) => {
           setProducts(res.data);
         } else if (isAddProduct) {
           setProducts(res.data);
-          //console.log("Prices");
-          //console.log(Min, Max);
-          //console.log("Products", Products);
           setTimeout(() => {
-            //console.log(Prices);
             setMin(Math.min(...Prices));
             setMax(Math.max(...Prices));
             setMinimum(Math.min(...Prices));
             setMaximum(Math.max(...Prices));
-            //console.log(Min, Max);
           }, 500);
         } else {
           setProducts(res.data);
-          //console.log("Products", Products);
-          //console.log("Prices", Prices);
 
           setMin(Math.min(...Prices));
           setMax(Math.max(...Prices));
@@ -122,12 +97,9 @@ const Home = (props) => {
 
   console.log("Restrict_IsNewOrder_Val", location.state);
   const GetOrderForCustomer = (UserId) => {
-    // const CustomerID = localStorage.getItem("LocalCustomerID");
     const CustomerID = UserId;
     console.log("IsNewOrder_Home", IsNewOrder);
     if (CustomerID != null && !IsNewOrder) {
-      // console.log("local", CustomerID);
-
       Axios.post("/api/GetOpenOrderForCustomer", { CustomerID: CustomerID })
         .then((res) => {
           console.log("GetOpenOrderForCustomer", res.data);
@@ -168,18 +140,13 @@ const Home = (props) => {
       }
     }
   };
-  // const CustomerID = localStorage.getItem("LocalCustomerID").split(",")[0];
-
-  // if (CustomerID) {
-  //   GetOrderForCustomer();
-  // }
 
   useEffect(() => {
     setTimeout(() => {
       doAxios(false, false, false, "/api/products");
     }, 1000);
   }, []);
-  // //console.log(Products[0]);
+
   let UpdateState = false;
 
   return (
@@ -189,7 +156,6 @@ const Home = (props) => {
           doAxios(false, true, false, link);
         }}
         Render="Home"
-        // Exitprop={Exit}
         UserName={
           params.name
             ? params.name
@@ -212,8 +178,6 @@ const Home = (props) => {
                   range
                   defaultValue={[Minimum, Maximum]}
                   onAfterChange={(value) => {
-                    //console.log("val");
-                    //console.log(value);
                     doAxios(
                       true,
                       false,
@@ -228,14 +192,11 @@ const Home = (props) => {
             </div>
           </div>
         </div>
-        {/* <div> */}
+
         <Search
           Search={(e) => {
-            //console.log(67);
             const UserInput = document.querySelector(".input").value;
-            //console.log(UserInput);
             const link = "/api/products?search=" + UserInput;
-            //console.log(link);
             doAxios(false, true, false, link);
           }}
         />
@@ -259,7 +220,6 @@ const Home = (props) => {
         <div className="Products">
           {Products.map((product, productIndex) => (
             <Product
-              // Exitprop={Exit}
               key={product._id}
               id={product._id}
               src={product.image}
@@ -270,17 +230,6 @@ const Home = (props) => {
               Cartp={Cartv}
               AllProducts={Products}
               ProductCount={ProductCount}
-              // ChangQuantity={(data) => {
-              //   let productsQuantityList = cloneDeep(Products);
-              //   productsQuantityList.forEach(
-              //     (productFromList, productfromlistIndex) => {
-              //       if (productFromList._id === data.id) {
-              //         productFromList.quantity = data.quantity;
-              //         setProducts(productsQuantityList);
-              //       }
-              //     }
-              //   );
-              // }}
               Plus={(e) => {
                 let productsList = cloneDeep(Products);
                 let vProductListToCart = cloneDeep(ProductCount);
@@ -311,9 +260,8 @@ const Home = (props) => {
                       );
 
                       if (index >= 0 && !quantityUpdate) {
-                        // //console.log("+", vProductListToCart[index]);
                         let ThisItem = { ...vProductListToCart[index] };
-                        //console.log(ThisItem);
+
                         if (
                           ThisItem.quantity < Products[productIndex].quantity
                         ) {
@@ -337,16 +285,10 @@ const Home = (props) => {
 
                       if (UpdateState) {
                         setTimeout(() => {
-                          // setProducts(productsList);
-                          // setCartv(Cartv + 1);
-                          // setProductListToCart(vProductListToCart);
                           setProductCount(vProductListToCart);
                         }, 1);
                       } else {
                         setProducts(productsList);
-                        // setCartv(Cartv);
-                        // setProductTocart("");
-                        // setProductFromcart("");
                       }
                     }
                   }
@@ -355,7 +297,6 @@ const Home = (props) => {
               Minus={(e) => {
                 let productsList = cloneDeep(Products);
                 let vProductListToCart = cloneDeep(ProductCount);
-                let quantityUpdate = true;
                 let index = "";
                 productsList.forEach(
                   (productFromList, productfromlistIndex) => {
@@ -383,19 +324,13 @@ const Home = (props) => {
 
                       productsList[productfromlistIndex] = productFromList;
                     }
-                    //console.log("update", UpdateState);
+
                     if (UpdateState) {
                       setProducts(productsList);
-                      // setCartv(Cartv - 1);
-                      // setProductFromcart(RemoveProductToCartItem);
-                      // setProductTocart("");
-                      // setProductListToCart(vProductListToCart);
                       setProductCount(vProductListToCart);
                     } else {
                       setProducts(productsList);
-                      // setCartv(Cartv);
                       setProductTocart("");
-                      // setProductFromcart("");
                     }
                   }
                 );
@@ -428,7 +363,6 @@ const Home = (props) => {
                 } else {
                   Axios.post("/api/AddToCart", ProductDetails)
                     .then((res) => {
-                      // console.log("res.data", res.data);
                       localStorage.setItem(
                         "LocalOpenOrderForCustomer",
                         JSON.stringify(res.data[2])

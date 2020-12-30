@@ -25,12 +25,9 @@ const FormUpdateProd = (props) => {
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    // //console.log(values);
-    // const Modal = document.querySelector(".ant-modal");
     const uploadedFile = document.querySelector(
       ".Div_FormUpateFile #FormUpateFile"
     );
-    //console.log(uploadedFile.files);
     props.onSubmit();
     form.resetFields();
 

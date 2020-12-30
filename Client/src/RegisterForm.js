@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Input, InputNumber, Button } from "antd";
+import { Form, Input, Button } from "antd";
 import Axios from "axios";
 import { Redirect } from "react-router";
 import { message } from "antd";
@@ -72,9 +72,6 @@ const validateMessages = {
 };
 
 const RegisterForm = (props) => {
-  // const [Redirect_MangeProducts, setRedirect_MangeProducts] = useState(false);
-  // const [Redirect_Home, setRedirect_Home] = useState(false);
-  // const [UserId, setUserId] = useState("");
   const [modalVisible, setmodalVisible] = useState(false);
   const [State, setState] = useState({
     Redirect_MangeProducts: false,
@@ -93,16 +90,11 @@ const RegisterForm = (props) => {
 
   const [form] = Form.useForm();
 
-  //console.log("WhoLogIn", props.WhoLogIn);
   const { Redirect_MangeProducts, Redirect_Home, UserId, Name } = State;
   if (Redirect_MangeProducts) {
     return <Redirect push to="/Admin/ManageProducts" />;
   } else if (Redirect_Home) {
-    //console.log("userid", { UserId }, { Name });
     return <Redirect push to={"/LoginCustomer/Customer/" + Name} />;
-    // setTimeout(() => {
-    //   return <Redirect push to="/LoginUser/:" {...UserId} />;
-    // }, 1000);
   }
 
   let url = "";
@@ -114,7 +106,6 @@ const RegisterForm = (props) => {
   }
 
   const TempCart = localStorage.getItem("TempCart");
-  //console.log(url);
   const onFinish = (values) => {
     console.log(values.Register.Username, values.Register.Password);
 

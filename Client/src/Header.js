@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Header.css";
-import Search from "./Search";
 import { Redirect } from "react-router";
 import { useHistory } from "react-router-dom";
 
@@ -8,9 +7,6 @@ import AdminLogIn from "./AdminLogin";
 import LogInUser from "./LogInUser";
 
 const Header = (props) => {
-  // const doAxiosonSearch = (isSlider, isSearch, isAddProduct, link) => {
-  //   props.doAxiosonSearch(false, true, false, link);
-  // };
   const [redirect_Admin, setredirect_Admin] = useState(false);
   const [redirect_MangeProducts, setredirect_MangeProducts] = useState(false);
   const [redirect_ImportProducts, setredirect_ImportProducts] = useState(false);
@@ -22,23 +18,18 @@ const Header = (props) => {
   const clickPage = (e) => {
     switch (e.target.innerText) {
       case "מתכונים לשייקים":
-        // code block
         history.push("/Recipes");
         break;
       case "צור קשר":
-        // code block
         history.push("/ContactUs");
         break;
       case "מבצעים":
-        // code block
         history.push("/Specials");
         break;
       case "אודות":
-        // code block
         history.push("/About");
         break;
       default:
-      // code block
     }
   };
 
@@ -65,7 +56,6 @@ const Header = (props) => {
   };
 
   if (redirect_Admin) {
-    //console.log("Redirect");
     return <Redirect push to="/Admin" />;
   } else if (redirect_MangeProducts) {
     return <Redirect push to="/Admin/ManageProducts" />;

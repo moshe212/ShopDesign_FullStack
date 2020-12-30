@@ -109,7 +109,6 @@
 .modalTxtErrorCart {
   background-color: white !important;
   margin-top: 5px;
-  /* margin-right: 40px; */
   width: 400px;
   height: 80px;
   border-radius: 20px;
@@ -117,7 +116,5 @@
 }
 
 .modalTxtErrorCart div {
-  /* margin-top: 20px !important; */
-  /* height: 30px !important; */
   padding: 30px;
 }

@@ -29,7 +29,6 @@ const ManageProducts = () => {
         </div>
       </div>
 
-      {/* <Form /> */}
       <Footer />
     </div>
   );

@@ -26,7 +26,6 @@ const Demo = (props) => {
   const inputEl = React.useRef();
 
   const onFinish = (values) => {
-    //console.log("form", inputEl.current.files[0].name);
     props.onSubmit();
 
     Axios.post(
@@ -43,9 +42,7 @@ const Demo = (props) => {
         },
       }
     ).then(
-      (response) => {
-        //console.log(response);
-      },
+      (response) => {},
       (error) => {
         //console.log(error);
       }

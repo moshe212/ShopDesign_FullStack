@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import { Modal, Button } from "antd";
 import FormUpdateProd from "./FormUpdateProd";
 
-// import { ConfigProvider } from "antd";
 import "./UpdateProduct.css";
 
 const UpdateProduct = (props) => {
-  //console.log("ax");
-  //console.log(props.CloseModal);
   const [state, setState] = useState({
     loading: false,
     visible: false,
@@ -27,10 +24,6 @@ const UpdateProduct = (props) => {
 
   const closeModal = () => {
     setState({ visible: false });
-
-    // setTimeout(() => {
-    //   doAxiosAfterAddProduct();
-    // }, 500);
   };
 
   const handleCancel = () => {
@@ -55,12 +48,8 @@ const UpdateProduct = (props) => {
         // onOk={handleOk}
         onCancel={() => handleCancel()}
       >
-        {/* <MyForm /> */}
         <FormUpdateProd onSubmit={closeModal} />
       </Modal>
-      {/* <ConfigProvider direction={direction}>
-        
-      </ConfigProvider> */}
     </>
   );
 };
