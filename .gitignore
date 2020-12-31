@@ -3,6 +3,3 @@
 # dependencies
 /node_modules
 .env
-Products.csv
-Test.txt
-mongo.js
