@@ -28,7 +28,7 @@ const ImportProducts = () => {
 
   return (
     <div>
-      <Header doAxiosonSearch={""} Render="Admin" />
+      <Header doAxiosonSearch={""} Render="Admin" Active="ImportProducts" />
       <div className="Explain">
         <p dir="rtl">
           ניתן להעלות קובץ בפורמט CSV ובו רשימת כל המוצרים. המערכת תבנה באופן

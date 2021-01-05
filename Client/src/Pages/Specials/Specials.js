@@ -13,6 +13,7 @@ const Specials = (props) => {
             : ""
         }
         Render="Home"
+        Active="Specials"
       />
       <Footer />
     </div>

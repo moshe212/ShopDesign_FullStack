@@ -10,6 +10,7 @@ import Box from "@material-ui/core/Box";
 
 import Header from "../../Header";
 import ManageOrdersMaterial from "./ManageOrdersMaterial";
+import ManageCustomersMaterial from "./ManageCustomersMaterial";
 import OrdersForDates from "./OrdersForDates";
 import TotalIncomForMonth from "./TotalIncomForMonth";
 
@@ -72,7 +73,7 @@ export default function FullWidthTabs() {
   return (
     <div>
       <div>
-        <Header Render="Admin" />
+        <Header Render="Admin" Active="ManageOrders" />
       </div>
       <div dir="rtl" className={classes.root}>
         <AppBar position="static" color="white">
@@ -98,7 +99,7 @@ export default function FullWidthTabs() {
             <ManageOrdersMaterial />
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            Item Two
+            <ManageCustomersMaterial />
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
             <div className="grid-container">

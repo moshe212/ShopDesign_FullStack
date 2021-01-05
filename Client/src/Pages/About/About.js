@@ -13,6 +13,7 @@ const About = (props) => {
             : ""
         }
         Render="Home"
+        Active="About"
       />
       <Footer />
     </div>

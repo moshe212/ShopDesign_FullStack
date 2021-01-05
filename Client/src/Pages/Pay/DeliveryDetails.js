@@ -512,7 +512,6 @@ const DeliveryDetails = (props) => {
               rows={1}
               value={state.checked ? state.email_defaultValue : value.email}
               onChange={handleChange}
-              on
               variant="outlined"
               style={{ width: 270, marginTop: 8 }}
               size="small"

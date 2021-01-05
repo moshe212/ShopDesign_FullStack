@@ -100,6 +100,7 @@ function connectToDB() {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   });
   // autoIncrement.initialize(connection);
   // ProductSchema.plugin(autoIncrement.plugin, "Product");
@@ -150,10 +151,10 @@ app.get("/api/orders", async (req, res) => {
     const NextDay = new Date(+StartDate);
     const DayValue = NextDay.getDate() + 1;
     const NextDayDate = NextDay.setDate(DayValue);
-    console.log("NextDayDate", NextDayDate);
+    console.log("NextDayDate", NextDayDate, new Date(NextDayDate));
     const filteredOrders = await Order.find(
       {
-        OrderDate: { $gte: new Date("2020-10-25"), $lt: new Date(NextDayDate) },
+        OrderDate: { $gte: new Date(StartDate), $lt: new Date(NextDayDate) },
       },
       (err, filteredOrders) => {
         if (err) return console.error(err);
@@ -162,16 +163,38 @@ app.get("/api/orders", async (req, res) => {
       }
     );
   } else {
-    Order.find((err, orderItems) => {
+    const OrdersList = await Order.find((err, orderItems) => {
       if (err) return console.error(err);
-      console.log(orderItems);
-      res.send(orderItems);
-    });
+      // console.log(orderItems);
+      // res.send(orderItems);
+    })
+      .populate("CustomerID")
+      .exec();
+
+    // const getArray = async () => {
+    //   let ProductListCartInServer = [];
+    //   for (let i = 0; i < Orderitem.Products.length; i++) {
+    //     const Prod = {
+    //       id: Orderitem.Products[i].productid._id,
+    //       title: Orderitem.Products[i].productid.title,
+    //       image: Orderitem.Products[i].productid.image,
+    //       quantity: Orderitem.Products[i].quantity,
+    //       price: Orderitem.Products[i].productid.price,
+    //     };
+    //     ProductListCartInServer.push(Prod);
+    //   }
+    //   return ProductListCartInServer;
+    // };
+    // const ArrayForClient = await getArray();
+    // res.status(200).send(ArrayForClient);
+    console.log("OrdersList", OrdersList);
+    res.send(OrdersList);
   }
 });
 
 //החזרת כמות הזמנות לפי תאריך
 app.get("/api/orders/dates", async (req, res) => {
+  console.log("here");
   const search = req.query.search;
   const OrdersCount = await Order.aggregate([
     {
@@ -1040,6 +1063,122 @@ app.post("/api/OrderPay", async (req, res) => {
       }
     }
   );
+});
+
+//פרטי עגלה ללקוח - ניהול
+app.post("/api/GetOrderForCustomer_Admin", async (req, res) => {
+  const { OrderID } = req.body;
+
+  const Orderitem = await Order.findOne({
+    _id: OrderID,
+  })
+    .populate("Products.productid")
+    .exec();
+
+  const getArray = async () => {
+    let ProductListCartInServer = [];
+    for (let i = 0; i < Orderitem.Products.length; i++) {
+      const Prod = {
+        id: Orderitem.Products[i].productid._id,
+        title: Orderitem.Products[i].productid.title,
+        image: Orderitem.Products[i].productid.image,
+        quantity: Orderitem.Products[i].quantity,
+        price: Orderitem.Products[i].productid.price,
+      };
+      ProductListCartInServer.push(Prod);
+    }
+    return ProductListCartInServer;
+  };
+  const ArrayForClient = await getArray();
+  res.status(200).send(ArrayForClient);
+});
+
+//מחיקת הזמנה - ניהול == Mongo
+app.delete("/api/orders/:id", async (req, res) => {
+  const orderId = req.params.id;
+  console.log(req.params.id);
+  Order.findByIdAndDelete(orderId, (err, order) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("delete", order);
+    }
+  });
+
+  orderItems = await Order.find().exec();
+
+  res.send(orderItems);
+});
+
+// עדכון הזמנה - ניהול == Mongo
+app.put("/api/orders/:id", async (req, res) => {
+  const orderId = req.params.id;
+  console.log(req.body);
+
+  Order.findByIdAndUpdate(
+    orderId,
+    { $set: { ...req.body } },
+    // (options.new = true),
+    (err, order) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("update", order);
+      }
+    }
+  );
+
+  orderItems = await Order.find().exec();
+
+  res.send(orderItems);
+});
+
+//טבלת ניהול לקוחות
+app.post("/api/GetClients_Admin", async (req, res) => {
+  console.log("req.body", req.body);
+  // const limitRows = req.body.limit;
+  const Clients = await Customer.find((err, customerItems) => {
+    if (err) return console.error(err);
+  });
+
+  const getArrayOfClientOrders = async (CustID) => {
+    const OrderList = await Order.find(
+      { CustomerID: CustID },
+      (err, orders) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("orders", orders);
+        }
+      }
+    );
+
+    return OrderList;
+  };
+
+  const getArrayOfClients = async () => {
+    let ClientWithOrdersBelong = [];
+    for (let i = 0; i < Clients.length; i++) {
+      const Clientorders = await getArrayOfClientOrders(Clients[i]._id);
+
+      const Client = {
+        id: Clients[i]._id,
+        UserName: Clients[i].UserName,
+        FullName: Clients[i].FullName,
+        Home: Clients[i].Home,
+        Street: Clients[i].Street,
+        City: Clients[i].City,
+        Telephone: Clients[i].Telephone,
+        CellPhone: Clients[i].CellPhone,
+        Orders: Clientorders,
+      };
+      ClientWithOrdersBelong.push(Client);
+    }
+    return ClientWithOrdersBelong;
+  };
+
+  const ArrayOfClient = await getArrayOfClients();
+  res.status(200).send(ArrayOfClient);
 });
 
 app.get("*", (req, res) => {

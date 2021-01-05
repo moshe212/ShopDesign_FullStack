@@ -12,7 +12,7 @@ import "./ManageProducts.css";
 const ManageProducts = () => {
   return (
     <div>
-      <Header doAxiosonSearch={""} Render="Admin" />
+      <Header doAxiosonSearch={""} Render="Admin" Active="ManageProducts" />
       <ProductsTableMaterial />
       <div className="Text_AddUpdateProd">
         <p dir="rtl">

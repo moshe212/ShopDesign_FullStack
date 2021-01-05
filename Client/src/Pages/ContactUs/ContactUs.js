@@ -13,6 +13,7 @@ const ContactUs = (props) => {
             : ""
         }
         Render="Home"
+        Active="ContactUs"
       />
       <Footer />
     </div>

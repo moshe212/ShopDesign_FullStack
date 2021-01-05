@@ -48,3 +48,10 @@
 .AdinAndLogoDiv :hover {
   cursor: pointer;
 }
+
+.Active {
+  border-bottom: 4px solid #ffba26;
+  color: green !important;
+  /* margin-bottom: 5px; */
+  padding-bottom: 3px;
+}

@@ -13,6 +13,7 @@ const Recipes = (props) => {
             : ""
         }
         Render="Home"
+        Active="Recipes"
       />
       <Footer />
     </div>

@@ -66,7 +66,7 @@ const Header = (props) => {
   } else if (redirect_Home) {
     return <Redirect push to="/" />;
   }
-
+  console.log("props.Active", props.Active);
   return (
     <div className="header">
       <LogInUser Username={props.UserName} />
@@ -78,17 +78,52 @@ const Header = (props) => {
       </div>
       {Render === "Home" && (
         <div className="Menu">
-          <div onClick={(e) => clickPage(e)}>אודות</div>
-          <div onClick={(e) => clickPage(e)}>מבצעים</div>
-          <div onClick={(e) => clickPage(e)}>צור קשר</div>
-          <div onClick={(e) => clickPage(e)}>מתכונים לשייקים</div>
+          <div
+            className={props.Active === "About" ? "Active" : null}
+            onClick={(e) => clickPage(e)}
+          >
+            אודות
+          </div>
+          <div
+            className={props.Active === "Specials" ? "Active" : null}
+            onClick={(e) => clickPage(e)}
+          >
+            מבצעים
+          </div>
+          <div
+            className={props.Active === "ContactUs" ? "Active" : null}
+            onClick={(e) => clickPage(e)}
+          >
+            צור קשר
+          </div>
+          <div
+            className={props.Active === "Recipes" ? "Active" : null}
+            onClick={(e) => clickPage(e)}
+          >
+            מתכונים לשייקים
+          </div>
         </div>
       )}
       {Render === "Admin" && (
         <div className="Menu">
-          <div onClick={MangeProducts_handleOnClick}>ניהול מוצרים</div>
-          <div onClick={ImportProducts_handleOnClick}>ייבוא מוצרים</div>
-          <div onClick={ManageOrders_handleOnClick}>ניהול הזמנות</div>
+          <div
+            className={props.Active === "ManageProducts" ? "Active" : null}
+            onClick={MangeProducts_handleOnClick}
+          >
+            ניהול מוצרים
+          </div>
+          <div
+            className={props.Active === "ImportProducts" ? "Active" : null}
+            onClick={ImportProducts_handleOnClick}
+          >
+            ייבוא מוצרים
+          </div>
+          <div
+            className={props.Active === "ManageOrders" ? "Active" : null}
+            onClick={ManageOrders_handleOnClick}
+          >
+            ניהול הזמנות
+          </div>
         </div>
       )}
     </div>
