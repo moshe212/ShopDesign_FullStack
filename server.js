@@ -156,12 +156,17 @@ app.get("/api/orders", async (req, res) => {
       {
         OrderDate: { $gte: new Date(StartDate), $lt: new Date(NextDayDate) },
       },
-      (err, filteredOrders) => {
+      (err, filtered) => {
         if (err) return console.error(err);
-        console.log(filteredOrders);
-        res.send(filteredOrders);
+        // console.log(filteredOrders);
       }
-    );
+    )
+      .populate("Products.productid")
+      .populate("CustomerID")
+      .exec();
+
+    // console.log(filtered);
+    res.send(filteredOrders);
   } else {
     const OrdersList = await Order.find((err, orderItems) => {
       if (err) return console.error(err);
@@ -351,7 +356,9 @@ app.get("/api/download/:file(*)", function (req, res) {
 
 // הוספת מוצרים מקובץ Csv == Mongo
 app.post("/api/upload", (req, res) => {
-  console.log(req.query);
+  console.log("upload", req.query.filename);
+
+  // console.log("upload", req);
   req.pipe(fs.createWriteStream(`./${req.query.filename}`));
   if (req.query.filename.includes("csv")) {
     csv()

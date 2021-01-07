@@ -12,6 +12,9 @@ import {
 
 import { Drawer, Button } from "antd";
 
+import OrderDetailsFromChart from "./OrderDetailsFromChart";
+import ProductInCart from "../../ProductInCart";
+
 import "./OrdersForDates.css";
 
 const data = [];
@@ -65,6 +68,8 @@ export default class OrdersForDates extends PureComponent {
       childrenDrawer: false,
       Title: "",
       ListOrders: [],
+      OrderCart: [],
+      OrderTotalPrice: "",
     };
   }
 
@@ -82,9 +87,12 @@ export default class OrdersForDates extends PureComponent {
     });
   };
 
-  showChildrenDrawer = () => {
+  showChildrenDrawer = (ProductsInCart, TotalPrice) => {
+    console.log("ProductsInCart", ProductsInCart);
     this.setState({
       childrenDrawer: true,
+      OrderCart: ProductsInCart,
+      OrderTotalPrice: TotalPrice,
     });
   };
 
@@ -162,21 +170,60 @@ export default class OrdersForDates extends PureComponent {
               <div>Count:{this.state.ListOrders.length}</div>
               <div className="ProductListToCart">
                 <div className="ProductsInCart">
-                  {this.state.ListOrders.map((order, orderIndex) => "Hello")}
+                  {this.state.ListOrders.map((order, orderIndex) => (
+                    <OrderDetailsFromChart
+                      id={order._id}
+                      ClientName={order.CustomerID.FullName}
+                      Orderdate={order.OrderDate}
+                      ProdCount={order.Products.length}
+                      TotalPrice={order.TotalAmount}
+                      ProductsList={order.Products}
+                      showChildrenDrawer={this.showChildrenDrawer}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
-            <Button type="primary" onClick={this.showChildrenDrawer}>
+            {/* <Button type="primary" onClick={this.showChildrenDrawer}>
               Two-level drawer
-            </Button>
+            </Button> */}
             <Drawer
-              title="Two-level Drawer"
+              title="פירוט הזמנה"
               width={320}
               closable={false}
               onClose={this.onChildrenDrawerClose}
               visible={this.state.childrenDrawer}
+              footer={
+                <div
+                  style={{
+                    textAlign: "left",
+                  }}
+                >
+                  <div className="TotalCountInFullCartDiv">
+                    <div className="TotalCountInFullCart">
+                      <span>
+                        <small className="SmallIcon">₪ </small>
+                        {this.state.OrderTotalPrice}
+                      </span>
+                    </div>
+
+                    <div className="ForPay"> :סה"כ</div>
+                  </div>
+                </div>
+              }
             >
-              This is two-level drawer
+              <div>
+                {this.state.OrderCart.map((product, productIndex) => (
+                  <ProductInCart
+                    key={product.productid._id}
+                    id={product.productid._id}
+                    src={product.productid.image}
+                    name={product.productid.title}
+                    price={product.productid.price}
+                    Quantity={product.quantity}
+                  />
+                ))}
+              </div>
             </Drawer>
           </Drawer>
         </div>
