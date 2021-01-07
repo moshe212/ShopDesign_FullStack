@@ -372,6 +372,7 @@ app.post("/api/upload", async (req, res) => {
   // req.pipe(fs.createWriteStream(`./${req.query.filename}`));
   req.pipe(fs.createWriteStream(csvFile));
   if (req.query.filename.includes("csv")) {
+    console.log("csv", csvFile);
     csv()
       .fromFile(csvFile)
       // .fromFile(`./${req.query.filename}`)
