@@ -358,7 +358,7 @@ app.get("/api/download/:file(*)", function (req, res) {
 app.post("/api/upload", async (req, res) => {
   console.log("upload", req.query.filename);
   // let dir = `${helpers.ordersDir}/`;
-  let dir = "/productList/";
+  let dir = "productList/";
 
   //checking if the upload dir exists on server, create it if not
   if (!fs.existsSync(dir)) {
