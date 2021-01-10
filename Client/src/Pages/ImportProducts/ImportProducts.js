@@ -14,6 +14,7 @@ const ImportProducts = () => {
     const uploadedFile = document.querySelector(".InputUpload #uploadedFile");
     console.log(uploadedFile.files[0]);
     if (uploadedFile.files[0]) {
+      message.loading("..נתוני המוצרים מתעדכנים", 0);
       Axios.post("/api/upload", uploadedFile.files[0], {
         params: { filename: uploadedFile.files[0].name },
         onUploadProgress: (progressEvent) => {
@@ -22,6 +23,7 @@ const ImportProducts = () => {
           );
         },
       }).then((res) => {
+        message.destroy();
         console.log(res.data);
         if (res.data === "OK") {
           alert("הקובץ עלה בהצלחה לשרת. רשימת המוצרים התעדכנה בהצלחה.");

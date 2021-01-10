@@ -357,7 +357,6 @@ app.get("/api/download/:file(*)", function (req, res) {
 // הוספת מוצרים מקובץ Csv == Mongo
 app.post("/api/upload", async (req, res) => {
   console.log("upload", req.query.filename);
-  // let dir = `${helpers.ordersDir}/`;
   let dir = "productList/";
 
   //checking if the upload dir exists on server, create it if not
@@ -365,13 +364,8 @@ app.post("/api/upload", async (req, res) => {
     fs.mkdirSync(dir);
   }
 
-  let excelFile = `${dir}${Date.now()}.xlsx`;
   let csvFile = `${dir}${Date.now()}.csv`;
-  // let csvFile = `${dir}${req.query.filename}`;
 
-  // console.log("csv", csvFile);
-  // req.pipe(fs.createWriteStream(`./${req.query.filename}`));
-  // req.pipe(fs.createWriteStream(`${req.query.filename}`));
   req.pipe(fs.createWriteStream(csvFile));
 
   setTimeout(async () => {
@@ -382,12 +376,7 @@ app.post("/api/upload", async (req, res) => {
       console.log("csv", csvFile);
       await csv()
         .fromFile(csvFile)
-
-        // .fromFile(`./${req.query.filename}`)
-        // .fromFile(`${req.query.filename}`)
         .then((jsonObj) => {
-          console.log("csvFile", csvFile);
-          console.log("jsonObj", jsonObj);
           for (i = 0; i < jsonObj.length; i++) {
             const title = jsonObj[i].title;
             const image = jsonObj[i].image;
