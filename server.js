@@ -374,41 +374,43 @@ app.post("/api/upload", async (req, res) => {
   // req.pipe(fs.createWriteStream(`${req.query.filename}`));
   req.pipe(fs.createWriteStream(csvFile));
 
-  setTimeout(() => {
+  setTimeout(async () => {
     if (fs.existsSync(csvFile)) console.log(`${csvFile} exists`);
     else console.log(`${csvFile} NOT exists`);
-  }, 2000);
 
-  if (req.query.filename.includes("csv")) {
-    console.log("csv", csvFile);
-    csv()
-      .fromFile(csvFile)
-      // .fromFile(`./${req.query.filename}`)
-      // .fromFile(`${req.query.filename}`)
-      .then(function (jsonObj) {
-        console.log("jsonObj", jsonObj.length);
-        for (i = 0; i < jsonObj.length; i++) {
-          const title = jsonObj[i].title;
-          const image = jsonObj[i].image;
-          const quantity = jsonObj[i].quantity;
-          const price = jsonObj[i].price;
+    if (req.query.filename.includes("csv")) {
+      console.log("csv", csvFile);
+      await csv()
+        .fromFile(csvFile)
 
-          const newProduct = new Product({
-            title: title,
-            image: image,
-            quantity: +quantity,
-            price: +price,
+        // .fromFile(`./${req.query.filename}`)
+        // .fromFile(`${req.query.filename}`)
+        .then((jsonObj) => {
+          console.log("csvFile", csvFile);
+          console.log("jsonObj", jsonObj);
+          for (i = 0; i < jsonObj.length; i++) {
+            const title = jsonObj[i].title;
+            const image = jsonObj[i].image;
+            const quantity = jsonObj[i].quantity;
+            const price = jsonObj[i].price;
+
+            const newProduct = new Product({
+              title: title,
+              image: image,
+              quantity: +quantity,
+              price: +price,
+            });
+            // console.log("newProduct", newProduct);
+            newProduct.save();
+          }
+          Product.find((err, productItems) => {
+            if (err) return console.error(err);
+
+            res.status(200).send("OK");
           });
-          console.log("newProduct", newProduct);
-          newProduct.save();
-        }
-        Product.find((err, productItems) => {
-          if (err) return console.error(err);
-
-          res.status(200).send("OK");
         });
-      });
-  }
+    }
+  }, 2000);
 });
 
 // הוספת מוצר עם קובץ להעלאה עבור תמונה == Mongo
