@@ -366,16 +366,19 @@ app.post("/api/upload", async (req, res) => {
   }
 
   let excelFile = `${dir}${Date.now()}.xlsx`;
-  let csvFile = `${dir}${Date.now()}.csv`;
+  // let csvFile = `${dir}${Date.now()}.csv`;
+  let csvFile = `${dir}${req.query.filename}`;
 
-  console.log("csv", csvFile);
+  // console.log("csv", csvFile);
   // req.pipe(fs.createWriteStream(`./${req.query.filename}`));
-  req.pipe(fs.createWriteStream(csvFile));
+  req.pipe(fs.createWriteStream(`${req.query.filename}`));
+  // req.pipe(fs.createWriteStream(csvFile));
   if (req.query.filename.includes("csv")) {
-    console.log("csv", csvFile);
+    console.log("csv", `${req.query.filename}`);
     csv()
-      .fromFile(csvFile)
+      // .fromFile(csvFile)
       // .fromFile(`./${req.query.filename}`)
+      .fromFile(`${req.query.filename}`)
       .then(function (jsonObj) {
         console.log("jsonObj", jsonObj.length);
         for (i = 0; i < jsonObj.length; i++) {
