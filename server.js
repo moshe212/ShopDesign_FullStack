@@ -389,6 +389,7 @@ app.post("/api/upload", async (req, res) => {
             quantity: +quantity,
             price: +price,
           });
+          console.log("newProduct", newProduct);
           newProduct.save();
         }
         Product.find((err, productItems) => {
