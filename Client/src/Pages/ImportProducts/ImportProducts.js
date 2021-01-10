@@ -24,9 +24,11 @@ const ImportProducts = () => {
         },
       }).then((res) => {
         message.destroy();
+
         console.log(res.data);
         if (res.data === "OK") {
-          alert("הקובץ עלה בהצלחה לשרת. רשימת המוצרים התעדכנה בהצלחה.");
+          message.success("נתוני המוצרים התעדכנו בהצלחה", 2);
+          // alert("הקובץ עלה בהצלחה לשרת. רשימת המוצרים התעדכנה בהצלחה.");
         }
       });
     }
