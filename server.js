@@ -377,6 +377,7 @@ app.post("/api/upload", async (req, res) => {
       .fromFile(csvFile)
       // .fromFile(`./${req.query.filename}`)
       .then(function (jsonObj) {
+        console.log("jsonObj", jsonObj.length);
         for (i = 0; i < jsonObj.length; i++) {
           const title = jsonObj[i].title;
           const image = jsonObj[i].image;
