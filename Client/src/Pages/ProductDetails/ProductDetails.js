@@ -1,27 +1,14 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { message, Button } from "antd";
 import Header from "../../Header";
-import Footer from "../../Footer";
+
 import CartMin from "../../CartMin";
 import "./ProductDetails.css";
 
-import {
-  useParams,
-  BrowserRouter as Router,
-  Switch as SwitchRout,
-  Route,
-  Link,
-} from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Axios from "axios";
-import { Redirect } from "react-router";
-import { parseInt } from "lodash";
 
 import ProductsContext from "../../ProductsContext";
-
-const success = () => {
-  const hide = message.loading("Action in progress..", 0);
-  setTimeout(hide, 2500);
-};
 
 const ProductDetails = (props) => {
   const [ClickArrow, setClickArrow] = useState(false);
@@ -57,7 +44,7 @@ const ProductDetails = (props) => {
   let Productdetails_Json;
 
   const Context = useContext(ProductsContext);
-  console.log("Context", Context);
+
   if (Context.length > 0) {
     ProductdetailsList = Context;
     Productdetails_Json = JSON.parse(ProductdetailsList);
@@ -68,7 +55,7 @@ const ProductDetails = (props) => {
         Productdetails_Json = JSON.parse(Productdetails);
       })
       .catch(function (error) {
-        //console.log(error);
+        console.log(error);
       });
   }
 
@@ -122,13 +109,9 @@ const ProductDetails = (props) => {
           );
           // }, 100);
           message.destroy();
-
-          // setProductListToCart(res.data[2]);
-          // setCartv(res.data[2].length);
-          // setProductCount([]);
         })
         .catch(function (error) {
-          //console.log(error);
+          console.log(error);
         });
     } else {
       if (!localStorage.getItem("TempCart")) {
@@ -220,7 +203,7 @@ const ProductDetails = (props) => {
           </div>
           <div className="Details grid-item">
             <div className="PD_Name">{PD_Name}</div>
-            {/* <div className="PD_Quantity"> {Details.Quantity}</div> */}
+
             <div className="PD_Price">₪{PD_Price}</div>
           </div>
         </div>

@@ -34,8 +34,7 @@ const useStyles3 = makeStyles((theme) => ({
 
 const DeliveryDetails = (props) => {
   const classes = useStyles();
-  const classes2 = useStyles2();
-  const classes3 = useStyles3();
+
   const [value, setValue] = useState({
     firstName: "",
     lastName: "",
@@ -47,9 +46,7 @@ const DeliveryDetails = (props) => {
     email: "",
     notes: "",
   });
-  const [selectedDate, setSelectedDate] = React.useState(
-    new Date("2014-08-18T21:11:54")
-  );
+
   const [state, setState] = useState({
     loading: false,
     visible: false,
@@ -70,10 +67,6 @@ const DeliveryDetails = (props) => {
     // popupPlacement: "bottomRight",
     // direction: "rtl",
   });
-
-  const IsDark_Credit = () => {
-    props.IsDark();
-  };
 
   const ChangCheckTotrue = () => {
     setState({
@@ -106,8 +99,6 @@ const DeliveryDetails = (props) => {
     .split(",");
 
   const changeCheckbox = () => {
-    console.log(User_DeliveryDetails[1].split(" ")[0]);
-    console.log(state.checked);
     setValue({
       firstName: "",
       lastName: "",
@@ -270,20 +261,6 @@ const DeliveryDetails = (props) => {
         break;
     }
   };
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const {
-    animation,
-    show,
-    visible,
-    loading,
-    direction,
-    popupPlacement,
-  } = state;
-  console.log("show", show);
 
   return (
     <div className="RootPayForm">

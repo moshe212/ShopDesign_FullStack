@@ -8,8 +8,6 @@ import "./LoginForm.css";
 
 import OrderContext from "./OrderContext";
 
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-
 const success = () => {
   message.success({
     content: "הינך מועבר לדף הניהול",
@@ -21,7 +19,6 @@ const success = () => {
 };
 
 const Customeruccess = (existOrder) => {
-  console.log("existOrder", existOrder);
   !existOrder
     ? message.success({
         content:
@@ -88,11 +85,11 @@ const LoginForm = (props) => {
 
   const [form] = Form.useForm();
 
-  const IsNewOrder = useContext(OrderContext).data;
+  // const IsNewOrder = useContext(OrderContext).data;
   const changeIsNewOrder = useContext(OrderContext).changeIsNewOrder;
   let District_IsNewOrder_Var;
 
-  const Context = useContext(OrderContext);
+  // const Context = useContext(OrderContext);
 
   const {
     Redirect_MangeProducts,
@@ -100,7 +97,6 @@ const LoginForm = (props) => {
     UserId,
     Name,
     District_IsNewOrder,
-    Order,
   } = State;
   if (Redirect_MangeProducts) {
     return <Redirect push to="/Admin/ManageProducts" />;
@@ -137,7 +133,7 @@ const LoginForm = (props) => {
     }).then(
       (response) => {
         message.destroy();
-        console.log("response", response.data);
+
         if (response.data[0] === "OK" || response.data === "OK") {
           localStorage.removeItem("TempCart");
           if (url === "/api/LogInCustomer") {
@@ -155,7 +151,6 @@ const LoginForm = (props) => {
             ]);
 
             if (changeIsNewOrder) {
-              console.log("changeIsNewOrder", changeIsNewOrder);
               if (response.data[3]) {
                 changeIsNewOrder(false);
               } else {
@@ -176,7 +171,7 @@ const LoginForm = (props) => {
               const id = response.data[1];
               const name = response.data[2];
               const order = response.data[3];
-              console.log("ino", id, name, order);
+
               setState({
                 UserId: id,
                 Redirect_Home: true,
@@ -193,12 +188,10 @@ const LoginForm = (props) => {
         }
       },
       (error) => {
-        //console.log(error);
+        console.log(error);
       }
     );
   };
-
-  console.log("render");
 
   return (
     <div dir="rtl">

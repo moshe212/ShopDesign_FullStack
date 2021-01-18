@@ -6,6 +6,8 @@ import { useHistory } from "react-router-dom";
 import AdminLogIn from "./AdminLogin";
 import LogInUser from "./LogInUser";
 
+import { TagsFilled } from "@ant-design/icons";
+
 const Header = (props) => {
   const [redirect_Admin, setredirect_Admin] = useState(false);
   const [redirect_MangeProducts, setredirect_MangeProducts] = useState(false);
@@ -66,7 +68,7 @@ const Header = (props) => {
   } else if (redirect_Home) {
     return <Redirect push to="/" />;
   }
-  console.log("props.Active", props.Active);
+
   return (
     <div className="header">
       <LogInUser Username={props.UserName} />
@@ -77,30 +79,32 @@ const Header = (props) => {
         <AdminLogIn />
       </div>
       {Render === "Home" && (
-        <div className="Menu">
-          <div
-            className={props.Active === "About" ? "Active" : null}
-            onClick={(e) => clickPage(e)}
-          >
-            אודות
-          </div>
-          <div
-            className={props.Active === "Specials" ? "Active" : null}
-            onClick={(e) => clickPage(e)}
-          >
-            מבצעים
-          </div>
-          <div
-            className={props.Active === "ContactUs" ? "Active" : null}
-            onClick={(e) => clickPage(e)}
-          >
-            צור קשר
-          </div>
-          <div
-            className={props.Active === "Recipes" ? "Active" : null}
-            onClick={(e) => clickPage(e)}
-          >
-            מתכונים לשייקים
+        <div dir="rtl">
+          <div className="Menu">
+            <div
+              className={props.Active === "About" ? "Active" : null}
+              onClick={(e) => clickPage(e)}
+            >
+              אודות
+            </div>
+            <div
+              className={props.Active === "Specials" ? "Active" : null}
+              onClick={(e) => clickPage(e)}
+            >
+              מבצעים
+            </div>
+            <div
+              className={props.Active === "ContactUs" ? "Active" : null}
+              onClick={(e) => clickPage(e)}
+            >
+              צור קשר
+            </div>
+            <div
+              className={props.Active === "Recipes" ? "Active" : null}
+              onClick={(e) => clickPage(e)}
+            >
+              מתכונים לשייקים
+            </div>
           </div>
         </div>
       )}

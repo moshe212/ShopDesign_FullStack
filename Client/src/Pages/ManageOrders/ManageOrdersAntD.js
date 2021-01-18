@@ -65,7 +65,6 @@ export default class ManageOrdersAntD extends React.Component {
       //   type: "json",
       data: getRandomuserParams(params),
     }).then((data) => {
-      console.log(data);
       this.setState({
         loading: false,
         data: data.results,

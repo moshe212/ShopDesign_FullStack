@@ -17,6 +17,26 @@ const Product = (props) => {
     }
   });
 
+  let catImg = "";
+  switch (props.mainCategory.name) {
+    case "פירות":
+      catImg = "/Images/harvest.svg";
+      break;
+    case "פירות קפואים":
+      catImg = "/Images/frozen.svg";
+      break;
+    case "ירקות":
+      catImg = "/Images/vegetable.svg";
+      break;
+    case "שייקים":
+      catImg = "/Images/healthy-shakes.svg";
+      break;
+    case "עוגות":
+      catImg = "/Images/cake.svg";
+      break;
+    default:
+  }
+
   const LocalCart = JSON.parse(
     localStorage.getItem("LocalOpenOrderForCustomer")
   );
@@ -100,15 +120,20 @@ const Product = (props) => {
   };
   return (
     <div id={props.id} className="Product">
+      <div className="Name">{props.name}</div>
+      <div className="Price"> ₪{props.price}</div>
       <div className="ImgContent" onClick={ClickImg}>
         <img className="ProductImg" src={props.src} alt="" />
         <img className="Clone" src={props.src} alt="" />
         <p className="QuantityToCart">{QuantityToCart}</p>
         <span className="OldQuantityToCart">{OldQuantityToCart}</span>
+        <div dir="rtl" className="catImg">
+          <img className="catImgIcon" src={catImg}></img>
+          {/* {props.mainCategory.name}/{props.subCategory.name} */}
+        </div>
       </div>
+
       <div className="ProdDetails">
-        <div className="Name">{props.name}</div>
-        <div className="Price"> ₪{props.price}</div>
         {props.addTocart && (
           <div className="PlusMinusBtns">
             <button
@@ -126,7 +151,7 @@ const Product = (props) => {
         )}
       </div>
 
-      <div>
+      <div className="btnAddProdDiv">
         {props.Quantity > 0 ? (
           <button
             className="AddToCartOne"

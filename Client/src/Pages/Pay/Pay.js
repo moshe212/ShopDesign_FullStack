@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import Header from "../../Header";
 import Footer from "../../Footer";
@@ -6,10 +6,6 @@ import CreditCardDetailForm from "./CreditCardDetailForm";
 import DeliveryDetails from "./DeliveryDetails";
 
 import "./Pay.css";
-
-import { Animated } from "react-animated-css";
-
-import { Redirect } from "react-router";
 
 const Pay = (props) => {
   console.log(props);

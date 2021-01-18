@@ -1,0 +1,26 @@
+.ant-menu {
+  border-radius: 10px;
+  border: 1px solid #ffba26;
+  color: #e06da5 !important;
+  /* margin-right: -15px !important; */
+  /* background: #bece39 !important; */
+}
+
+.ant-menu-item {
+  border-radius: 10px;
+}
+
+/* .ant-menu-item:hover {
+  opacity: 0.5;
+  background-color: #ffba26 !important;
+} */
+
+/* .ant-menu-item-selected {
+  color: #ffba26 !important;
+  background-color: white !important;
+  opacity: 1;
+} */
+
+.sideMenuRoot {
+  position: fixed;
+}

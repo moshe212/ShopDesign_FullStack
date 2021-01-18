@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Axios from "axios";
 
 import "./ProductsTableMaterial.css";
@@ -22,10 +22,9 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import { createMuiTheme } from "@material-ui/core/styles";
 // import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
-import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
+
 import blue from "@material-ui/core/colors/blue";
 import { ThemeProvider } from "@material-ui/styles";
-import Icon from "@material-ui/core";
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -126,7 +125,6 @@ const ProductsTableMaterial = () => {
             onRowAdd: (newData) =>
               new Promise((resolve, reject) => {
                 setTimeout(() => {
-                  //console.log(newData);
                   const url = "/api/products";
                   const obj = {
                     title: newData.title,

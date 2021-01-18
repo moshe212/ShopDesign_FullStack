@@ -1,12 +1,10 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import "./CartMin.css";
 import ProductInCart from "./ProductInCart";
-import Axios from "axios";
+
 import Modal from "react-animated-modal";
-import { Drawer, Button, Radio, Space } from "antd";
-import OrderContext from "./OrderContext";
-import { Redirect } from "react-router";
+import { Drawer, Space } from "antd";
 
 const CartMin = (props) => {
   const [Visible, setVisible] = useState(false);
@@ -40,7 +38,6 @@ const CartMin = (props) => {
   const LocalCart = JSON.parse(
     localStorage.getItem("LocalOpenOrderForCustomer")
   );
-  console.log("LocalCart", LocalCart, props.ProductListToCart);
 
   let ProductInCartItems;
   if (props.ProductListToCart.length > 0) {

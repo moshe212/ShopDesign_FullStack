@@ -253,7 +253,6 @@ export default function CustomersTable() {
   useEffect(() => {
     Axios.post("/api/GetClients_Admin")
       .then((res) => {
-        console.log(res.data);
         let rowsArray = [];
         for (let i = 0; i < res.data.length; i++) {
           const create = createData(
@@ -272,7 +271,7 @@ export default function CustomersTable() {
         setrows(rowsArray);
       })
       .catch(function (error) {
-        //console.log(error);
+        console.log(error);
       });
   }, []);
 
@@ -293,13 +292,6 @@ export default function CustomersTable() {
               <TableCell align="center">עיר</TableCell>
               <TableCell align="center">טלפון</TableCell>
               <TableCell align="center">סלולרי</TableCell>
-
-              {/* <TableCell />
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>

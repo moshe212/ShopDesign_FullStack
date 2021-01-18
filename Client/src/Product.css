@@ -136,10 +136,52 @@ button.Plus {
 }
 
 .ProdDetails {
+  display: none;
+}
+
+.btnAddProdDiv {
+  display: none;
+}
+
+.Product:hover .btnAddProdDiv {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  animation: MoveUp 1s linear;
+  margin-top: 10px;
+}
+
+.Product:hover .ProdDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: MoveUp 1s linear;
+}
+
+@keyframes MoveUp {
+  0% {
+    transform: translateY(80px);
+    width: 300px;
+  }
+  30% {
+    transform: translateY(60px);
+    width: 300px;
+  }
+  50% {
+    transform: translateY(40px);
+    width: 300px;
+  }
+  70% {
+    transform: translateY(20px);
+    width: 300px;
+  }
+
+  100% {
+    transform: translateY(0px);
+    width: 300px;
+  }
 }
 
 .Name {
@@ -163,11 +205,20 @@ button.Plus {
   width: 20px;
   border-radius: 30px;
   top: 140px;
-  right: 105px;
+  right: 60px;
   position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   font-weight: bold;
+}
+
+.catImg .catImgIcon {
+  width: 20px !important;
+  height: 20px !important;
+  margin-top: -15px;
+  margin-right: 65px;
+  z-index: 10;
+  position: absolute;
 }

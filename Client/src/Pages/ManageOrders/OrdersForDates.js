@@ -1,4 +1,4 @@
-import React, { useEffect, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import Axios from "axios";
 import {
   LineChart,
@@ -10,19 +10,12 @@ import {
   Legend,
 } from "recharts";
 
-import { Drawer, Button } from "antd";
-
+import { Drawer } from "antd";
+import dayjs from "dayjs";
 import OrderDetailsFromChart from "./OrderDetailsFromChart";
 import ProductInCart from "../../ProductInCart";
 
 import "./OrdersForDates.css";
-
-const data = [];
-
-function demoOnClick(e) {
-  console.log(e.activeLabel, e.activePayload[0].payload);
-  this.showDrawer();
-}
 
 class CustomizedLabel extends PureComponent {
   render() {
@@ -70,14 +63,24 @@ export default class OrdersForDates extends PureComponent {
       ListOrders: [],
       OrderCart: [],
       OrderTotalPrice: "",
+      TotalAmountOrders: "",
+      OrderID: "",
+      ChildTitle: "",
     };
   }
 
   showDrawer = (e, data) => {
+    const Totals = data.map((order) => order.TotalAmount);
+
+    const getSum = (total, num) => total + num;
+    const TotalAmounts = Totals.reduce(getSum, 0);
+
     this.setState({
       visible: true,
-      Title: "רשימת הזמנות לתאריך: " + e.activeLabel,
+      Title:
+        "רשימת הזמנות לתאריך: " + dayjs(e.activeLabel).format("DD/MM/YYYY"),
       ListOrders: data,
+      TotalAmountOrders: TotalAmounts,
     });
   };
 
@@ -87,12 +90,13 @@ export default class OrdersForDates extends PureComponent {
     });
   };
 
-  showChildrenDrawer = (ProductsInCart, TotalPrice) => {
-    console.log("ProductsInCart", ProductsInCart);
+  showChildrenDrawer = (ProductsInCart, TotalPrice, id) => {
     this.setState({
       childrenDrawer: true,
       OrderCart: ProductsInCart,
       OrderTotalPrice: TotalPrice,
+      OrderID: id,
+      ChildTitle: `פירוט הזמנה מס': ${id}`,
     });
   };
 
@@ -105,12 +109,11 @@ export default class OrdersForDates extends PureComponent {
   componentDidMount() {
     return Axios.get("/api/orders/dates")
       .then((res) => {
-        console.log("res", res.data);
         this.setState({ data: res.data });
         this.setState({ loaded: true });
       })
       .catch(function (error) {
-        //console.log(error);
+        console.log(error);
       });
   }
 
@@ -124,19 +127,18 @@ export default class OrdersForDates extends PureComponent {
             width={800}
             height={400}
             data={this.state.data}
-            // onClick={demoOnClick}
             onClick={(e) => {
-              const Date = e.activeLabel;
-              Axios.get("/api/orders?search=" + Date)
-                .then((res) => {
-                  console.log("res", res.data);
-                  const OrdersList = res.data;
-                  this.showDrawer(e, OrdersList);
-                  console.log(e.activeLabel, e.activePayload[0].payload);
-                })
-                .catch(function (error) {
-                  //console.log(error);
-                });
+              if (e) {
+                const Date = e.activeLabel;
+                Axios.get("/api/orders?search=" + Date)
+                  .then((res) => {
+                    const OrdersList = res.data;
+                    this.showDrawer(e, OrdersList);
+                  })
+                  .catch(function (error) {
+                    console.log(error);
+                  });
+              }
             }}
             margin={{
               top: 20,
@@ -156,18 +158,20 @@ export default class OrdersForDates extends PureComponent {
               stroke="#e06da5"
               label={<CustomizedLabel />}
             />
-            {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" /> */}
           </LineChart>
 
           <Drawer
             title={this.state.Title}
-            width={520}
+            width={570}
             closable={false}
             onClose={this.onClose}
             visible={this.state.visible}
           >
-            <div className="Content">
-              <div>Count:{this.state.ListOrders.length}</div>
+            <div dir="rtl" className="Content">
+              <div>כמות הזמנות:{this.state.ListOrders.length}</div>
+              <div>
+                <span>סה"כ הזמנות: ₪{this.state.TotalAmountOrders}</span>
+              </div>
               <div className="ProductListToCart">
                 <div className="ProductsInCart">
                   {this.state.ListOrders.map((order, orderIndex) => (
@@ -184,11 +188,9 @@ export default class OrdersForDates extends PureComponent {
                 </div>
               </div>
             </div>
-            {/* <Button type="primary" onClick={this.showChildrenDrawer}>
-              Two-level drawer
-            </Button> */}
+
             <Drawer
-              title="פירוט הזמנה"
+              title={this.state.ChildTitle}
               width={320}
               closable={false}
               onClose={this.onChildrenDrawerClose}

@@ -4,13 +4,13 @@ import TextField from "@material-ui/core/TextField";
 import { useHistory } from "react-router-dom";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
+
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
 
 import Axios from "axios";
-import { Animated } from "react-animated-css";
+
 import Modal from "react-animated-modal";
 
 import "./CreditCardDetailForm.css";
@@ -46,7 +46,7 @@ const useStyles3 = makeStyles((theme) => ({
 const CreditCardDetailForm = (props) => {
   const classes = useStyles();
   const classes2 = useStyles2();
-  const classes3 = useStyles3();
+
   const [value, setValue] = useState({
     firstName: "",
     lastName: "",
@@ -56,9 +56,7 @@ const CreditCardDetailForm = (props) => {
     year: "",
     idNum: "",
   });
-  const [selectedDate, setSelectedDate] = React.useState(
-    new Date("2014-08-18T21:11:54")
-  );
+
   const [state, setState] = useState({
     loading: false,
     visible: false,
@@ -72,7 +70,6 @@ const CreditCardDetailForm = (props) => {
   const LocalDeliveryDetails = JSON.parse(
     localStorage.getItem("DeliveryDetails")
   );
-  console.log("LocalDeliveryDetails", LocalDeliveryDetails.firstName);
 
   let DataToServer;
   if (LocalDeliveryDetails.firstName) {
@@ -87,7 +84,6 @@ const CreditCardDetailForm = (props) => {
       IDNum: value.idNum,
       CustomerID: localStorage.getItem("LocalCustomerID").split(",")[0],
     };
-    console.log("DataToServer", DataToServer);
   } else {
     DataToServer = {};
   }
@@ -95,19 +91,15 @@ const CreditCardDetailForm = (props) => {
   const LocalCartCredit = JSON.parse(
     localStorage.getItem("LocalOpenOrderForCustomer")
   );
-  console.log("LocalCartCredit", LocalCartCredit);
+
   let TotalPrice = 0;
   if (LocalCartCredit != null) {
     for (let i = 0; i < LocalCartCredit.length; i++) {
       const Price = LocalCartCredit[i].quantity * LocalCartCredit[i].price;
-      console.log("Price", Price);
+
       TotalPrice = TotalPrice + Price;
     }
   }
-
-  const IsDark_Credit = () => {
-    props.IsDark();
-  };
 
   const showModal = () => {
     setState({
@@ -124,15 +116,13 @@ const CreditCardDetailForm = (props) => {
   const sendPayOrderToServer = () => {
     let FormFieldsFull = [];
     for (const property in DataToServer) {
-      console.log(`${property}: ${DataToServer[property]}`);
       if (property !== "phone" && property !== "notes") {
-        console.log(DataToServer[property]);
         if (DataToServer[property]) {
           FormFieldsFull.push(property);
         }
       }
     }
-    console.log("FormFieldsFull.length", FormFieldsFull.length);
+
     if (FormFieldsFull.length === 15) {
       Axios.post("/api/OrderPay", DataToServer).then((response) => {
         if (response.data === "OK") {
@@ -147,12 +137,7 @@ const CreditCardDetailForm = (props) => {
     }
   };
 
-  const handleCancel = () => {
-    setState({ visible: false });
-  };
-
   const handleChange = (event) => {
-    console.log(event.target.name);
     switch (event.target.name) {
       case "FirstName":
         setValue({
@@ -234,18 +219,7 @@ const CreditCardDetailForm = (props) => {
     }
   };
 
-  // const handleDateChange = (date) => {
-  //   setSelectedDate(date);
-  // };
-
-  const {
-    animation,
-    show,
-    visible,
-    visibleError,
-    visibleErrorFields,
-    loading,
-  } = state;
+  const { visible, visibleError, visibleErrorFields } = state;
 
   let history = useHistory();
   return (
@@ -280,7 +254,6 @@ const CreditCardDetailForm = (props) => {
           type="rotateIn"
         >
           <div className="modalTxtErrorFields">
-            {/* <div></div> */}
             <div>חסרים נתונים. אנא הזינו את כל השדות עם הכוכבית.</div>
           </div>
         </Modal>
@@ -453,8 +426,6 @@ const CreditCardDetailForm = (props) => {
               fontSize: 20,
             }}
             onClick={sendPayOrderToServer}
-            // disabled={state.btnDisabled}
-            //   color="#e06da5"
           >
             בצע תשלום
           </Button>

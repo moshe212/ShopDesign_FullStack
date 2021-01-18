@@ -107,8 +107,6 @@ const RegisterForm = (props) => {
 
   const TempCart = localStorage.getItem("TempCart");
   const onFinish = (values) => {
-    console.log(values.Register.Username, values.Register.Password);
-
     props.onSubmit();
     form.resetFields();
 
@@ -124,7 +122,6 @@ const RegisterForm = (props) => {
       TempCart: TempCart,
     }).then(
       (response) => {
-        console.log("response", response.data);
         if (response.data === "RegOK") {
           localStorage.removeItem("TempCart");
           RegCustomeruccess();
@@ -132,7 +129,7 @@ const RegisterForm = (props) => {
         }
       },
       (error) => {
-        //console.log(error);
+        console.log(error);
       }
     );
   };

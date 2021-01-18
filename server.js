@@ -14,11 +14,25 @@ const io = socketIo.listen(server);
 const mongoose = require("mongoose");
 const autoIncrement = require("mongoose-auto-increment");
 
+const CategorySchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+});
+
+const SubCategorySchema = new mongoose.Schema({
+  categoryID: { type: mongoose.Schema.Types.ObjectId, ref: "categorys" },
+  name: String,
+});
+
 const ProductSchema = new mongoose.Schema({
   title: String,
   image: String,
   quantity: Number,
   price: Number,
+  subCategoryID: { type: mongoose.Schema.Types.ObjectId, ref: "subCategorys" },
+  mainCategoryID: { type: mongoose.Schema.Types.ObjectId, ref: "categorys" },
 });
 
 const CustomerSchema = new mongoose.Schema({
@@ -79,6 +93,8 @@ const User = mongoose.model("User", UserSchema);
 const Order = mongoose.model("Order", OrderSchema);
 const Customer = mongoose.model("Customer", CustomerSchema);
 const Product = mongoose.model("Product", ProductSchema);
+const Category = mongoose.model("categorys", CategorySchema);
+const SubCategory = mongoose.model("subCategorys", SubCategorySchema);
 // const OrderDetails = mongoose.model("OrderDetails", OrderDetailsSchema);
 
 dotenv.config();
@@ -117,26 +133,80 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+// Category.find({}).then((res) => {
+//   console.log(res);
+// });
+
 //החזרת כל המוצרים או לפי חיפוש אם יש חיפוש == Mongo
-app.get("/api/products", (req, res) => {
+app.get("/api/products", async (req, res) => {
   console.log("QUERY:", req.query);
   const search = req.query.search;
-  console.log(search);
+  const categoryName = req.query.category;
+  console.log(categoryName);
 
   if (search) {
-    const filteredProducts = Product.find(
+    const filteredProducts = await Product.find(
       { title: { $regex: search, $options: "i" } },
       (err, filteredProducts) => {
         if (err) return console.error(err);
         res.send(filteredProducts);
       }
     );
+  } else if (categoryName) {
+    const filteredCategory = await Category.findOne(
+      { name: categoryName },
+      async (err, category) => {
+        if (err) return console.error(err);
+        console.log(category);
+        if (!category) {
+          await SubCategory.findOne(
+            { name: categoryName },
+            async (err, subcategory) => {
+              if (err) return console.error(err);
+              console.log("sub", subcategory);
+              const filteredProducts = await Product.find(
+                { subCategoryID: subcategory._id },
+                (err, filteredProductsList) => {
+                  if (err) return console.error(err);
+                }
+              )
+                .populate("subCategoryID")
+                .populate("mainCategoryID")
+                .exec();
+
+              res.send(filteredProducts);
+            }
+          );
+        } else {
+          const filteredProducts = await Product.find(
+            { mainCategoryID: category._id },
+            (err, filteredProducts) => {
+              if (err) return console.error(err);
+            }
+          )
+            .populate("subCategoryID")
+            .populate("mainCategoryID")
+            .exec();
+
+          res.send(filteredProducts);
+        }
+      }
+    );
   } else {
-    Product.find((err, productItems) => {
+    const ProductList = await Product.find((err, productItems) => {
       if (err) return console.error(err);
-      console.log(productItems);
-      res.send(productItems);
-    });
+      // console.log(productItems);
+      // res.send(productItems);
+    })
+      .populate("subCategoryID")
+      .populate("mainCategoryID")
+      .exec();
+
+    // const x = await SubCategory.find({}).populate("categoryID");
+
+    console.log(ProductList);
+    // console.log(x);
+    res.send(ProductList);
   }
 });
 
@@ -195,6 +265,51 @@ app.get("/api/orders", async (req, res) => {
     console.log("OrdersList", OrdersList);
     res.send(OrdersList);
   }
+});
+
+//החזרת לקוחות לפי ביצוע הזמנות לפי תאריך
+app.get("/api/orders_customers", async (req, res) => {
+  const search = req.query.search.replace("'", "");
+  const month = search.split("-")[1].replace("'", "");
+  const year = search.split("-")[0];
+  console.log("search", search);
+  console.log(month, year);
+
+  const filteredOrders = await Order.aggregate([
+    {
+      $addFields: {
+        month: { $month: "$OrderDate" },
+        year: { $year: "$OrderDate" },
+        count: 1,
+      },
+    },
+    { $match: { month: +month } },
+    { $match: { year: +year } },
+    // {
+    //   $group: {
+    //     _id: { CustomerID: "$CustomerID" },
+    //     'סה"כ הזמנות': { $sum: 1 },
+    //   },
+    // },
+    {
+      $lookup: {
+        from: "customers",
+        localField: "CustomerID",
+        foreignField: "_id",
+        as: "CustomerDetails",
+      },
+    },
+    {
+      $lookup: {
+        from: "products",
+        localField: "Products.productid",
+        foreignField: "_id",
+        as: "ProductsDetails",
+      },
+    },
+  ]);
+
+  res.send(filteredOrders);
 });
 
 //החזרת כמות הזמנות לפי תאריך

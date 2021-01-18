@@ -1,14 +1,12 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import dayjs from "dayjs";
 import "./ManageOrdersMaterial.css";
-import { Drawer, Button, Radio, Space } from "antd";
+import { Drawer } from "antd";
 import ProductInCart from "../../ProductInCart";
 
-import TablePagination from "@material-ui/core/TablePagination";
-
 import { forwardRef } from "react";
-import MaterialTable, { MTablePagination } from "material-table";
+import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import Check from "@material-ui/icons/Check";
@@ -26,11 +24,10 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import { createMuiTheme } from "@material-ui/core/styles";
 // import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
-import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
+// import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import blue from "@material-ui/core/colors/blue";
 import { ThemeProvider } from "@material-ui/styles";
-import Icon from "@material-ui/core";
-import SaveIcon from "@material-ui/icons/Save";
+
 import BallotSharpIcon from "@material-ui/icons/BallotSharp";
 
 const tableIcons = {
@@ -212,9 +209,7 @@ const ManageOrdersMaterial = () => {
               },
             ]}
             editable={{
-              onRowClick: () => {
-                console.log("click");
-              },
+              onRowClick: () => {},
               // onBulkEditRowChanged: (changes) =>
               //   new Promise((resolve, reject) => {
               //     setTimeout(() => {
@@ -304,9 +299,6 @@ const ManageOrdersMaterial = () => {
 
               <div className="ForPay"> :סה"כ</div>
             </div>
-            {/* <button className="PayBtn" onClick={getPay}>
-              לתשלום
-            </button> */}
           </div>
         }
         key={Placement}

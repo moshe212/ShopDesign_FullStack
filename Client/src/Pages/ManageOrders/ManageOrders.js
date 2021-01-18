@@ -14,7 +14,6 @@ const ManageOrders = () => {
   useEffect(() => {
     Axios.get("/api/orders")
       .then((res) => {
-        console.log(res.data);
         data = JSON.stringify(res.data);
       })
       .catch(function (error) {
@@ -22,9 +21,7 @@ const ManageOrders = () => {
       });
   });
 
-  console.log(state.AllOrders);
   const handleChange = (pagination, filters, sorter) => {
-    console.log("Various parameters", pagination, filters, sorter);
     setstate({ filteredInfo: filters, sortedInfo: sorter });
   };
 
