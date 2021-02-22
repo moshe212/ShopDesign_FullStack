@@ -109,6 +109,7 @@ export default class OrdersForDates extends PureComponent {
   componentDidMount() {
     return Axios.get("/api/orders/dates")
       .then((res) => {
+        console.log(res.data);
         this.setState({ data: res.data });
         this.setState({ loaded: true });
       })

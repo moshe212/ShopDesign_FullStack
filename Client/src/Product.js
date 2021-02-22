@@ -149,22 +149,21 @@ const Product = (props) => {
             </button>
           </div>
         )}
-      </div>
-
-      <div className="btnAddProdDiv">
-        {props.Quantity > 0 ? (
-          <button
-            className="AddToCartOne"
-            onClick={(e) => {
-              makeFixedPosition(e);
-              SaveProdinCart();
-            }}
-          >
-            הוסף לסל
-          </button>
-        ) : (
-          <button className="AddToCartOne">אזל מהמלאי</button>
-        )}
+        <div className="btnAddProdDiv">
+          {props.Quantity > 0 ? (
+            <button
+              className="AddToCartOne"
+              onClick={(e) => {
+                makeFixedPosition(e);
+                SaveProdinCart();
+              }}
+            >
+              הוסף לסל
+            </button>
+          ) : (
+            <button className="AddToCartOne">אזל מהמלאי</button>
+          )}
+        </div>
       </div>
     </div>
   );
