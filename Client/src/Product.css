@@ -152,6 +152,7 @@ button.Plus {
   align-items: center;
   animation: MoveUp 1s linear;
   margin-top: 10px;
+  z-index: 1;
 }
 
 .Product:hover .ProdDetails {
