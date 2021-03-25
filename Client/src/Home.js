@@ -64,6 +64,7 @@ const Home = (props) => {
   }
 
   const doAxios = (isSlider, isSearch, isAddProduct, url, val1, val2) => {
+    console.log(url);
     Axios.get(url)
       .then((res) => {
         let Prices = res.data.map((prod) => prod.price);
