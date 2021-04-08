@@ -137,6 +137,11 @@ app.get("/", (req, res) => {
 //   console.log(res);
 // });
 
+app.post("/api/Whatsapp", async (req, res) => {
+  console.log("whatsapp");
+  res.send("whatsapp");
+});
+
 //החזרת כל המוצרים או לפי חיפוש אם יש חיפוש == Mongo
 app.get("/api/products", async (req, res) => {
   console.log("QUERY:", req.query);
