@@ -138,7 +138,7 @@ app.get("/", (req, res) => {
 // });
 
 app.post("/api/Whatsapp", async (req, res) => {
-  console.log("whatsapp ok");
+  console.log("whatsapp ok", req);
   const jsonFile = { reply: "שלום, אני השרת של משה. תודה שפנית אלי.." };
   res.send(jsonFile);
 });
