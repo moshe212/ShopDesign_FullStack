@@ -139,7 +139,8 @@ app.get("/", (req, res) => {
 
 app.post("/api/Whatsapp", async (req, res) => {
   console.log("whatsapp ok");
-  res.send("whatsapp");
+  const jsonFile = { reply: "Hi" };
+  res.send(jsonFile);
 });
 
 //החזרת כל המוצרים או לפי חיפוש אם יש חיפוש == Mongo
