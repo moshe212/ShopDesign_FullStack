@@ -139,7 +139,7 @@ app.get("/", (req, res) => {
 
 app.post("/api/Whatsapp", async (req, res) => {
   console.log("whatsapp ok");
-  const jsonFile = { reply: "Hi" };
+  const jsonFile = { reply: "שלום, אני השרת של משה. תודה שפנית אלי.." };
   res.send(jsonFile);
 });
 
