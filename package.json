@@ -8,7 +8,7 @@
     "start": "node server.js",
     "start-dev": "nodemon server.js",
     "startMongo": "nodemon UserSchemaBuild.js",
-    "heroku-postbuild": "cd Client && npm i && npm run build"
+    "heroku-postbuild": "cd Client && npm i && npm run build --force"
   },
   "keywords": [],
   "author": "",
