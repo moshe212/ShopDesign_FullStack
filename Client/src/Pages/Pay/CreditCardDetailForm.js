@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { useHistory } from "react-router-dom";
@@ -46,6 +46,25 @@ const useStyles3 = makeStyles((theme) => ({
 const CreditCardDetailForm = (props) => {
   const classes = useStyles();
   const classes2 = useStyles2();
+
+  const [isScreenMax800px, setIsScreenMax800px] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsScreenMax800px(window.innerWidth <= 800);
+    };
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Call handleResize initially to set the initial value
+    handleResize();
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const [value, setValue] = useState({
     firstName: "",
@@ -288,6 +307,7 @@ const CreditCardDetailForm = (props) => {
               onChange={handleChange}
               variant="outlined"
               size="small"
+              style={isScreenMax800px ? { width: 350 } : {}}
             />
             <TextField
               required
@@ -329,6 +349,7 @@ const CreditCardDetailForm = (props) => {
               onChange={handleChange}
               variant="outlined"
               size="small"
+              style={isScreenMax800px ? { width: 350 } : {}}
             />
           </div>
           <div>
@@ -344,10 +365,14 @@ const CreditCardDetailForm = (props) => {
                 value={value.month}
                 onChange={handleChange}
                 label="חודש"
-                style={{
-                  height: 40,
-                  width: 120,
-                }}
+                style={
+                  isScreenMax800px
+                    ? { width: 350, height: 40 }
+                    : {
+                        height: 40,
+                        width: 120,
+                      }
+                }
               >
                 <MenuItem value={1}>1</MenuItem>
                 <MenuItem value={2}>2</MenuItem>
@@ -381,10 +406,14 @@ const CreditCardDetailForm = (props) => {
                 onChange={handleChange}
                 label="שנה"
                 // size="small"
-                style={{
-                  height: 40,
-                  width: 120,
-                }}
+                style={
+                  isScreenMax800px
+                    ? { width: 350, height: 40, marginTop: 20 }
+                    : {
+                        height: 40,
+                        width: 120,
+                      }
+                }
               >
                 <MenuItem value={2020}>2020</MenuItem>
                 <MenuItem value={2021}>2021</MenuItem>
@@ -411,20 +440,32 @@ const CreditCardDetailForm = (props) => {
               onChange={handleChange}
               variant="outlined"
               //   labelWidth={120}
-              style={{ width: 283, marginTop: 8 }}
+              style={
+                isScreenMax800px
+                  ? { width: 350, marginTop: 45 }
+                  : { width: 283, marginTop: 8 }
+              }
               size="small"
             />
           </div>
 
           <Button
             variant="contained"
-            style={{
-              width: 558,
-              marginTop: 25,
-              backgroundColor: "#e06da5",
-              fontWeight: "bold",
-              fontSize: 20,
-            }}
+            style={
+              ({
+                marginTop: 25,
+                backgroundColor: "#e06da5",
+                fontWeight: "bold",
+                fontSize: 20,
+              },
+              isScreenMax800px
+                ? {
+                    width: 350,
+                  }
+                : {
+                    width: 558,
+                  })
+            }
             onClick={sendPayOrderToServer}
           >
             בצע תשלום

@@ -3,6 +3,12 @@
   height: 400px !important;
 }
 
+@media screen and (max-width: 800px) {
+  .map {
+    width: 350px !important;
+  }
+}
+
 .BusImg {
   float: right;
   width: 20px;

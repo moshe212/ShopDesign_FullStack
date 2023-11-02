@@ -24,3 +24,9 @@
 .sideMenuRoot {
   position: fixed;
 }
+
+@media screen and (max-width: 800px) {
+  .sideMenuRoot {
+    display: none;
+  }
+}

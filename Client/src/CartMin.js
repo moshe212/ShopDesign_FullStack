@@ -10,6 +10,24 @@ const CartMin = (props) => {
   const [Visible, setVisible] = useState(false);
   const [modalVisible, setmodalVisible] = useState(false);
   const [Placement, setPlacement] = useState("left");
+  const [isScreenMax800px, setIsScreenMax800px] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsScreenMax800px(window.innerWidth <= 800);
+    };
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Call handleResize initially to set the initial value
+    handleResize();
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const doAxiosGetOrderForCustomer = (UserId) => {
     props.GetOrderForCustomer(UserId);
@@ -84,7 +102,7 @@ const CartMin = (props) => {
               src="/Images/shopping_cart_PNG29.png"
             ></img>
             <div className="TotalCount">
-              <span>
+              <span className="TotalPrice">
                 <small className="SmallIcon">₪ </small>
                 {TotalPrice}
               </span>
@@ -97,7 +115,7 @@ const CartMin = (props) => {
           textAlign: "right",
           marginRight: 10,
         }}
-        width={"25%"}
+        width={isScreenMax800px ? "45%" : "25%"}
         title="סל קניות"
         placement={Placement}
         closable={false}

@@ -31,6 +31,12 @@
   align-items: center;
 }
 
+@media screen and (max-width: 800px) {
+  .TotalPay_Form {
+    right: 70%;
+  }
+}
+
 .TotalPay_Form:before {
   content: "";
   position: absolute;
@@ -135,6 +141,19 @@
   font-weight: bold;
 }
 
+@media screen and (max-width: 800px) {
+  .modalTxtErrorFields {
+    width: 350px;
+    margin-right: 1px;
+  }
+}
+
 .modalTxtErrorFields div {
   padding: 30px;
+}
+
+@media screen and (max-width: 800px) {
+  .modalTxtErrorFields div {
+    padding: 11px;
+  }
 }

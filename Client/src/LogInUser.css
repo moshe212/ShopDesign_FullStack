@@ -6,6 +6,7 @@
   height: 50px !important;
   margin-top: -15px !important;
   margin-left: 12% !important;
+
   /* position: -webkit-sticky !important;
   position: sticky !important;
   top: 0px !important; */
@@ -16,3 +17,9 @@
   font-weight: bold !important;
   color: #e06da5 !important;
 }
+
+/* @media screen and (max-width: 800px) {
+  .LogInuserBtn {
+    margin-bottom: 1rem;
+  }
+} */

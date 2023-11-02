@@ -1,8 +1,17 @@
 .CartImg {
-  width: 70px;
-  height: 70px;
+  width: 100%;
+  height: 100%;
   margin-left: 40px;
 }
+
+/* @media screen and (max-width: 800px) {
+  .CartImg,
+  .Count,
+  .TotalCount {
+    width: 40% !important; 
+    height: 40% !important;
+  }
+} */
 
 .Count {
   font-weight: bold;
@@ -23,14 +32,37 @@
   z-index: 2;
 }
 
+@media screen and (max-width: 800px) {
+  .Count {
+    font-size: medium;
+    margin-bottom: -20px;
+    margin-left: 75px;
+    width: 30px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .ant-drawer-body {
+    padding: 15px !important;
+  }
+}
+
 .CartImgDiv {
   position: fixed;
   top: 33px;
+  width: 70px;
+  height: 70px;
+}
+
+@media screen and (max-width: 800px) {
+  .CartImgDiv {
+    margin-top: 1.5rem;
+    width: 45px;
+  }
 }
 
 .TotalCount {
-  width: 100px;
-  height: 28px;
+  width: 140%;
   background-color: white;
   margin-left: 35px;
   margin-top: -5px;
@@ -42,6 +74,16 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.TotalPrice {
+  font-size: 1.5rem;
+}
+
+@media screen and (max-width: 800px) {
+  .TotalPrice {
+    font-size: 1.25rem;
+  }
 }
 
 .SmallIcon {
@@ -106,6 +148,12 @@
   align-items: center;
 }
 
+@media screen and (max-width: 800px) {
+  .PayBtn {
+    width: 150px;
+  }
+}
+
 .modalTxtErrorCart {
   background-color: white !important;
   margin-top: 5px;
@@ -115,6 +163,18 @@
   font-weight: bold;
 }
 
+@media screen and (max-width: 800px) {
+  .modalTxtErrorCart {
+    width: 350px;
+  }
+}
+
 .modalTxtErrorCart div {
   padding: 30px;
+}
+
+@media screen and (max-width: 800px) {
+  .modalTxtErrorCart div {
+    padding: 20px;
+  }
 }

@@ -14,8 +14,15 @@
   margin-top: -30px;
 }
 
+@media screen and (max-width: 800px) {
+  .PayDiv {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 .DetailsBlock {
-  width: 1050px;
+  width: 945px;
   height: 550px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   text-align: center;
@@ -24,8 +31,15 @@
   background-color: white;
 }
 
+@media screen and (max-width: 800px) {
+  .DetailsBlock {
+    width: 375px;
+    height: 720px;
+  }
+}
+
 .PayBlock {
-  width: 650px;
+  width: 605px;
   height: 550px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   text-align: center;
@@ -33,6 +47,15 @@
   border-radius: 15px;
   background-color: white;
   margin-right: 40px;
+}
+
+@media screen and (max-width: 800px) {
+  .PayBlock {
+    width: 375px;
+    margin-right: 0px !important;
+    margin-top: 60px;
+    height: 750px;
+  }
 }
 
 .DetailsLine {

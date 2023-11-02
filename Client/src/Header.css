@@ -6,12 +6,24 @@
 
 .logo img {
   width: 100px;
-  height: 100px;
   margin-top: 30px;
+}
+
+@media screen and (max-width: 800px) {
+  .logo img {
+    width: 46px;
+    margin-bottom: 65px;
+  }
 }
 
 .logo {
   margin-left: 50%;
+}
+
+@media screen and (max-width: 800px) {
+  .logo {
+    margin-left: 82%;
+  }
 }
 
 .Menu {
@@ -19,14 +31,23 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-top: -25px;
+  margin-top: -39px;
+}
+
+@media screen and (max-width: 800px) {
+  .Menu {
+    display: none;
+  }
 }
 
 .Menu div {
-  margin-left: 140px;
-  margin-top: 40px;
   color: white;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  margin-top: 40px;
 }
 
 .Menu div:hover {
@@ -43,6 +64,12 @@
   justify-content: center;
   align-items: center;
   margin-top: -3%;
+}
+
+@media screen and (max-width: 800px) {
+  .AdinAndLogoDiv {
+    margin-top: -13%;
+  }
 }
 
 .AdinAndLogoDiv :hover {

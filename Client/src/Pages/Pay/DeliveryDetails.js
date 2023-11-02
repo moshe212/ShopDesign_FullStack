@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -67,6 +67,25 @@ const DeliveryDetails = (props) => {
     // popupPlacement: "bottomRight",
     // direction: "rtl",
   });
+
+  const [isScreenMax800px, setIsScreenMax800px] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsScreenMax800px(window.innerWidth <= 800);
+    };
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Call handleResize initially to set the initial value
+    handleResize();
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const ChangCheckTotrue = () => {
     setState({
@@ -319,7 +338,7 @@ const DeliveryDetails = (props) => {
               }
               onChange={handleChange}
               variant="outlined"
-              style={{ width: 435 }}
+              style={isScreenMax800px ? { width: 350 } : { width: 435 }}
               size="small"
               InputProps={{
                 // readOnly: state.readonly,
@@ -350,7 +369,7 @@ const DeliveryDetails = (props) => {
               onChange={handleChange}
               variant="outlined"
               size="small"
-              style={{ width: 200 }}
+              style={isScreenMax800px ? { width: 350 } : { width: 200 }}
               InputProps={{
                 // readOnly: state.readonly,
                 disabled: state.disabled,
@@ -376,7 +395,7 @@ const DeliveryDetails = (props) => {
               onChange={handleChange}
               variant="outlined"
               //   labelWidth={120}
-              style={{ width: 285 }}
+              style={isScreenMax800px ? { width: 350 } : { width: 285 }}
               size="small"
               InputProps={{
                 // readOnly: state.readonly,
@@ -403,7 +422,7 @@ const DeliveryDetails = (props) => {
               onChange={handleChange}
               variant="outlined"
               //   labelWidth={120}
-              style={{ width: 285 }}
+              style={isScreenMax800px ? { width: 350 } : { width: 285 }}
               size="small"
               InputProps={{
                 // readOnly: state.readonly,
@@ -432,7 +451,9 @@ const DeliveryDetails = (props) => {
               onChange={handleChange}
               variant="outlined"
               //   labelWidth={120}
-              style={{ width: 250, marginTop: 8 }}
+              style={
+                isScreenMax800px ? { width: 350 } : { width: 250, marginTop: 8 }
+              }
               size="small"
               InputProps={{
                 // readOnly: state.readonly,
@@ -462,7 +483,9 @@ const DeliveryDetails = (props) => {
               }
               onChange={handleChange}
               variant="outlined"
-              style={{ width: 250, marginTop: 8 }}
+              style={
+                isScreenMax800px ? { width: 350 } : { width: 250, marginTop: 8 }
+              }
               size="small"
               InputProps={{
                 // readOnly: state.readonly,
@@ -490,7 +513,9 @@ const DeliveryDetails = (props) => {
               value={state.checked ? state.email_defaultValue : value.email}
               onChange={handleChange}
               variant="outlined"
-              style={{ width: 270, marginTop: 8 }}
+              style={
+                isScreenMax800px ? { width: 350 } : { width: 270, marginTop: 8 }
+              }
               size="small"
               InputProps={{
                 // readOnly: state.readonly,
@@ -520,7 +545,7 @@ const DeliveryDetails = (props) => {
               onChange={handleChange}
               onClick={handleChange}
               variant="outlined"
-              style={{ width: 802 }}
+              style={isScreenMax800px ? { width: 350 } : { width: 802 }}
               //   labelWidth={120}
               //   InputProps={{
               //     // readOnly: state.readonly,
