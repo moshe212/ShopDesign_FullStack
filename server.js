@@ -12,7 +12,7 @@ const dotenv = require("dotenv");
 const server = http.createServer(app);
 const io = socketIo.listen(server);
 const mongoose = require("mongoose");
-const autoIncrement = require("mongoose-auto-increment");
+// const autoIncrement = require("mongoose-auto-increment");
 
 const CategorySchema = new mongoose.Schema({
   name: {
@@ -114,13 +114,13 @@ function connectToDB() {
 
   const connection = mongoose.connect(Mongo_Path, {
     useNewUrlParser: true,
-    useCreateIndex: true,
+    // useCreateIndex: true,
     useUnifiedTopology: true,
-    useFindAndModify: false,
+    // useFindAndModify: false,
   });
   // autoIncrement.initialize(connection);
   // ProductSchema.plugin(autoIncrement.plugin, "Product");
-
+  // console.log("Connected to: ", connection);
   return connection;
 }
 
