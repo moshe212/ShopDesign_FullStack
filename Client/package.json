@@ -1,6 +1,9 @@
 {
   "name": "product_in_react",
   "version": "0.1.0",
+  "engines": {
+    "node": "16.0.0"
+  },
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
